@@ -13,6 +13,6 @@ public class Jimp2_Maze {
    static GUI GUI;
 
     public static void main(String[] args) {
-        GUI.addFrame();
+        GUI.buildGUI();
     }
 }
