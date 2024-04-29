@@ -7,6 +7,7 @@ package jimp2.jimp2_maze;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 /**
  *
@@ -18,15 +19,17 @@ public class GUI {
     static final int frameY=700;
     static JButton button = new JButton();
     static JComboBox comboBox = new JComboBox();
+    static JTextField textField = new JTextField();
     
     private static void addFrame() {
         frame.setSize(frameX, frameY);
         frame.setLayout(null);
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    private static void addButton(int x, int y, String text) {
-        button.setBounds(x,y, 200, 50);
+    private static void addButton(int x, int y, int width, int height, String text) {
+        button.setBounds(x,y, width, height);
         button.setText(text);
         frame.add(button);
     }
@@ -39,13 +42,20 @@ public class GUI {
         frame.add(comboBox);
     }
     
+    private static void addTextField(int x, int y, int width, int height, String text) {
+        textField.setBounds(x,y, width, height);
+        textField.setText(text);
+        frame.add(textField);
+    }
+    
     public static void buildGUI() {
         addFrame();
-        addButton(200,100, "TestButton");
+        addButton(200,100, 200, 50, "TestButton");
         String [] text = new String[3];
         text[0] = "TestComboBox1";
         text[1] = "TestComboBox2";
         text[2] = "TestComboBox3";
         addComboBox(10,10, 125, 25, text);
+        addTextField(150,10,125,25,"TestTextField");
 }
 }
