@@ -51,13 +51,17 @@ public class GUI {
         
         frame.add(topPanel, BorderLayout.NORTH);
         
-        JMenu menu = new JMenu("Import maze");
+        JMenu importMenu = new JMenu("Import maze");
+        JMenu saveMenu = new JMenu("Save");
         JMenuBar menuBar = new JMenuBar();
-        JMenuItem i1 = new JMenuItem("Import text maze");
-        JMenuItem i2= new JMenuItem("Import binary maze");
-        menu.add(i1);
-        menu.add(i2);
-        menuBar.add(menu);
+        JMenuItem importTextItem = new JMenuItem("Import text maze");
+        JMenuItem importBinaryItem= new JMenuItem("Import binary maze");
+        importMenu.add(importTextItem);
+        importMenu.add(importBinaryItem);
+        JMenuItem saveWayItem = new JMenuItem("Save way as a text file");
+        saveMenu.add(saveWayItem);
+        menuBar.add(importMenu);
+        menuBar.add(saveMenu);
         frame.setJMenuBar(menuBar);
 }
 }
