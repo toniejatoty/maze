@@ -7,10 +7,11 @@ package jimp2.jimp2_maze;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  *
@@ -20,10 +21,7 @@ public class GUI {
     static JFrame frame;
     static final int frameX=1400;
     static final int frameY=700;
-    static JButton button;
-    static JComboBox comboBox;
-    static JTextField textField;
-    
+
     private static void addFrame() {
         frame = new JFrame();
         frame.setSize(frameX, frameY);
@@ -53,5 +51,13 @@ public class GUI {
         
         frame.add(topPanel, BorderLayout.NORTH);
         
+        JMenu menu = new JMenu("Import maze");
+        JMenuBar menuBar = new JMenuBar();
+        JMenuItem i1 = new JMenuItem("Import text maze");
+        JMenuItem i2= new JMenuItem("Import binary maze");
+        menu.add(i1);
+        menu.add(i2);
+        menuBar.add(menu);
+        frame.setJMenuBar(menuBar);
 }
 }
