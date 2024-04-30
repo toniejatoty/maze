@@ -4,9 +4,12 @@
  */
 package jimp2.jimp2_maze;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
@@ -24,42 +27,31 @@ public class GUI {
     private static void addFrame() {
         frame = new JFrame();
         frame.setSize(frameX, frameY);
-        frame.setLayout(null);
+        frame.setLayout(new BorderLayout());
+        frame.setTitle("Maze");
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
-    private static void addButton(int x, int y, int width, int height, String text) {
-        button = new JButton();
-        button.setBounds(x,y, width, height);
-        button.setText(text);
-        frame.add(button);
-    }
-    
-    private static void addComboBox(int x, int y, int width, int height, String [] text) {
-        comboBox = new JComboBox();
-        comboBox.setBounds(x,y, width, height);
-        for(int i = 0; i < text.length; i++) {
-            comboBox.addItem(text[i]);
-        }
-        frame.add(comboBox);
-    }
-    
-    private static void addTextField(int x, int y, int width, int height, String text) {
-        textField = new JTextField();
-        textField.setBounds(x,y, width, height);
-        textField.setText(text);
-        frame.add(textField);
-    }
-    
+   
     public static void buildGUI() {
         addFrame();
-        addButton(200,100, 200, 50, "TestButton");
-        String [] text = new String[3];
-        text[0] = "TestComboBox1";
-        text[1] = "TestComboBox2";
-        text[2] = "TestComboBox3";
-        addComboBox(10,10, 125, 25, text);
-        addTextField(150,10,125,25,"TestTextField");
+        
+        JButton findShortestWayButton = new JButton("Find the shortest way");
+        JButton changeStartingPositionButton = new JButton("Change starting position");
+        JButton changeEndingPositionButton = new JButton("Change ending position");
+        
+        JPanel topMenuPanel = new JPanel();
+        topMenuPanel.setBackground(Color.LIGHT_GRAY);
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
+        
+        topMenuPanel.add(findShortestWayButton);
+        topMenuPanel.add(changeStartingPositionButton);
+        topMenuPanel.add(changeEndingPositionButton);
+        
+        topPanel.add(topMenuPanel, BorderLayout.NORTH);
+        
+        frame.add(topPanel, BorderLayout.NORTH);
+        
 }
 }
