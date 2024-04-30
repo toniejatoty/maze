@@ -14,14 +14,15 @@ import javax.swing.JTextField;
  * @author piotr-sosnowski
  */
 public class GUI {
-    static JFrame frame = new JFrame();
+    static JFrame frame;
     static final int frameX=1400;
     static final int frameY=700;
-    static JButton button = new JButton();
-    static JComboBox comboBox = new JComboBox();
-    static JTextField textField = new JTextField();
+    static JButton button;
+    static JComboBox comboBox;
+    static JTextField textField;
     
     private static void addFrame() {
+        frame = new JFrame();
         frame.setSize(frameX, frameY);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -29,12 +30,14 @@ public class GUI {
     }
     
     private static void addButton(int x, int y, int width, int height, String text) {
+        button = new JButton();
         button.setBounds(x,y, width, height);
         button.setText(text);
         frame.add(button);
     }
     
     private static void addComboBox(int x, int y, int width, int height, String [] text) {
+        comboBox = new JComboBox();
         comboBox.setBounds(x,y, width, height);
         for(int i = 0; i < text.length; i++) {
             comboBox.addItem(text[i]);
@@ -43,6 +46,7 @@ public class GUI {
     }
     
     private static void addTextField(int x, int y, int width, int height, String text) {
+        textField = new JTextField();
         textField.setBounds(x,y, width, height);
         textField.setText(text);
         frame.add(textField);
