@@ -19,8 +19,10 @@ import javax.swing.JPanel;
  */
 public class GUI {
     static JFrame frame;
-    static final int frameX=1400;
-    static final int frameY=700;
+    static final int frameX=1600;
+    static final int frameY=1400;
+    static final int defaultWidth=1600;
+    static final int defaultHeight=defaultWidth-200;
 
     private static void addFrame() {
         frame = new JFrame();
@@ -49,7 +51,11 @@ public class GUI {
         
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
         
+        JPanel mazeCanvas = new JPanel();
+        mazeCanvas.setSize(defaultWidth,defaultHeight);
+        
         frame.add(topPanel, BorderLayout.NORTH);
+        frame.add(mazeCanvas, BorderLayout.CENTER);
         
         JMenu importMenu = new JMenu("Import maze");
         JMenu saveMenu = new JMenu("Save");
