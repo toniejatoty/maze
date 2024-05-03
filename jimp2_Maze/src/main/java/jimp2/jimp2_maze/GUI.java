@@ -6,6 +6,8 @@ package jimp2.jimp2_maze;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -39,6 +41,16 @@ public class GUI {
         JButton findShortestWayButton = new JButton("Find the shortest way");
         JButton changeStartingPositionButton = new JButton("Change starting position");
         JButton changeEndingPositionButton = new JButton("Change ending position");
+        Icon helpIcon = new ImageIcon("images\\helpIcon.png");
+        JButton helpButton = new JButton(helpIcon);
+        
+        JPanel bottomMenuPanel = new JPanel();
+        bottomMenuPanel.setBackground(Color.LIGHT_GRAY);
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BorderLayout());
+        
+        bottomMenuPanel.add(helpButton);
+        bottomPanel.add(bottomMenuPanel, BorderLayout.EAST);
         
         JPanel topMenuPanel = new JPanel();
         topMenuPanel.setBackground(Color.LIGHT_GRAY);
@@ -55,7 +67,9 @@ public class GUI {
         mazeCanvas.setSize(defaultWidth,defaultHeight);
         
         frame.add(topPanel, BorderLayout.NORTH);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
         frame.add(mazeCanvas, BorderLayout.CENTER);
+        frame.repaint();
         
         JMenu importMenu = new JMenu("Import maze");
         JMenu saveMenu = new JMenu("Save");
@@ -69,5 +83,6 @@ public class GUI {
         menuBar.add(importMenu);
         menuBar.add(saveMenu);
         frame.setJMenuBar(menuBar);
+        
 }
 }
