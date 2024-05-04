@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -93,9 +94,22 @@ public class GUI {
         
          importTextItem.addActionListener(new ActionListener () {
             @Override
-            public void actionPerformed(ActionEvent Event) {
+            public void actionPerformed(ActionEvent TextLoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.showOpenDialog(frame);
+                if(fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION); {
+                    File inputFile = fileChooser.getSelectedFile();
+            }
+        };
+        
+    });
+         
+        importBinaryItem.addActionListener(new ActionListener () {
+            @Override
+            public void actionPerformed(ActionEvent BinaryLoadEvent) {
+                JFileChooser fileChooser = new JFileChooser();
+                if(fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION); {
+                    File inputFile = fileChooser.getSelectedFile();
+            }
         };
         
     });
@@ -103,6 +117,17 @@ public class GUI {
         importMenu.add(importTextItem);
         importMenu.add(importBinaryItem);
         JMenuItem saveWayItem = new JMenuItem("Save way as a text file");
+        
+        saveWayItem.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent SaveAction) {
+               JFileChooser fileChooser = new JFileChooser();
+               if(fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION); {
+                    File saveFile = fileChooser.getSelectedFile();
+           }
+           }
+        });
+        
         saveMenu.add(saveWayItem);
         menuBar.add(importMenu);
         menuBar.add(saveMenu);
