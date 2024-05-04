@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -29,6 +30,7 @@ public class GUI {
     static final int frameY=1400;
     static final int defaultWidth=1600;
     static final int defaultHeight=defaultWidth-200;
+    static final String helpMessage = "Test help message";
 
     private static void addFrame() {
         frame = new JFrame();
@@ -53,6 +55,13 @@ public class GUI {
            @Override
            public void actionPerformed(ActionEvent action) {
                System.exit(0);
+           }
+        });
+        
+        helpButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent HelpAction) {
+               JOptionPane.showMessageDialog(frame, helpMessage);
            }
         });
         
