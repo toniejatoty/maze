@@ -41,7 +41,7 @@ public class GUI {
         JButton findShortestWayButton = new JButton("Find the shortest way");
         JButton changeStartingPositionButton = new JButton("Change starting position");
         JButton changeEndingPositionButton = new JButton("Change ending position");
-        Icon helpIcon = new ImageIcon("/home/piotr-sosnowski/NetBeansProjects/maze/jimp2_Maze/images/helpIcon2.jpg");
+        Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         
         JPanel bottomMenuPanel = new JPanel();
