@@ -41,12 +41,13 @@ public class GUI {
         JButton findShortestWayButton = new JButton("Find the shortest way");
         JButton changeStartingPositionButton = new JButton("Change starting position");
         JButton changeEndingPositionButton = new JButton("Change ending position");
-        Icon helpIcon = new ImageIcon("images\\helpIcon.png");
+        Icon helpIcon = new ImageIcon("/home/piotr-sosnowski/NetBeansProjects/maze/jimp2_Maze/images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         
         JPanel bottomMenuPanel = new JPanel();
         bottomMenuPanel.setBackground(Color.LIGHT_GRAY);
         JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.LIGHT_GRAY);
         bottomPanel.setLayout(new BorderLayout());
         
         bottomMenuPanel.add(helpButton);
@@ -64,6 +65,7 @@ public class GUI {
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
         
         JPanel mazeCanvas = new JPanel();
+        mazeCanvas.setBackground(Color.darkGray);
         mazeCanvas.setSize(defaultWidth,defaultHeight);
         
         frame.add(topPanel, BorderLayout.NORTH);
