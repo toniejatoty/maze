@@ -30,7 +30,13 @@ public class GUI {
     static final int frameY=1400;
     static final int defaultWidth=1600;
     static final int defaultHeight=defaultWidth-200;
-    static final String helpMessage = "Test help message";
+    static final String helpMessage = "Witam w programie do znajdywania ścieżki w labiryncie!.\n"
+            + "Proszę wczytać labirynt za pomocą opcji \"Import maze\". Wczytany plik powinien być\n"
+            + "tekstowy z oznaczenie P na początek labiryntu oraz K na jego koniec lub binarny\n"
+            + "Następnie za pomocą przycisku \"Find shortest way\" można znaleźć najkrótszą ścieżkę w labiryncie.\n"
+            + "Przyciski \"Change starting position\" oraz \"Change ending position\" pozwalają zmieniać początek i koniec\n"
+            + "między którymi szukana będzie ścieżka. Istnieje również możliwość zapisania znalezionej ścieżki\n"
+            + "w formie tekstowej korzystając z opcji \"Save\".";
 
     private static void addFrame() {
         frame = new JFrame();
