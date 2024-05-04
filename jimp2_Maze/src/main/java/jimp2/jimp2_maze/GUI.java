@@ -95,7 +95,7 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent Event) {
                 JFileChooser fileChooser = new JFileChooser();
-                frame.add(fileChooser);
+                fileChooser.showOpenDialog(frame);
         };
         
     });
