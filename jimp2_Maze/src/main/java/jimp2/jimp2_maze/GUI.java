@@ -67,7 +67,7 @@ public class GUI {
         helpButton.addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent HelpAction) {
-               JOptionPane.showMessageDialog(frame, helpMessage);
+               JOptionPane.showMessageDialog(frame, helpMessage, "Help", JOptionPane.INFORMATION_MESSAGE);
            }
         });
         
