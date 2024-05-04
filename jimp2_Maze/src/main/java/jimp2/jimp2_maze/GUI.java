@@ -6,9 +6,12 @@ package jimp2.jimp2_maze;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -43,6 +46,14 @@ public class GUI {
         JButton changeEndingPositionButton = new JButton("Change ending position");
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
+        JButton exitButton = new JButton("Exit");
+        
+        exitButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent action) {
+               System.exit(0);
+           }
+        });
         
         JPanel bottomMenuPanel = new JPanel();
         bottomMenuPanel.setBackground(Color.LIGHT_GRAY);
@@ -61,6 +72,7 @@ public class GUI {
         topMenuPanel.add(findShortestWayButton);
         topMenuPanel.add(changeStartingPositionButton);
         topMenuPanel.add(changeEndingPositionButton);
+        topMenuPanel.add(exitButton);
         
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
         
@@ -78,6 +90,16 @@ public class GUI {
         JMenuBar menuBar = new JMenuBar();
         JMenuItem importTextItem = new JMenuItem("Import text maze");
         JMenuItem importBinaryItem= new JMenuItem("Import binary maze");
+        
+         importTextItem.addActionListener(new ActionListener () {
+            @Override
+            public void actionPerformed(ActionEvent Event) {
+                JFileChooser fileChooser = new JFileChooser();
+                frame.add(fileChooser);
+        };
+        
+    });
+        
         importMenu.add(importTextItem);
         importMenu.add(importBinaryItem);
         JMenuItem saveWayItem = new JMenuItem("Save way as a text file");
@@ -86,5 +108,5 @@ public class GUI {
         menuBar.add(saveMenu);
         frame.setJMenuBar(menuBar);
         
-}
+    }
 }
