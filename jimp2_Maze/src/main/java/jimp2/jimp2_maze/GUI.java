@@ -19,6 +19,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -92,9 +93,11 @@ public class GUI {
         
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
         
+        JScrollPane canvasScrollPane = new JScrollPane();
         JPanel mazeCanvas = new JPanel();
         mazeCanvas.setBackground(Color.darkGray);
         mazeCanvas.setSize(defaultWidth,defaultHeight);
+        mazeCanvas.add(canvasScrollPane);
         
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(bottomPanel, BorderLayout.SOUTH);
