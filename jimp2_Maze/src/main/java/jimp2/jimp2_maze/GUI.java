@@ -113,7 +113,8 @@ public class GUI {
                 JFileChooser fileChooser = new JFileChooser();
                 if(fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION); {
                     File inputFile = fileChooser.getSelectedFile();
-            }
+                    load_and_save.load_from_txt(inputFile);
+                }
         };
         
     });
