@@ -6,6 +6,7 @@ package jimp2.jimp2_maze;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+<<<<<<< HEAD
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
