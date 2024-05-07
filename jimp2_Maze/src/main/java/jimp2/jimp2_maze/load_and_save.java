@@ -57,6 +57,41 @@ rows++;
     System.out.print(Maze[i][j]+" ");
 System.out.println();
 }
+Graph [] mazegraph = new Graph [vertexnumber+1];
+for (int i=0; i<vertexnumber+1; i++) mazegraph[i] = new Graph();
+int from =0; //1 up 2 down 3 left 4 right to identyfy what position is vertex source
+for(int i=1; i<rows-1; i++)
+{
+    for(int j=1; j<columns-1; j++)
+    {
+        if(Maze[i][j]>=0 )
+        {
+            if(Maze[i-1][j]==-1)
+            {
+                from =2;
+                mazegraph[Maze[i][j]].makegraph( Maze, from, i-1, j, Maze[i][j]);
+            }
+            if(Maze[i+1][j]==-1)
+            {
+                from=1;
+                mazegraph[Maze[i][j]].makegraph( Maze, from, i+1, j, Maze[i][j]);
+            }
+            if(Maze[i][j+1]==-1)
+            {
+                from =3;
+                mazegraph[Maze[i][j]].makegraph( Maze, from, i, j+1, Maze[i][j]);
+            }
+            if(Maze[i][j-1]==-1)
+            {
+                from =4;
+                mazegraph[Maze[i][j]].makegraph( Maze, from, i, j-1, Maze[i][j]);
+            }
+        }
+    
+    }
+}
+for( int i=0; i<vertexnumber+1; i++)
+System.out.println(mazegraph[i]);
 }
         catch(IOException e )
         {
