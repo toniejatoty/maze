@@ -7,6 +7,7 @@ package jimp2.jimp2_maze;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -41,7 +42,7 @@ public class GUI {
             + "Przyciski \"Change start position\" oraz \"Change finish position\" pozwalają zmieniać początek i koniec\n"
             + "między którymi szukana będzie ścieżka. Istnieje również możliwość zapisania znalezionej ścieżki\n"
             + "w formie tekstowej korzystając z opcji \"Save\".";
-    static JTextArea eventLogLabel = new JTextArea("Test");
+    static JTextArea eventLogLabel = new JTextArea("");
     
     private static void addFrame() {
         frame = new JFrame();
@@ -58,7 +59,11 @@ public class GUI {
 
     public static void buildGUI() {
         addFrame();
-
+        
+        eventLogLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        eventLogLabel.setBackground(Color.LIGHT_GRAY);
+        eventLogLabel.setForeground(Color.BLACK);
+        eventLogLabel.setText("Please import a maze");
         JButton findShortestWayButton = new JButton("Find the shortest path");
         findShortestWayButton.setVisible(false);
         JButton changeStartingPositionButton = new JButton("Change start position");
