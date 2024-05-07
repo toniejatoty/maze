@@ -36,8 +36,8 @@ public class GUI {
     static final String helpMessage = "Witam w programie do znajdywania ścieżki w labiryncie!.\n"
             + "Proszę wczytać labirynt za pomocą opcji \"Import maze\". Wczytany plik powinien być\n"
             + "tekstowy z oznaczenie P na początek labiryntu oraz K na jego koniec lub binarny\n"
-            + "Następnie za pomocą przycisku \"Find shortest way\" można znaleźć najkrótszą ścieżkę w labiryncie.\n"
-            + "Przyciski \"Change starting position\" oraz \"Change ending position\" pozwalają zmieniać początek i koniec\n"
+            + "Następnie za pomocą przycisku \"Find shortest path\" można znaleźć najkrótszą ścieżkę w labiryncie.\n"
+            + "Przyciski \"Change start position\" oraz \"Change finish position\" pozwalają zmieniać początek i koniec\n"
             + "między którymi szukana będzie ścieżka. Istnieje również możliwość zapisania znalezionej ścieżki\n"
             + "w formie tekstowej korzystając z opcji \"Save\".";
 
@@ -53,9 +53,9 @@ public class GUI {
     public static void buildGUI() {
         addFrame();
 
-        JButton findShortestWayButton = new JButton("Find the shortest way");
-        JButton changeStartingPositionButton = new JButton("Change starting position");
-        JButton changeEndingPositionButton = new JButton("Change ending position");
+        JButton findShortestWayButton = new JButton("Find the shortest path");
+        JButton changeStartingPositionButton = new JButton("Change start position");
+        JButton changeEndingPositionButton = new JButton("Change finish position");
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
@@ -99,20 +99,18 @@ public class GUI {
         JPanel mazeCanvas = new JPanel();
         mazeCanvas.setBackground(Color.darkGray);
         mazeCanvas.setSize(defaultWidth, defaultHeight);
-        mazeCanvas.add(canvasScrollPane);
+        //mazeCanvas.add(canvasScrollPane);
 
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.add(mazeCanvas, BorderLayout.CENTER);
+        //frame.add(mazeCanvas, BorderLayout.CENTER);
         frame.repaint();
 
-        JMenu importMenu = new JMenu("Import maze");
-        JMenu saveMenu = new JMenu("Save");
+        JMenu mazeMenu = new JMenu("Maze");
         JMenuBar menuBar = new JMenuBar();
-        JMenuItem importTextItem = new JMenuItem("Import text maze");
-        JMenuItem importBinaryItem = new JMenuItem("Import binary maze");
+        JMenuItem importItem = new JMenuItem("Import");
 
-        importTextItem.addActionListener(new ActionListener() {
+        importItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent TextLoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -120,7 +118,8 @@ public class GUI {
                 {
                     File inputFile = fileChooser.getSelectedFile();
                     load_and_save.load_from_txt(inputFile);
-                    Maze_drawer.drawMaze(load_and_save.getMaze(), load_and_save.getRows(), load_and_save.getColumns(), canvasScrollPane);
+                    Maze_drawer.drawMaze(load_and_save.getMaze(), load_and_save.getRows(), load_and_save.getColumns(), canvasScrollPane, mazeCanvas);
+                    frame.add(mazeCanvas, BorderLayout.CENTER);
                     frame.revalidate();
                     frame.repaint();
                 }
@@ -129,24 +128,11 @@ public class GUI {
 
         });
          
-        importBinaryItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent BinaryLoadEvent) {
-                JFileChooser fileChooser = new JFileChooser();
-                if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
-                {
-                    File inputFile = fileChooser.getSelectedFile();
-                }
-            }
-        ;
-
-        });
         
-        importMenu.add(importTextItem);
-        importMenu.add(importBinaryItem);
-        JMenuItem saveWayItem = new JMenuItem("Save way as a text file");
+        mazeMenu.add(importItem);
+        JMenuItem exportItem = new JMenuItem("Export");
 
-        saveWayItem.addActionListener(new ActionListener() {
+        exportItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -157,13 +143,12 @@ public class GUI {
             }
         });
 
-        saveMenu.add(saveWayItem);
-        menuBar.add(importMenu);
-        menuBar.add(saveMenu);
+        mazeMenu.add(exportItem);
+        menuBar.add(mazeMenu);
         frame.setJMenuBar(menuBar);
-
+        frame.setPreferredSize(frame.getPreferredSize());
+        //frame.setPreferedSize(); -- żeby menubar nie znikał może zadziała
+        //frame.setVisible(true);
     }
 }
-//button.setVisible(! button.isVisible())
-//textField.setHorizontalAlignment(SwingConstants.CENTER
-//przy ActionEvent e        ((JButton) e.getSource()).getText()         bo getSource zraca komponent
+
