@@ -117,8 +117,8 @@ public class GUI {
                 if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File inputFile = fileChooser.getSelectedFile();
-                    load_and_save.load_from_txt(inputFile);
-                    Maze_drawer.drawMaze(load_and_save.getMaze(), load_and_save.getRows(), load_and_save.getColumns(), canvasScrollPane, mazeCanvas);
+                    LoadAndSave.load_from_txt(inputFile);
+                    MazeDrawer.drawMaze(LoadAndSave.getMaze(), LoadAndSave.getRows(), LoadAndSave.getColumns(), canvasScrollPane, mazeCanvas);
                     frame.add(mazeCanvas, BorderLayout.CENTER);
                     frame.revalidate();
                     frame.repaint();
