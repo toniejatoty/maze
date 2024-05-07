@@ -54,8 +54,11 @@ public class GUI {
         addFrame();
 
         JButton findShortestWayButton = new JButton("Find the shortest path");
+        findShortestWayButton.setVisible(false);
         JButton changeStartingPositionButton = new JButton("Change start position");
+        changeStartingPositionButton.setVisible(false);
         JButton changeEndingPositionButton = new JButton("Change finish position");
+        changeEndingPositionButton.setVisible(false);
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
@@ -118,7 +121,10 @@ public class GUI {
                 {
                     File inputFile = fileChooser.getSelectedFile();
                     LoadAndSave.load_from_txt(inputFile);
-                    MazeDrawer.drawMaze(LoadAndSave.getMaze(), LoadAndSave.getRows(), LoadAndSave.getColumns(), canvasScrollPane, mazeCanvas);
+                    //MazeDrawer.drawMaze(LoadAndSave.getMaze(), LoadAndSave.getRows(), LoadAndSave.getColumns(), canvasScrollPane, mazeCanvas);
+                    findShortestWayButton.setVisible(true);
+                    changeStartingPositionButton.setVisible(true);
+                    changeEndingPositionButton.setVisible(true);
                     frame.add(mazeCanvas, BorderLayout.CENTER);
                     frame.revalidate();
                     frame.repaint();
