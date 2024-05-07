@@ -1,7 +1,6 @@
 package jimp2.jimp2_maze;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Graph {
 private ArrayList<Edge> mazegraph = new ArrayList<>();
