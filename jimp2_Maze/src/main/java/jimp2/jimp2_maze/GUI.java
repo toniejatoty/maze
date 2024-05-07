@@ -6,7 +6,7 @@ package jimp2.jimp2_maze;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -21,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -40,7 +41,8 @@ public class GUI {
             + "Przyciski \"Change start position\" oraz \"Change finish position\" pozwalają zmieniać początek i koniec\n"
             + "między którymi szukana będzie ścieżka. Istnieje również możliwość zapisania znalezionej ścieżki\n"
             + "w formie tekstowej korzystając z opcji \"Save\".";
-
+    static JTextArea eventLogLabel = new JTextArea("Test");
+    
     private static void addFrame() {
         frame = new JFrame();
         frame.setSize(frameX, frameY);
@@ -48,6 +50,10 @@ public class GUI {
         frame.setTitle("Maze");
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    private static void addLogMessage(String text) {
+        eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
     }
 
     public static void buildGUI() {
@@ -82,9 +88,14 @@ public class GUI {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.LIGHT_GRAY);
         bottomPanel.setLayout(new BorderLayout());
+        JPanel eventLogPanel = new JPanel();
+        eventLogPanel.setBackground(Color.LIGHT_GRAY);
+        eventLogPanel.setLayout(new FlowLayout());
 
         bottomMenuPanel.add(helpButton);
+        eventLogPanel.add(eventLogLabel);
         bottomPanel.add(bottomMenuPanel, BorderLayout.EAST);
+        bottomPanel.add(eventLogPanel, BorderLayout.CENTER);
 
         JPanel topMenuPanel = new JPanel();
         topMenuPanel.setBackground(Color.LIGHT_GRAY);
@@ -125,6 +136,7 @@ public class GUI {
                     findShortestWayButton.setVisible(true);
                     changeStartingPositionButton.setVisible(true);
                     changeEndingPositionButton.setVisible(true);
+                    addLogMessage("Maze imported");
                     frame.add(mazeCanvas, BorderLayout.CENTER);
                     frame.revalidate();
                     frame.repaint();
