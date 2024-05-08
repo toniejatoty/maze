@@ -6,8 +6,10 @@ package jimp2.jimp2_maze;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -23,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 /**
  *
@@ -64,6 +67,8 @@ public class GUI {
         eventLogLabel.setBackground(Color.LIGHT_GRAY);
         eventLogLabel.setForeground(Color.BLACK);
         eventLogLabel.setText("Please import a maze");
+        DefaultCaret caret = (DefaultCaret) eventLogLabel.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);                           //so text in event log is always at the top
         JButton findShortestWayButton = new JButton("Find the shortest path");
         findShortestWayButton.setVisible(false);
         JButton changeStartingPositionButton = new JButton("Change start position");
@@ -96,9 +101,12 @@ public class GUI {
         JPanel eventLogPanel = new JPanel();
         eventLogPanel.setBackground(Color.LIGHT_GRAY);
         eventLogPanel.setLayout(new FlowLayout());
+        JScrollPane eventLogScrollPane = new JScrollPane();
+        eventLogScrollPane.setPreferredSize(new Dimension(500,30));
+        eventLogScrollPane.setViewportView(eventLogLabel);
 
         bottomMenuPanel.add(helpButton);
-        eventLogPanel.add(eventLogLabel);
+        eventLogPanel.add(eventLogScrollPane);
         bottomPanel.add(bottomMenuPanel, BorderLayout.EAST);
         bottomPanel.add(eventLogPanel, BorderLayout.CENTER);
 
@@ -137,11 +145,12 @@ public class GUI {
                 {
                     File inputFile = fileChooser.getSelectedFile();
                     LoadAndSave.load_from_txt(inputFile);
-                    //MazeDrawer.drawMaze(LoadAndSave.getMaze(), LoadAndSave.getRows(), LoadAndSave.getColumns(), canvasScrollPane, mazeCanvas);
+                    Graphics g;
+                    //MazeDrawer.paintComponent(g);
                     findShortestWayButton.setVisible(true);
                     changeStartingPositionButton.setVisible(true);
                     changeEndingPositionButton.setVisible(true);
-                    addLogMessage("Maze imported");
+                    addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
                     frame.add(mazeCanvas, BorderLayout.CENTER);
                     frame.revalidate();
                     frame.repaint();
