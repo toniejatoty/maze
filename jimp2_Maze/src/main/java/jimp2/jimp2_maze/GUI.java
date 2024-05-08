@@ -102,7 +102,7 @@ public class GUI {
         eventLogPanel.setBackground(Color.LIGHT_GRAY);
         eventLogPanel.setLayout(new FlowLayout());
         JScrollPane eventLogScrollPane = new JScrollPane();
-        eventLogScrollPane.setPreferredSize(new Dimension(500,30));
+        eventLogScrollPane.setPreferredSize(new Dimension(535,35));
         eventLogScrollPane.setViewportView(eventLogLabel);
 
         bottomMenuPanel.add(helpButton);
@@ -138,7 +138,7 @@ public class GUI {
         JMenuItem importItem = new JMenuItem("Import");
 
         importItem.addActionListener(new ActionListener() {
-            @Override
+               @Override
             public void actionPerformed(ActionEvent TextLoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
                 if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
