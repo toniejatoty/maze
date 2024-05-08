@@ -121,16 +121,17 @@ public class GUI {
         topMenuPanel.add(exitButton);
 
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
-
         JScrollPane canvasScrollPane = new JScrollPane();
-        JPanel mazeCanvas = new JPanel();
-        mazeCanvas.setBackground(Color.darkGray);
-        mazeCanvas.setSize(defaultWidth, defaultHeight);
+        canvasScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        canvasScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        //JPanel mazeCanvas = new JPanel();
+        //mazeCanvas.setBackground(Color.darkGray);
+        //mazeCanvas.setSize(defaultWidth, defaultHeight);
         //mazeCanvas.add(canvasScrollPane);
 
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(bottomPanel, BorderLayout.SOUTH);
-        //frame.add(mazeCanvas, BorderLayout.CENTER);
+        frame.add(canvasScrollPane, BorderLayout.CENTER);
         frame.repaint();
 
         JMenu mazeMenu = new JMenu("Maze");
@@ -145,13 +146,14 @@ public class GUI {
                 {
                     File inputFile = fileChooser.getSelectedFile();
                     LoadAndSave.load_from_txt(inputFile);
-                    Graphics g;
-                    //MazeDrawer.paintComponent(g);
                     findShortestWayButton.setVisible(true);
                     changeStartingPositionButton.setVisible(true);
                     changeEndingPositionButton.setVisible(true);
+                    canvasScrollPane.setViewportView(new MazeDrawer());
+                    //frame.add(new MazeDrawer(), BorderLayout.CENTER);
                     addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
-                    frame.add(mazeCanvas, BorderLayout.CENTER);
+                    //frame.add(mazeCanvas, BorderLayout.CENTER);
+                    
                     frame.revalidate();
                     frame.repaint();
                 }
