@@ -6,7 +6,10 @@ package jimp2.jimp2_maze;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -21,6 +24,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 /**
  *
@@ -36,11 +41,12 @@ public class GUI {
     static final String helpMessage = "Witam w programie do znajdywania ścieżki w labiryncie!.\n"
             + "Proszę wczytać labirynt za pomocą opcji \"Import maze\". Wczytany plik powinien być\n"
             + "tekstowy z oznaczenie P na początek labiryntu oraz K na jego koniec lub binarny\n"
-            + "Następnie za pomocą przycisku \"Find shortest way\" można znaleźć najkrótszą ścieżkę w labiryncie.\n"
-            + "Przyciski \"Change starting position\" oraz \"Change ending position\" pozwalają zmieniać początek i koniec\n"
+            + "Następnie za pomocą przycisku \"Find shortest path\" można znaleźć najkrótszą ścieżkę w labiryncie.\n"
+            + "Przyciski \"Change start position\" oraz \"Change finish position\" pozwalają zmieniać początek i koniec\n"
             + "między którymi szukana będzie ścieżka. Istnieje również możliwość zapisania znalezionej ścieżki\n"
             + "w formie tekstowej korzystając z opcji \"Save\".";
-
+    static JTextArea eventLogLabel = new JTextArea("");
+    
     private static void addFrame() {
         frame = new JFrame();
         frame.setSize(frameX, frameY);
@@ -49,13 +55,26 @@ public class GUI {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
+    private static void addLogMessage(String text) {
+        eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
+    }
 
     public static void buildGUI() {
         addFrame();
-
-        JButton findShortestWayButton = new JButton("Find the shortest way");
-        JButton changeStartingPositionButton = new JButton("Change starting position");
-        JButton changeEndingPositionButton = new JButton("Change ending position");
+        
+        eventLogLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        eventLogLabel.setBackground(Color.LIGHT_GRAY);
+        eventLogLabel.setForeground(Color.BLACK);
+        eventLogLabel.setText("Please import a maze");
+        DefaultCaret caret = (DefaultCaret) eventLogLabel.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);                           //so text in event log is always at the top
+        JButton findShortestWayButton = new JButton("Find the shortest path");
+        findShortestWayButton.setVisible(false);
+        JButton changeStartingPositionButton = new JButton("Change start position");
+        changeStartingPositionButton.setVisible(false);
+        JButton changeEndingPositionButton = new JButton("Change finish position");
+        changeEndingPositionButton.setVisible(false);
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
@@ -79,9 +98,17 @@ public class GUI {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.LIGHT_GRAY);
         bottomPanel.setLayout(new BorderLayout());
+        JPanel eventLogPanel = new JPanel();
+        eventLogPanel.setBackground(Color.LIGHT_GRAY);
+        eventLogPanel.setLayout(new FlowLayout());
+        JScrollPane eventLogScrollPane = new JScrollPane();
+        eventLogScrollPane.setPreferredSize(new Dimension(500,30));
+        eventLogScrollPane.setViewportView(eventLogLabel);
 
         bottomMenuPanel.add(helpButton);
+        eventLogPanel.add(eventLogScrollPane);
         bottomPanel.add(bottomMenuPanel, BorderLayout.EAST);
+        bottomPanel.add(eventLogPanel, BorderLayout.CENTER);
 
         JPanel topMenuPanel = new JPanel();
         topMenuPanel.setBackground(Color.LIGHT_GRAY);
@@ -99,28 +126,32 @@ public class GUI {
         JPanel mazeCanvas = new JPanel();
         mazeCanvas.setBackground(Color.darkGray);
         mazeCanvas.setSize(defaultWidth, defaultHeight);
-        mazeCanvas.add(canvasScrollPane);
+        //mazeCanvas.add(canvasScrollPane);
 
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.add(mazeCanvas, BorderLayout.CENTER);
+        //frame.add(mazeCanvas, BorderLayout.CENTER);
         frame.repaint();
 
-        JMenu importMenu = new JMenu("Import maze");
-        JMenu saveMenu = new JMenu("Save");
+        JMenu mazeMenu = new JMenu("Maze");
         JMenuBar menuBar = new JMenuBar();
-        JMenuItem importTextItem = new JMenuItem("Import text maze");
-        JMenuItem importBinaryItem = new JMenuItem("Import binary maze");
+        JMenuItem importItem = new JMenuItem("Import");
 
-        importTextItem.addActionListener(new ActionListener() {
+        importItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent TextLoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
                 if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File inputFile = fileChooser.getSelectedFile();
-                    load_and_save.load_from_txt(inputFile);
-                    //Maze_drawer.drawMaze(load_and_save.getMaze(), load_and_save.getRows(), load_and_save.getColumns(), canvasScrollPane);
+                    LoadAndSave.load_from_txt(inputFile);
+                    Graphics g;
+                    //MazeDrawer.paintComponent(g);
+                    findShortestWayButton.setVisible(true);
+                    changeStartingPositionButton.setVisible(true);
+                    changeEndingPositionButton.setVisible(true);
+                    addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
+                    frame.add(mazeCanvas, BorderLayout.CENTER);
                     frame.revalidate();
                     frame.repaint();
                 }
@@ -129,24 +160,11 @@ public class GUI {
 
         });
          
-        importBinaryItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent BinaryLoadEvent) {
-                JFileChooser fileChooser = new JFileChooser();
-                if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
-                {
-                    File inputFile = fileChooser.getSelectedFile();
-                }
-            }
-        ;
-
-        });
         
-        importMenu.add(importTextItem);
-        importMenu.add(importBinaryItem);
-        JMenuItem saveWayItem = new JMenuItem("Save way as a text file");
+        mazeMenu.add(importItem);
+        JMenuItem exportItem = new JMenuItem("Export");
 
-        saveWayItem.addActionListener(new ActionListener() {
+        exportItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -157,13 +175,12 @@ public class GUI {
             }
         });
 
-        saveMenu.add(saveWayItem);
-        menuBar.add(importMenu);
-        menuBar.add(saveMenu);
+        mazeMenu.add(exportItem);
+        menuBar.add(mazeMenu);
         frame.setJMenuBar(menuBar);
-
+        frame.setPreferredSize(frame.getPreferredSize());
+        //frame.setPreferedSize(); -- żeby menubar nie znikał może zadziała
+        //frame.setVisible(true);
     }
 }
-//button.setVisible(! button.isVisible())
-//textField.setHorizontalAlignment(SwingConstants.CENTER
-//przy ActionEvent e        ((JButton) e.getSource()).getText()         bo getSource zraca komponent
+
