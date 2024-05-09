@@ -149,7 +149,9 @@ public class GUI {
                     findShortestWayButton.setVisible(true);
                     changeStartingPositionButton.setVisible(true);
                     changeEndingPositionButton.setVisible(true);
-                    canvasScrollPane.setViewportView(new MazeDrawer());
+                    MazeDrawer mazePaint = new MazeDrawer();
+                    mazePaint.setPreferredSize(new Dimension(10*LoadAndSave.getColumns(), 10*LoadAndSave.getRows()));
+                    canvasScrollPane.setViewportView(mazePaint);
                     //frame.add(new MazeDrawer(), BorderLayout.CENTER);
                     addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
                     //frame.add(mazeCanvas, BorderLayout.CENTER);
