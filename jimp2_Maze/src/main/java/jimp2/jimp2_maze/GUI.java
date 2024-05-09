@@ -43,7 +43,7 @@ public class GUI {
             + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.\n"
             + "Buttons \"Change start position\" and \"Change finish position\" allow you to change the start and finish\n"         //może dodać tu info o tym set start/finish position oprócz change?
             + "between which the path will be found. You can also save the found path or the maze with the found path\n"
-            + "in a text file using the \"Save\" button.";
+            + "in a text file using the \"Export\" button.";
     static final String wrongIndexError = "You tried to import a maze with a wrong extension.\nPlease import a maze with either \".txt\" or \".bin\" extension.";
     private static JTextArea eventLogLabel = new JTextArea("");
     
@@ -205,9 +205,20 @@ public class GUI {
          
         
         mazeMenu.add(importItem);
-        JMenuItem exportItem = new JMenuItem("Export");
+        JMenuItem exportPathItem = new JMenuItem("Export path");
+        JMenuItem exportMazeItem = new JMenuItem("Export solved maze");
 
-        exportItem.addActionListener(new ActionListener() {
+        exportPathItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent SaveAction) {
+                JFileChooser fileChooser = new JFileChooser();
+                if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
+                {
+                    File saveFile = fileChooser.getSelectedFile();
+                }
+            }
+        });
+        exportMazeItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -218,7 +229,8 @@ public class GUI {
             }
         });
 
-        mazeMenu.add(exportItem);
+        mazeMenu.add(exportPathItem);
+        mazeMenu.add(exportMazeItem);
         menuBar.add(mazeMenu);
         frame.setJMenuBar(menuBar);
         frame.setPreferredSize(frame.getPreferredSize());
