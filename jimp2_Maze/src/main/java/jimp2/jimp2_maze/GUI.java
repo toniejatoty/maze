@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -38,13 +37,14 @@ public class GUI {
     static final int frameY = 1400;
     static final int defaultWidth = 1600;
     static final int defaultHeight = defaultWidth - 200;
-    static final String helpMessage = "Witam w programie do znajdywania ścieżki w labiryncie!.\n"
-            + "Proszę wczytać labirynt za pomocą opcji \"Import maze\". Wczytany plik powinien być\n"
-            + "tekstowy z oznaczenie P na początek labiryntu oraz K na jego koniec lub binarny\n"
-            + "Następnie za pomocą przycisku \"Find shortest path\" można znaleźć najkrótszą ścieżkę w labiryncie.\n"
-            + "Przyciski \"Change start position\" oraz \"Change finish position\" pozwalają zmieniać początek i koniec\n"
-            + "między którymi szukana będzie ścieżka. Istnieje również możliwość zapisania znalezionej ścieżki\n"
-            + "w formie tekstowej korzystając z opcji \"Save\".";
+    static final String helpMessage = "Welcome to an pathfinding in a maze aplication!.\n"
+            + "Please import a maze using the \"Import maze\" option. The imported file should be\n"
+            + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths\n"
+            + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.\n"
+            + "Buttons \"Change start position\" and \"Change finish position\" allow you to change the start and finish\n"         //może dodać tu info o tym set start/finish position oprócz change?
+            + "between which the path will be found. You can also save the found path or the maze with the found path\n"
+            + "in a text file using the \"Save\" button.";
+    static final String wrongIndexError = "You tried to import a maze with a wrong extension.\nPlease import a maze with either \".txt\" or \".bin\" extension.";
     private static JTextArea eventLogLabel = new JTextArea("");
     
     private static void addFrame() {
@@ -58,6 +58,15 @@ public class GUI {
     
     private static void addLogMessage(String text) {
         eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
+    }
+    
+    private static String getFileExtension(File file) {
+        String filename = file.getName();
+        int lastIndexOf = filename.lastIndexOf(".");
+        if(lastIndexOf == -1) {
+            return "";           //without extension
+        }
+        return filename.substring(lastIndexOf);
     }
 
     public static void buildGUI() {
@@ -150,12 +159,13 @@ public class GUI {
 
         importItem.addActionListener(new ActionListener() {
                @Override
-            public void actionPerformed(ActionEvent TextLoadEvent) {
+            public void actionPerformed(ActionEvent LoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
                 
                 if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File inputFile = fileChooser.getSelectedFile();
+                    if(getFileExtension(inputFile).compareTo(".txt") == 0) {
                     LoadAndSave.loadFromTxt(inputFile);
                     findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
                     if(LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish()==true) {
@@ -175,6 +185,15 @@ public class GUI {
                     mazePaint.setPreferredSize(new Dimension(10*LoadAndSave.getColumns(), 10*LoadAndSave.getRows()));
                     canvasScrollPane.setViewportView(mazePaint);
                     addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
+                    }
+                    else if (getFileExtension(inputFile).compareTo(".bin") == 0) {
+                        //binary import
+                    }
+                    else {
+                        System.out.println("File with wrong extension");
+                        JOptionPane.showMessageDialog(frame, wrongIndexError, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
+                        
+                    }
                     
                     frame.revalidate();
                     frame.repaint();
