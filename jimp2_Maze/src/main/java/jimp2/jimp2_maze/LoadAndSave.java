@@ -10,6 +10,8 @@ public class LoadAndSave {
     private static char[][] maze;
     private static int rows = 0;
     private static int columns = 0;
+    private static boolean isStart = false;
+    private static boolean isFinish = false;
     
     public static void loadFromTxt(File file)
     {
@@ -34,8 +36,13 @@ public class LoadAndSave {
 rows++;
     }
     for(int i=0; i<rows; i++){
-    for(int j=0; j<columns; j++)
+    for(int j=0; j<columns; j++) {
+        if(maze[i][j]=='P')
+            isStart=true;
+        if(maze[i][j]=='K')
+            isFinish=true;
     System.out.print(maze[i][j]);
+    }
 System.out.println();
 }
 }
@@ -57,4 +64,11 @@ System.out.println();
         return columns;
     }
     
-}
+    public static boolean getIsStart() {
+        return isStart;
+    }
+    
+    public static boolean getIsFinish() {
+        return isFinish;
+    }
+}   

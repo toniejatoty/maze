@@ -83,6 +83,7 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 changeStartingPositionButton.setText("Change start position");
+                addLogMessage("Changed start position to ");                        //dopisać x i y nowego początku
             }
         });
         
@@ -90,6 +91,7 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 changeEndingPositionButton.setText("Change finish position");
+                addLogMessage("Changed finish position to ");                       //dopisać x i y nowego końca
             }
         });
 
