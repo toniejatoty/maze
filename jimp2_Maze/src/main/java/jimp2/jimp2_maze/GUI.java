@@ -45,7 +45,7 @@ public class GUI {
             + "Przyciski \"Change start position\" oraz \"Change finish position\" pozwalają zmieniać początek i koniec\n"
             + "między którymi szukana będzie ścieżka. Istnieje również możliwość zapisania znalezionej ścieżki\n"
             + "w formie tekstowej korzystając z opcji \"Save\".";
-    static JTextArea eventLogLabel = new JTextArea("");
+    private static JTextArea eventLogLabel = new JTextArea("");
     
     private static void addFrame() {
         frame = new JFrame();
@@ -78,6 +78,20 @@ public class GUI {
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
+        
+        changeStartingPositionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                changeStartingPositionButton.setText("Change start position");
+            }
+        });
+        
+        changeEndingPositionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                changeEndingPositionButton.setText("Change finish position");
+            }
+        });
 
         exitButton.addActionListener(new ActionListener() {
             @Override
@@ -122,12 +136,6 @@ public class GUI {
 
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
         JScrollPane canvasScrollPane = new JScrollPane();
-        canvasScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        canvasScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        //JPanel mazeCanvas = new JPanel();
-        //mazeCanvas.setBackground(Color.darkGray);
-        //mazeCanvas.setSize(defaultWidth, defaultHeight);
-        //mazeCanvas.add(canvasScrollPane);
 
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(bottomPanel, BorderLayout.SOUTH);
@@ -142,19 +150,29 @@ public class GUI {
                @Override
             public void actionPerformed(ActionEvent TextLoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
+                
                 if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File inputFile = fileChooser.getSelectedFile();
-                    LoadAndSave.load_from_txt(inputFile);
-                    findShortestWayButton.setVisible(true);
+                    LoadAndSave.loadFromTxt(inputFile);
+                    findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
+                    if(LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish()==true) {
+                        findShortestWayButton.setVisible(true);
+                        changeStartingPositionButton.setText("Change start position");
+                        changeEndingPositionButton.setText("Change finish position");
+                    }
+                    else {
+                        if(LoadAndSave.getIsStart() == false)
+                            changeStartingPositionButton.setText("Set start position");
+                        if(LoadAndSave.getIsFinish() == false)
+                            changeEndingPositionButton.setText("Set finish position");
+                    }
                     changeStartingPositionButton.setVisible(true);
                     changeEndingPositionButton.setVisible(true);
                     MazeDrawer mazePaint = new MazeDrawer();
                     mazePaint.setPreferredSize(new Dimension(10*LoadAndSave.getColumns(), 10*LoadAndSave.getRows()));
                     canvasScrollPane.setViewportView(mazePaint);
-                    //frame.add(new MazeDrawer(), BorderLayout.CENTER);
                     addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
-                    //frame.add(mazeCanvas, BorderLayout.CENTER);
                     
                     frame.revalidate();
                     frame.repaint();
