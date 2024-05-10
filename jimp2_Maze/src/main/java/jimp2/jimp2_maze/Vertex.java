@@ -2,8 +2,17 @@ package jimp2.jimp2_maze;
 
 import java.util.ArrayList;
 
-public class Graph {
+public class Vertex {
 private ArrayList<Edge> mazegraph = new ArrayList<>();
+
+public Edge getEdge(int i)
+{
+    return mazegraph.get(i);
+}
+public int getsize()
+{
+    return mazegraph.size();
+}
 @Override
 public String toString() {
     String result = new String("");
@@ -13,9 +22,15 @@ public String toString() {
     }
 return result;
 }
-private class Edge
+protected class Edge
 {
-    int destination, source, weight;
+    private int destination, source, weight;
+    public int getDestination() {
+        return destination;
+    }
+    public int getWeight() {
+        return weight;
+    }
     public Edge(int destination, int source, int weight) {
         this.destination = destination;
         this.source = source;

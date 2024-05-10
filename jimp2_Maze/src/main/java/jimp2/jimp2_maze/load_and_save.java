@@ -70,8 +70,8 @@ if(amountK==0) throw new IOException("File don't have K letter");
     System.out.print(Maze[i][j]+" ");
 System.out.println();
 }
-Graph [] mazegraph = new Graph [vertexnumber+1];
-for (int i=0; i<vertexnumber+1; i++) mazegraph[i] = new Graph();
+Vertex [] mazegraph = new Vertex [vertexnumber+1];
+for (int i=0; i<vertexnumber+1; i++) mazegraph[i] = new Vertex();
 int from =0; //1 up 2 down 3 left 4 right to identyfy what position is vertex source
 for(int i=1; i<rows-1; i++)
 {
@@ -103,6 +103,12 @@ for(int i=1; i<rows-1; i++)
     
     }
 }
+for( int i=0; i<mazegraph.length; i++)
+System.out.println(mazegraph[i]);
+int start=0, finish=mazegraph.length-1; // this will determine the number of vertex where maze is starting and finishing
+
+solver Sollution = new solver(mazegraph, start, finish); 
+Sollution.solve();
 }
         catch(IOException e )
         {
