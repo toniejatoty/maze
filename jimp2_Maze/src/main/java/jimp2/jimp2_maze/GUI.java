@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -177,15 +178,22 @@ public class GUI {
                @Override
             public void actionPerformed(ActionEvent LoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
+                //setting deafult extension choosing option as .txt and .bin
+                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
+                FileNameExtensionFilter binFilter = new FileNameExtensionFilter("bin files (*.bin)", "bin");
+                //adding filters
+                fileChooser.addChoosableFileFilter(txtFilter);
+                fileChooser.addChoosableFileFilter(binFilter);
+                fileChooser.setFileFilter(txtFilter);
                 
                 if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
-                    exportMazeItem.setVisible(true);
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
                     if(getFileExtension(inputFile).compareTo(".txt") == 0) {
-                    LoadAndSave.loadFromTxt(inputFile);
+                        LoadAndSave.loadFromTxt(inputFile);
+                        exportMazeItem.setVisible(true);
                     if(LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true)
                         findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
                     changeStartingPositionButton.setVisible(true);
@@ -219,6 +227,13 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                
+                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
+                //adding filters
+                fileChooser.addChoosableFileFilter(txtFilter);
+                fileChooser.setFileFilter(txtFilter);
+                
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
@@ -230,6 +245,12 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
+               
+                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");        //we can add more extension in the future if needed(ex. binary)
+                //adding filters
+                fileChooser.addChoosableFileFilter(txtFilter);
+                fileChooser.setFileFilter(txtFilter);
+                
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
