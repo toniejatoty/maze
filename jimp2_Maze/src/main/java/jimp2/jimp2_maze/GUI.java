@@ -143,6 +143,7 @@ public class GUI {
         eventLogPanel.setLayout(new FlowLayout());
         JScrollPane eventLogScrollPane = new JScrollPane();
         eventLogScrollPane.setPreferredSize(new Dimension(535,35));
+        eventLogScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         eventLogScrollPane.setViewportView(eventLogLabel);
 
         bottomMenuPanel.add(helpButton);
@@ -186,7 +187,7 @@ public class GUI {
                 fileChooser.addChoosableFileFilter(binFilter);
                 fileChooser.setFileFilter(txtFilter);
                 
-                if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
+                if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION)
                 {
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
@@ -216,7 +217,6 @@ public class GUI {
                     frame.repaint();
                 }
             }
-        ;
 
         });
          
@@ -237,6 +237,8 @@ public class GUI {
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
+                    if(fileChooser.getFileFilter()==txtFilter)
+                        saveFile = new File(fileChooser.getSelectedFile().getName() + ".txt");
                     addLogMessage("Saved the path as " + saveFile.getName());
                     
                 }
@@ -255,6 +257,11 @@ public class GUI {
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
+                    if(fileChooser.getFileFilter()==txtFilter) {
+                        saveFile = new File(fileChooser.getSelectedFile().getName() + ".txt");
+                    }
+                    else
+                        saveFile = fileChooser.getSelectedFile();                     //z jakiegoś powodu pojawiają się wtedy pliki zapisane w jimp2_maze folderze
                     for(int i = 0; i < LoadAndSave.getRows(); i++) {
                         for (int j = 0; j < LoadAndSave.getColumns(); j++) {
                             try {
