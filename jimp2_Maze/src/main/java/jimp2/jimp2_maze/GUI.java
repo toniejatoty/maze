@@ -11,7 +11,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -60,6 +63,12 @@ public class GUI {
         eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
     }
     
+    private static void writeToFile(File filename, char c) throws IOException{
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
+        writer.append(c);
+        writer.close();
+    }
+    
     private static String getFileExtension(File file) {
         String filename = file.getName();
         int lastIndexOf = filename.lastIndexOf(".");
@@ -87,6 +96,7 @@ public class GUI {
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
+        
         
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
@@ -160,6 +170,8 @@ public class GUI {
         JMenu mazeMenu = new JMenu("Maze");
         JMenuBar menuBar = new JMenuBar();
         JMenuItem importItem = new JMenuItem("Import");
+        JMenuItem exportPathItem = new JMenuItem("Export path");
+        JMenuItem exportMazeItem = new JMenuItem("Export maze");
 
         importItem.addActionListener(new ActionListener() {
                @Override
@@ -168,6 +180,8 @@ public class GUI {
                 
                 if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
+                    exportMazeItem.setVisible(true);
+                    exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
                     if(getFileExtension(inputFile).compareTo(".txt") == 0) {
@@ -200,8 +214,6 @@ public class GUI {
          
         
         mazeMenu.add(importItem);
-        JMenuItem exportPathItem = new JMenuItem("Export path");
-        JMenuItem exportMazeItem = new JMenuItem("Export solved maze");
 
         exportPathItem.addActionListener(new ActionListener() {
             @Override
@@ -210,6 +222,7 @@ public class GUI {
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
+                    
                 }
             }
         });
@@ -220,14 +233,41 @@ public class GUI {
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
+                    for(int i = 0; i < LoadAndSave.getRows(); i++) {
+                        for (int j = 0; j < LoadAndSave.getColumns(); j++) {
+                            try {
+                                writeToFile(saveFile, LoadAndSave.getMaze()[i][j]);
+                            }
+                            catch(IOException ex) {
+                                System.out.println("Cannon write to file " + saveFile.getName());
+                            }
+                        }
+                        try {
+                                writeToFile(saveFile, '\n');
+                            }
+                            catch(IOException ex) {
+                                System.out.println("Cannon write to file " + saveFile.getName());
+                            }
+                    }
                 }
             }
         });
+        
+        findShortestWayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportPathItem.setVisible(true);
+            }
+        });
+        
 
         mazeMenu.add(exportPathItem);
         mazeMenu.add(exportMazeItem);
+        exportPathItem.setVisible(false);
+        exportMazeItem.setVisible(false);
         menuBar.add(mazeMenu);
         frame.setJMenuBar(menuBar);
+        
         frame.setPreferredSize(frame.getPreferredSize());
         //frame.setPreferedSize(); -- żeby menubar nie znikał może zadziała
         //frame.setVisible(true);
