@@ -18,6 +18,8 @@ public class LoadAndSave {
         maze = null;
         rows=0;
         columns=0;
+        isStart=false;
+        isFinish=false;
         String line;
         try{
     BufferedReader mazeloadsize = new BufferedReader(new FileReader(file));
@@ -70,5 +72,12 @@ System.out.println();
     
     public static boolean getIsFinish() {
         return isFinish;
+    }
+    
+    public static void setIsStart(boolean isStart) {
+        LoadAndSave.isStart=isStart;
+    }
+    public static void setIsFinish(boolean isFinish) {
+        LoadAndSave.isFinish=isFinish;
     }
 }   

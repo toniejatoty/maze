@@ -41,7 +41,7 @@ public class GUI {
             + "Please import a maze using the \"Import maze\" option. The imported file should be\n"
             + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths\n"
             + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.\n"
-            + "Buttons \"Change start position\" and \"Change finish position\" allow you to change the start and finish\n"         //może dodać tu info o tym set start/finish position oprócz change?
+            + "Buttons \"Set start position\" and \"Set finish position\" allow you to change the start and finish\n"         //może dodać tu info o tym set start/finish position oprócz change?
             + "between which the path will be found. You can also save the found path or the maze with the found path\n"
             + "in a text file using the \"Export\" button.";
     static final String wrongIndexError = "You tried to import a maze with a wrong extension.\nPlease import a maze with either \".txt\" or \".bin\" extension.";
@@ -80,9 +80,9 @@ public class GUI {
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);                           //so text in event log is always at the top
         JButton findShortestWayButton = new JButton("Find the shortest path");
         findShortestWayButton.setVisible(false);
-        JButton changeStartingPositionButton = new JButton("Change start position");
+        JButton changeStartingPositionButton = new JButton("Set start position");
         changeStartingPositionButton.setVisible(false);
-        JButton changeEndingPositionButton = new JButton("Change finish position");
+        JButton changeEndingPositionButton = new JButton("Set finish position");
         changeEndingPositionButton.setVisible(false);
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
@@ -91,16 +91,20 @@ public class GUI {
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
-                changeStartingPositionButton.setText("Change start position");
+                LoadAndSave.setIsStart(true);
                 addLogMessage("Changed start position to ");                        //dopisać x i y nowego początku
+                if(LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish() == true)
+                    findShortestWayButton.setVisible(true);
             }
         });
         
         changeEndingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
-                changeEndingPositionButton.setText("Change finish position");
+                LoadAndSave.setIsFinish(true);
                 addLogMessage("Changed finish position to ");                       //dopisać x i y nowego końca
+                if(LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish() == true)
+                    findShortestWayButton.setVisible(true);
             }
         });
 
@@ -164,21 +168,12 @@ public class GUI {
                 
                 if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
+                    findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
                     if(getFileExtension(inputFile).compareTo(".txt") == 0) {
                     LoadAndSave.loadFromTxt(inputFile);
-                    findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
-                    if(LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish()==true) {
-                        findShortestWayButton.setVisible(true);
-                        changeStartingPositionButton.setText("Change start position");
-                        changeEndingPositionButton.setText("Change finish position");
-                    }
-                    else {
-                        if(LoadAndSave.getIsStart() == false)
-                            changeStartingPositionButton.setText("Set start position");
-                        if(LoadAndSave.getIsFinish() == false)
-                            changeEndingPositionButton.setText("Set finish position");
-                    }
+                    if(LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true)
+                        findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
                     changeStartingPositionButton.setVisible(true);
                     changeEndingPositionButton.setVisible(true);
                     MazeDrawer mazePaint = new MazeDrawer();
