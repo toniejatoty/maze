@@ -237,6 +237,7 @@ public class GUI {
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
+                    addLogMessage("Saved the path as " + saveFile.getName());
                     
                 }
             }
@@ -270,6 +271,7 @@ public class GUI {
                                 System.out.println("Cannon write to file " + saveFile.getName());
                             }
                     }
+                    addLogMessage("Saved maze as " + saveFile.getName());
                 }
             }
         });
