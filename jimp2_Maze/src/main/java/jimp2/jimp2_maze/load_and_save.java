@@ -6,8 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class load_and_save {
-
-    public static void load_from_txt(File file)
+private char [][] maze ;
+    public static char [][] load_from_txt(File file)
     { char [][]maze;
         int rows =0, columns = 0;
         int amountP=0,amountK=0; // To check if File with maze is correct
@@ -111,11 +111,15 @@ int start=0, finish=mazegraph.length-1; // this will determine the number of ver
 
 solver Sollution = new solver(mazegraph, start); 
 Sollution.solve();
-
+Interpret_sollution_in_graph_to_sollution_in_maze interpret = new Interpret_sollution_in_graph_to_sollution_in_maze(Maze, Sollution.getDirections(), mazegraph[0].getEdge(0).getX(), mazegraph[0].getEdge(0).getY(), Sollution.get_distance_from_start_to_finish());
+interpret.getPoints();
+return interpret.getMaze();
 }
         catch(IOException e )
         {
             System.out.println(e.getMessage());
         }
+        return null;
     }
+
 }

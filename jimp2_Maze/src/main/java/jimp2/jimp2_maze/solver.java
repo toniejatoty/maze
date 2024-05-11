@@ -2,6 +2,7 @@ package jimp2.jimp2_maze;
 
 public class solver {
  private Vertex [] mazegraph ; 
+ private Integer [] directions;
 private int start; 
 private boolean[]visited; // is vertex visited?
 private Integer [] distance_from_start; // like distance_from_start[50] will have value beetween start and vertex represented by 50 number    
@@ -16,6 +17,11 @@ for(int i=0; i<distance_from_start.length; i++)
     distance_from_start[i]=Integer.MAX_VALUE;
 }
 visited = new boolean[mazegraph.length];
+}
+
+
+public Integer[] getDirections() {
+    return directions;
 }
 
 
@@ -39,7 +45,7 @@ previous_vertex[mazegraph[number_min_vertex].getEdge(j).getDestination()] = numb
 }
 }
     }
-    Integer [] directions= new Integer[mazegraph.length]; // it will containts direction 1-up 2-down 3-left 4-right i should head in maze from finish to start
+     directions= new Integer[mazegraph.length]; // it will containts direction 1-up 2-down 3-left 4-right i should head in maze from finish to start
     
     int vertex_number_iterator=1;
     int i =0; // to chronology assign values to way
@@ -49,10 +55,17 @@ previous_vertex[mazegraph[number_min_vertex].getEdge(j).getDestination()] = numb
         directions[i]=mazegraph[vertex_number_iterator].getEdge(mazegraph[vertex_number_iterator].find_vertex_connection(previous_vertex[vertex_number_iterator])).getDirection();
           i++;
         vertex_number_iterator = previous_vertex[vertex_number_iterator];
-    } 
-    for(int p=0; p<20; p++)
+    }
+    int directionsize=0; 
+    for(int p=0; p<mazegraph.length; p++)
+    if(directions[p]!=null){
     System.out.println(directions[p]);
-    printSolution(distance_from_start, previous_vertex);
+directionsize++;       
+}
+Integer[]tmp = new Integer[directionsize];
+System.arraycopy(directions, 0, tmp, 0, directionsize);
+directions=tmp;
+printSolution(distance_from_start, previous_vertex);
 }
 
     private static void printSolution(Integer[] distance, Integer[] previous_vertex) {
@@ -76,4 +89,8 @@ previous_vertex[mazegraph[number_min_vertex].getEdge(j).getDestination()] = numb
         }
         return vertex_with_minvalue;
     }
+    public int get_distance_from_start_to_finish()
+{
+    return distance_from_start[1];
+}
 }

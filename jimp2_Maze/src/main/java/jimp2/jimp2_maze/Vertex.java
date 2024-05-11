@@ -70,10 +70,10 @@ public void makegraph( Integer [][] Maze, int from, int i, int j, Integer source
     int weight=1;
     int howmanyspace=2;
     while(howmanyspace==2){
-    if(Maze[i-1][j]>=0 && Maze[i-1][j]!=source){mazegraph.add(new Edge(Maze[i-1][j], source, weight, x_source, y_source,2)); return;}    
-    if(Maze[i+1][j]>=0 && Maze[i+1][j]!=source){mazegraph.add(new Edge(Maze[i+1][j], source, weight, x_source, y_source,1)); return; }
-    if(Maze[i][j+1]>=0 && Maze[i][j+1]!=source){mazegraph.add(new Edge(Maze[i][j+1], source, weight, x_source, y_source,3));return;}
-    if(Maze[i][j-1]>=0 && Maze[i][j-1]!=source){mazegraph.add(new Edge(Maze[i][j-1], source, weight, x_source, y_source,4)); return;}
+    if(Maze[i-1][j]>=0 && Maze[i-1][j]!=source){mazegraph.add(new Edge(Maze[i-1][j], source, weight+1, x_source, y_source,2)); return;}    
+    if(Maze[i+1][j]>=0 && Maze[i+1][j]!=source){mazegraph.add(new Edge(Maze[i+1][j], source, weight+1, x_source, y_source,1)); return; }
+    if(Maze[i][j+1]>=0 && Maze[i][j+1]!=source){mazegraph.add(new Edge(Maze[i][j+1], source, weight+1, x_source, y_source,3));return;}
+    if(Maze[i][j-1]>=0 && Maze[i][j-1]!=source){mazegraph.add(new Edge(Maze[i][j-1], source, weight+1, x_source, y_source,4)); return;}
     howmanyspace=0;
     if(Maze[i-1][j]!=-2 ){ howmanyspace++;   }
     if(Maze[i+1][j]!=-2 ){ howmanyspace++;   }

@@ -194,7 +194,8 @@ public class GUI {
                     File inputFile = fileChooser.getSelectedFile();
                     if(getFileExtension(inputFile).compareTo(".txt") == 0) {
                         //LoadAndSave.loadFromTxt(inputFile);
-                        load_and_save.load_from_txt(inputFile);
+                        char maze[][];  
+                        maze=load_and_save.load_from_txt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
                         exportMazeItem.setVisible(true);
                     if(LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true)
                         findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
