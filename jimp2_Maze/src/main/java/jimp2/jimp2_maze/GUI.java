@@ -45,12 +45,12 @@ public class GUI {
             + "Please import a maze using the \"Import maze\" option. The imported file should be\n"
             + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths\n"
             + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.\n"
-            + "Buttons \"Set start position\" and \"Set finish position\" allow you to change the start and finish\n"         //może dodać tu info o tym set start/finish position oprócz change?
+            + "Buttons \"Set start position\" and \"Set finish position\" allow you to change the start and finish\n" //może dodać tu info o tym set start/finish position oprócz change?
             + "between which the path will be found. You can also save the found path or the maze with the found path\n"
             + "in a text file using the \"Export\" button.";
     static final String wrongIndexError = "You tried to import a maze with a wrong extension.\nPlease import a maze with either \".txt\" or \".bin\" extension.";
     private static JTextArea eventLogLabel = new JTextArea("");
-    
+
     private static void addFrame() {
         frame = new JFrame();
         frame.setSize(frameX, frameY);
@@ -59,21 +59,21 @@ public class GUI {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+
     private static void addLogMessage(String text) {
         eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
     }
-    
-    private static void writeToFile(File filename, char c) throws IOException{
+
+    private static void writeToFile(File filename, char c) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
         writer.append(c);
         writer.close();
     }
-    
+
     private static String getFileExtension(File file) {
         String filename = file.getName();
         int lastIndexOf = filename.lastIndexOf(".");
-        if(lastIndexOf == -1) {
+        if (lastIndexOf == -1) {
             return "";           //without extension
         }
         return filename.substring(lastIndexOf);
@@ -81,7 +81,7 @@ public class GUI {
 
     public static void buildGUI() {
         addFrame();
-        
+
         eventLogLabel.setFont(new Font("Arial", Font.BOLD, 20));
         eventLogLabel.setBackground(Color.LIGHT_GRAY);
         eventLogLabel.setForeground(Color.BLACK);
@@ -97,25 +97,26 @@ public class GUI {
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
-        
-        
+
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 LoadAndSave.setIsStart(true);
                 addLogMessage("Changed start position to ");                        //dopisać x i y nowego początku
-                if(LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish() == true)
+                if (LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish() == true) {
                     findShortestWayButton.setVisible(true);
+                }
             }
         });
-        
+
         changeEndingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 LoadAndSave.setIsFinish(true);
                 addLogMessage("Changed finish position to ");                       //dopisać x i y nowego końca
-                if(LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish() == true)
+                if (LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish() == true) {
                     findShortestWayButton.setVisible(true);
+                }
             }
         });
 
@@ -142,7 +143,7 @@ public class GUI {
         eventLogPanel.setBackground(Color.LIGHT_GRAY);
         eventLogPanel.setLayout(new FlowLayout());
         JScrollPane eventLogScrollPane = new JScrollPane();
-        eventLogScrollPane.setPreferredSize(new Dimension(535,35));
+        eventLogScrollPane.setPreferredSize(new Dimension(535, 35));
         eventLogScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         eventLogScrollPane.setViewportView(eventLogLabel);
 
@@ -176,7 +177,7 @@ public class GUI {
         JMenuItem exportMazeItem = new JMenuItem("Export maze");
 
         importItem.addActionListener(new ActionListener() {
-               @Override
+            @Override
             public void actionPerformed(ActionEvent LoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
                 //setting deafult extension choosing option as .txt and .bin
@@ -186,43 +187,57 @@ public class GUI {
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.addChoosableFileFilter(binFilter);
                 fileChooser.setFileFilter(txtFilter);
-                
-                if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION)
-                {
+
+                if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION) {
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
+//<<<<<<< HEAD
                     if(getFileExtension(inputFile).compareTo(".txt") == 0) {
-                        //LoadAndSave.loadFromTxt(inputFile);
+                        LoadAndSave.loadFromTxt(inputFile);
                         char maze[][];  
                         maze=load_and_save.load_from_txt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
+/* =======
+                    if (getFileExtension(inputFile).compareTo(".txt") == 0) {
+                        LoadAndSave.loadFromTxt(inputFile);
+                        //load_and_save.load_from_txt(inputFile);
+>>>>>>> 35064e6f9bd4b2b28506fddfd152557bb378b489*/
                         exportMazeItem.setVisible(true);
-                    if(LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true)
-                        findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
-                    changeStartingPositionButton.setVisible(true);
-                    changeEndingPositionButton.setVisible(true);
-                    MazeDrawer mazePaint = new MazeDrawer();
-                    mazePaint.setPreferredSize(new Dimension(10*LoadAndSave.getColumns(), 10*LoadAndSave.getRows()));
-                    canvasScrollPane.setViewportView(mazePaint);
-                    addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
-                    }
-                    else if (getFileExtension(inputFile).compareTo(".bin") == 0) {
+                        if (LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true) {
+                            findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
+                        }
+                        changeStartingPositionButton.setVisible(true);
+                        changeEndingPositionButton.setVisible(true);
+                        MazeDrawer mazePaint = new MazeDrawer();
+                        mazePaint.setPreferredSize(new Dimension(10 * LoadAndSave.getColumns(), 10 * LoadAndSave.getRows()));
+                        canvasScrollPane.setViewportView(mazePaint);
+                        addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
+                    } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {
+                        LoadAndSave.loadFromBin(inputFile);
+                        exportMazeItem.setVisible(true);
+                        if (LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true) {
+                            findShortestWayButton.setVisible(true);
+                        }
+                        changeStartingPositionButton.setVisible(true);
+                        changeEndingPositionButton.setVisible(true);
+                        MazeDrawer mazePaint = new MazeDrawer();
+                        mazePaint.setPreferredSize(new Dimension(10 * LoadAndSave.getColumns(), 10 * LoadAndSave.getRows()));
+                        canvasScrollPane.setViewportView(mazePaint);
+                        addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
                         //binary import
-                    }
-                    else {
+                    } else {
                         System.out.println("File with wrong extension");
                         JOptionPane.showMessageDialog(frame, wrongIndexError, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
-                        
+
                     }
-                    
+
                     frame.revalidate();
                     frame.repaint();
                 }
             }
 
         });
-         
-        
+
         mazeMenu.add(importItem);
 
         exportPathItem.addActionListener(new ActionListener() {
@@ -230,19 +245,20 @@ public class GUI {
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                
+
                 FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
                 //adding filters
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
-                
+
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
-                    if(fileChooser.getFileFilter()==txtFilter)
+                    if (fileChooser.getFileFilter() == txtFilter) {
                         saveFile = new File(fileChooser.getSelectedFile().getName() + ".txt");
+                    }
                     addLogMessage("Saved the path as " + saveFile.getName());
-                    
+
                 }
             }
         });
@@ -250,48 +266,46 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
-               
+
                 FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");        //we can add more extension in the future if needed(ex. binary)
                 //adding filters
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
-                
+
                 if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
-                    if(fileChooser.getFileFilter()==txtFilter) {
+                    if (fileChooser.getFileFilter() == txtFilter) {
                         saveFile = new File(fileChooser.getSelectedFile().getName() + ".txt");
-                    }
-                    else
+                    } else {
                         saveFile = fileChooser.getSelectedFile();                     //z jakiegoś powodu pojawiają się wtedy pliki zapisane w jimp2_maze folderze
-                    for(int i = 0; i < LoadAndSave.getRows(); i++) {
+                    }
+                    for (int i = 0; i < LoadAndSave.getRows(); i++) {
                         for (int j = 0; j < LoadAndSave.getColumns(); j++) {
                             try {
                                 writeToFile(saveFile, LoadAndSave.getMaze()[i][j]);
-                            }
-                            catch(IOException ex) {
+                            } catch (IOException ex) {
                                 System.out.println("Cannon write to file " + saveFile.getName());
                             }
                         }
                         try {
-                                writeToFile(saveFile, '\n');
-                            }
-                            catch(IOException ex) {
-                                System.out.println("Cannon write to file " + saveFile.getName());
-                            }
+                            writeToFile(saveFile, '\n');
+                        } catch (IOException ex) {
+                            System.out.println("Cannon write to file " + saveFile.getName());
+                        }
                     }
                     addLogMessage("Saved maze as " + saveFile.getName());
                 }
             }
         });
-        
+
         findShortestWayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 exportPathItem.setVisible(true);
+                addLogMessage("Found shortest path beetwen start and finish");
             }
         });
-        
 
         mazeMenu.add(exportPathItem);
         mazeMenu.add(exportMazeItem);
@@ -299,10 +313,9 @@ public class GUI {
         exportMazeItem.setVisible(false);
         menuBar.add(mazeMenu);
         frame.setJMenuBar(menuBar);
-        
+
         frame.setPreferredSize(frame.getPreferredSize());
         //frame.setPreferedSize(); -- żeby menubar nie znikał może zadziała
         //frame.setVisible(true);
     }
 }
-
