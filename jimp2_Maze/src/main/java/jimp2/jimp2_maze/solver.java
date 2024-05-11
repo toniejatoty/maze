@@ -2,14 +2,13 @@ package jimp2.jimp2_maze;
 
 public class solver {
  private Vertex [] mazegraph ; 
-private int start , finish;
-private boolean[]visited;
+private int start; 
+private boolean[]visited; // is vertex visited?
 private Integer [] distance_from_start; // like distance_from_start[50] will have value beetween start and vertex represented by 50 number    
-private Integer [] previous_vertex;
- public solver(Vertex[] mazegraph, int start, int finish) {
+private Integer [] previous_vertex; // to know connetions  
+ public solver(Vertex[] mazegraph, int start) {
     this.mazegraph = mazegraph;
     this.start=start;
-    this.finish=finish;
  this.distance_from_start= new Integer[mazegraph.length];
  previous_vertex = new Integer[mazegraph.length];
 for(int i=0; i<distance_from_start.length; i++)
@@ -18,6 +17,7 @@ for(int i=0; i<distance_from_start.length; i++)
 }
 visited = new boolean[mazegraph.length];
 }
+
 
 public void solve ()
     {
@@ -35,16 +35,30 @@ for(int j=0; j<mazegraph[number_min_vertex].getsize(); j++)
     && distance_from_start [number_min_vertex] + mazegraph[number_min_vertex].getEdge(j).getWeight() < distance_from_start [mazegraph[number_min_vertex].getEdge(j).getDestination()]) 
     {
     distance_from_start [mazegraph[number_min_vertex].getEdge(j).getDestination()] = distance_from_start [number_min_vertex] + mazegraph[number_min_vertex].getEdge(j).getWeight();
+previous_vertex[mazegraph[number_min_vertex].getEdge(j).getDestination()] = number_min_vertex;
 }
 }
     }
-    printSolution(distance_from_start);
+    Integer [] directions= new Integer[mazegraph.length]; // it will containts direction 1-up 2-down 3-left 4-right i should head in maze from finish to start
+    
+    int vertex_number_iterator=1;
+    int i =0; // to chronology assign values to way
+    
+    while(previous_vertex[vertex_number_iterator]!=-1)
+    {
+        directions[i]=mazegraph[vertex_number_iterator].getEdge(mazegraph[vertex_number_iterator].find_vertex_connection(previous_vertex[vertex_number_iterator])).getDirection();
+          i++;
+        vertex_number_iterator = previous_vertex[vertex_number_iterator];
+    } 
+    for(int p=0; p<20; p++)
+    System.out.println(directions[p]);
+    printSolution(distance_from_start, previous_vertex);
 }
 
-    private static void printSolution(Integer[] distance) {
+    private static void printSolution(Integer[] distance, Integer[] previous_vertex) {
         System.out.println("Vertex \t Distance from Source");
         for (int i = 0; i < distance.length-1; i++) {
-            System.out.println(i + " \t " + distance[i]);
+            System.out.println(i + " \t " + distance[i]+ " \t" + previous_vertex[i] );
         }
     }
 
