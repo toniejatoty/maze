@@ -193,8 +193,8 @@ public class GUI {
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
                     if(getFileExtension(inputFile).compareTo(".txt") == 0) {
-                        //LoadAndSave.loadFromTxt(inputFile);
-                        load_and_save.load_from_txt(inputFile);
+                        LoadAndSave.loadFromTxt(inputFile);
+                        //load_and_save.load_from_txt(inputFile);
                         exportMazeItem.setVisible(true);
                     if(LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true)
                         findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
@@ -288,6 +288,7 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 exportPathItem.setVisible(true);
+                addLogMessage("Found shortest path beetwen start and finish");
             }
         });
         
