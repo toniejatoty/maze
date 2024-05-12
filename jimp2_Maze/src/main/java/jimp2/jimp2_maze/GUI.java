@@ -101,9 +101,9 @@ public class GUI {
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
-                LoadAndSave.setIsStart(true);
+                LoadAndSave.setAmountP(1);
                 addLogMessage("Changed start position to ");                        //dopisać x i y nowego początku
-                if (LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish() == true) {
+                if (LoadAndSave.getAmountP() == 1 && LoadAndSave.getAmountK() == 1) {
                     findShortestWayButton.setVisible(true);
                 }
             }
@@ -112,9 +112,9 @@ public class GUI {
         changeEndingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
-                LoadAndSave.setIsFinish(true);
+                LoadAndSave.setAmountK(1);
                 addLogMessage("Changed finish position to ");                       //dopisać x i y nowego końca
-                if (LoadAndSave.getIsStart() == true && LoadAndSave.getIsFinish() == true) {
+                if (LoadAndSave.getAmountP() == 1 && LoadAndSave.getAmountK() == 1) {
                     findShortestWayButton.setVisible(true);
                 }
             }
@@ -196,13 +196,13 @@ public class GUI {
                     if(getFileExtension(inputFile).compareTo(".txt") == 0) {
                         LoadAndSave.loadFromTxt(inputFile);
                         char maze[][];  
-                        maze=load_and_save.load_from_txt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
+                        maze=LoadAndSave.loadFromTxt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
 
                    // if (getFileExtension(inputFile).compareTo(".txt") == 0) {
                      //   LoadAndSave.loadFromTxt(inputFile);
 
                         exportMazeItem.setVisible(true);
-                        if (LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true) {
+                        if (LoadAndSave.getAmountK() == 1 && LoadAndSave.getAmountP() == 1) {
                             findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
                         }
                         changeStartingPositionButton.setVisible(true);
@@ -214,7 +214,7 @@ public class GUI {
                     } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {
                         LoadAndSave.loadFromBin(inputFile);
                         exportMazeItem.setVisible(true);
-                        if (LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true) {
+                        if (LoadAndSave.getAmountK() == 1 && LoadAndSave.getAmountP() == 1) {
                             findShortestWayButton.setVisible(true);
                         }
                         changeStartingPositionButton.setVisible(true);
@@ -304,7 +304,7 @@ public class GUI {
                 exportPathItem.setVisible(true);
                 addLogMessage("Found shortest path beetwen start and finish");
                 try {
-                    load_and_save.findPathInMaze();
+                    LoadAndSave.findPathInMaze();
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
