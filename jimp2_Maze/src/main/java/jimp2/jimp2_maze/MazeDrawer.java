@@ -20,7 +20,7 @@ public class MazeDrawer extends JPanel{
         super.paintComponent(g);
         for(int i = 0; i < load_and_save.getRows(); i++) {
             for(int j = 0; j < load_and_save.getColumns(); j++) {
-                switch(Interpret_sollution_in_graph_to_sollution_in_maze.getMaze()[i][j]) {
+                switch(load_and_save.getMaze()[i][j]) {
                     case ' ':
                         g.setColor(Color.WHITE);
                         g.fillRect(10*j, 10*i, 10, 10);
