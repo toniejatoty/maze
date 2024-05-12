@@ -303,6 +303,14 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 exportPathItem.setVisible(true);
                 addLogMessage("Found shortest path beetwen start and finish");
+                try {
+                    load_and_save.findPathInMaze();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                MazeDrawer mazePaint = new MazeDrawer();
+                mazePaint.setPreferredSize(new Dimension(10 * LoadAndSave.getColumns(), 10 * LoadAndSave.getRows()));
+                canvasScrollPane.setViewportView(mazePaint);
             }
         });
 
