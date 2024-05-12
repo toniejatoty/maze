@@ -3,7 +3,7 @@ package jimp2.jimp2_maze;
 
 public class Interpret_sollution_in_graph_to_sollution_in_maze {
 private Integer [][]Maze;
-private char [][]maze;
+private static char [][]maze;
 private Integer [] directions;
 private int xstart, ystart;
 private int distance_from_start_to_finish;
@@ -69,7 +69,7 @@ for(int j=0; j<maze[0].length; j++)
 System.out.println("");
 }
 }
-public char[][] getMaze() {
+public static char[][] getMaze() {
     return maze;
 }
 }

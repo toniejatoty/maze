@@ -14,7 +14,7 @@ private Integer [] previous_vertex; // to know connetions
  previous_vertex = new Integer[mazegraph.length];
 for(int i=0; i<distance_from_start.length; i++)
 {
-    distance_from_start[i]=Integer.MAX_VALUE;
+    distance_from_start[i]=Integer.MAX_VALUE;           //nie pamiętam czy Chaber przy C nie czepiał się tego Integer.MAX_VALUE
 }
 visited = new boolean[mazegraph.length];
 }

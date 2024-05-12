@@ -6,10 +6,25 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class load_and_save {
-private char [][] maze ;
+private static char [][] maze ;
+private static int rows;
+private static int columns;
+
+    public static char[][] getMaze() {
+        return maze;
+    }
+    public static int getRows() {
+        return rows;
+    }
+    public static int getColumns() {
+        return columns;
+    }
+    
+
     public static char [][] load_from_txt(File file)
-    { char [][]maze;
-        int rows =0, columns = 0;
+    {
+        rows =0;
+        columns = 0;
         int amountP=0,amountK=0; // To check if File with maze is correct
         String line;
         try{
@@ -113,6 +128,7 @@ solver Sollution = new solver(mazegraph, start);
 Sollution.solve();
 Interpret_sollution_in_graph_to_sollution_in_maze interpret = new Interpret_sollution_in_graph_to_sollution_in_maze(Maze, Sollution.getDirections(), mazegraph[0].getEdge(0).getX(), mazegraph[0].getEdge(0).getY(), Sollution.get_distance_from_start_to_finish());
 interpret.getPoints();
+System.out.println(interpret.getMaze()[1][1]);
 return interpret.getMaze();
 }
         catch(IOException e )
@@ -123,3 +139,4 @@ return interpret.getMaze();
     }
 
 }
+

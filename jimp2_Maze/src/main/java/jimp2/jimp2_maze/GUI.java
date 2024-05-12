@@ -192,16 +192,15 @@ public class GUI {
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
-//<<<<<<< HEAD
+//<<<<<<< HEAD      //TO ZAKOMENTOWANE U MNIE NIE DZIAŁA
                     if(getFileExtension(inputFile).compareTo(".txt") == 0) {
                         LoadAndSave.loadFromTxt(inputFile);
                         char maze[][];  
                         maze=load_and_save.load_from_txt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
-/* =======
-                    if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-                        LoadAndSave.loadFromTxt(inputFile);
-                        //load_and_save.load_from_txt(inputFile);
->>>>>>> 35064e6f9bd4b2b28506fddfd152557bb378b489*/
+
+                   // if (getFileExtension(inputFile).compareTo(".txt") == 0) {
+                     //   LoadAndSave.loadFromTxt(inputFile);
+
                         exportMazeItem.setVisible(true);
                         if (LoadAndSave.getIsFinish() == true && LoadAndSave.getIsStart() == true) {
                             findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie

@@ -18,9 +18,9 @@ public class MazeDrawer extends JPanel{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for(int i = 0; i < LoadAndSave.getRows(); i++) {
-            for(int j = 0; j < LoadAndSave.getColumns(); j++) {
-                switch(LoadAndSave.getMaze()[i][j]) {
+        for(int i = 0; i < load_and_save.getRows(); i++) {
+            for(int j = 0; j < load_and_save.getColumns(); j++) {
+                switch(Interpret_sollution_in_graph_to_sollution_in_maze.getMaze()[i][j]) {
                     case ' ':
                         g.setColor(Color.WHITE);
                         g.fillRect(10*j, 10*i, 10, 10);
@@ -37,6 +37,9 @@ public class MazeDrawer extends JPanel{
                         g.setColor(Color.BLUE);
                         g.fillRect(10*j, 10*i, 10, 10);
                         break;
+                    case 'O':
+                        g.setColor(Color.ORANGE);
+                        g.fillRect(10*j, 10*i, 10, 10);
                     default:
                         g.setColor(Color.RED);
                         g.fillRect(10*j, 10*i, 10, 10);
