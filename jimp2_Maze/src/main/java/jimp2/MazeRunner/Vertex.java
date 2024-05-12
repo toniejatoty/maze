@@ -1,11 +1,11 @@
-package jimp2.jimp2_maze;
+package jimp2.MazeRunner;
 
 import java.util.ArrayList;
 
 public class Vertex {
 private ArrayList<Edge> mazegraph = new ArrayList<>();
 
-public int find_vertex_connection(int x)
+public int findVertexConnection(int x)
 { 
     for(int i=0; i<mazegraph.size(); i++)
     {
@@ -64,16 +64,16 @@ protected class Edge
         return "source ("+ x+"," + y + ") " +  +source + " destination: " + destination + " weight: "+ weight+" "+ "direction" + " " + direction + " ";
     }
 }
-public void makegraph( Integer [][] Maze, int from, int i, int j, Integer source, int x_source, int y_source)
+public void makegraph( Integer [][] Maze, int from, int i, int j, Integer source, int xSource, int ySource)
 {    
-    if(Maze[i][j]>=0){ mazegraph.add(new Edge(Maze[i][j], source, 1, x_source, y_source,from)); return;}
+    if(Maze[i][j]>=0){ mazegraph.add(new Edge(Maze[i][j], source, 1, xSource, ySource,from)); return;}
     int weight=1;
     int howmanyspace=2;
     while(howmanyspace==2){
-    if(Maze[i-1][j]>=0 && Maze[i-1][j]!=source){mazegraph.add(new Edge(Maze[i-1][j], source, weight+1, x_source, y_source,2)); return;}    
-    if(Maze[i+1][j]>=0 && Maze[i+1][j]!=source){mazegraph.add(new Edge(Maze[i+1][j], source, weight+1, x_source, y_source,1)); return; }
-    if(Maze[i][j+1]>=0 && Maze[i][j+1]!=source){mazegraph.add(new Edge(Maze[i][j+1], source, weight+1, x_source, y_source,3));return;}
-    if(Maze[i][j-1]>=0 && Maze[i][j-1]!=source){mazegraph.add(new Edge(Maze[i][j-1], source, weight+1, x_source, y_source,4)); return;}
+    if(Maze[i-1][j]>=0 && Maze[i-1][j]!=source){mazegraph.add(new Edge(Maze[i-1][j], source, weight+1, xSource, ySource,2)); return;}    
+    if(Maze[i+1][j]>=0 && Maze[i+1][j]!=source){mazegraph.add(new Edge(Maze[i+1][j], source, weight+1, xSource, ySource,1)); return; }
+    if(Maze[i][j+1]>=0 && Maze[i][j+1]!=source){mazegraph.add(new Edge(Maze[i][j+1], source, weight+1, xSource, ySource,3));return;}
+    if(Maze[i][j-1]>=0 && Maze[i][j-1]!=source){mazegraph.add(new Edge(Maze[i][j-1], source, weight+1, xSource, ySource,4)); return;}
     howmanyspace=0;
     if(Maze[i-1][j]!=-2 ){ howmanyspace++;   }
     if(Maze[i+1][j]!=-2 ){ howmanyspace++;   }

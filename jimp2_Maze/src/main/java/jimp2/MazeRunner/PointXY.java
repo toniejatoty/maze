@@ -1,4 +1,4 @@
-package jimp2.jimp2_maze;
+package jimp2.MazeRunner;
 
 public class PointXY {
 private int x,y;

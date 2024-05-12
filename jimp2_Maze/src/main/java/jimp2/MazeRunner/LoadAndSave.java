@@ -1,4 +1,4 @@
-package jimp2.jimp2_maze;
+package jimp2.MazeRunner;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -171,10 +171,10 @@ public class LoadAndSave {
 
             solver Sollution = new solver(mazegraph, start);
             Sollution.solve();
-            Interpret_sollution_in_graph_to_sollution_in_maze interpret = new Interpret_sollution_in_graph_to_sollution_in_maze(Maze, Sollution.getDirections(), mazegraph[0].getEdge(0).getX(), mazegraph[0].getEdge(0).getY(), Sollution.get_distance_from_start_to_finish());
+            InterpretSollutionInGraphToSollutionInMaze interpret = new InterpretSollutionInGraphToSollutionInMaze(Maze, Sollution.getDirections(), mazegraph[0].getEdge(0).getX(), mazegraph[0].getEdge(0).getY(), Sollution.getDistanceFromStartToFinish());
             interpret.getPoints();
-            System.out.println(Interpret_sollution_in_graph_to_sollution_in_maze.getMaze()[1][1]);
-            maze = Interpret_sollution_in_graph_to_sollution_in_maze.getMaze();
+            System.out.println(InterpretSollutionInGraphToSollutionInMaze.getMaze()[1][1]);
+            maze = InterpretSollutionInGraphToSollutionInMaze.getMaze();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
