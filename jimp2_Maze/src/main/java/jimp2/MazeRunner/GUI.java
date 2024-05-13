@@ -194,14 +194,13 @@ public class GUI {
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
 //<<<<<<< HEAD      //TO ZAKOMENTOWANE U MNIE NIE DZIAŁA
-                    if(getFileExtension(inputFile).compareTo(".txt") == 0) {
+                    if (getFileExtension(inputFile).compareTo(".txt") == 0) {
                         LoadAndSave.loadFromTxt(inputFile);
-                        char maze[][];  
-                        maze=LoadAndSave.loadFromTxt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
+                        char maze[][];
+                        maze = LoadAndSave.loadFromTxt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
 
-                   // if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-                     //   LoadAndSave.loadFromTxt(inputFile);
-
+                        // if (getFileExtension(inputFile).compareTo(".txt") == 0) {
+                        //   LoadAndSave.loadFromTxt(inputFile);
                         exportMazeItem.setVisible(true);
                         if (LoadAndSave.getAmountK() == 1 && LoadAndSave.getAmountP() == 1) {
                             findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
@@ -266,7 +265,6 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
-
                 FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");        //we can add more extension in the future if needed(ex. binary)
                 //adding filters
                 fileChooser.addChoosableFileFilter(txtFilter);
@@ -280,23 +278,22 @@ public class GUI {
                     } else {
                         saveFile = fileChooser.getSelectedFile();                     //z jakiegoś powodu pojawiają się wtedy pliki zapisane w jimp2_maze folderze
                     }
-                    for (int i = 0; i < LoadAndSave.getRows(); i++) {
-                        for (int j = 0; j < LoadAndSave.getColumns(); j++) {
-                            try {
+                    try {
+                        for (int i = 0; i < LoadAndSave.getRows(); i++) {
+                            for (int j = 0; j < LoadAndSave.getColumns(); j++) {
+
                                 writeToFile(saveFile, LoadAndSave.getMaze()[i][j]);
-                            } catch (IOException ex) {
-                                System.out.println("Cannon write to file " + saveFile.getName());
                             }
-                        }
-                        try {
                             writeToFile(saveFile, '\n');
-                        } catch (IOException ex) {
-                            System.out.println("Cannon write to file " + saveFile.getName());
                         }
+                        writeToFile(saveFile, '\n');
+                    } catch (IOException ex) {
+                        System.err.println("Cannon write to file " + fileChooser.getSelectedFile().getName());
                     }
                     addLogMessage("Saved maze as " + saveFile.getName());
                 }
             }
+
         });
 
         findShortestWayButton.addActionListener(new ActionListener() {
