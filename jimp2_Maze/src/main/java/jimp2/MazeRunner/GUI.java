@@ -47,7 +47,8 @@ public class GUI {
             + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.\n"
             + "Buttons \"Set start position\" and \"Set finish position\" allow you to change the start and finish\n" //może dodać tu info o tym set start/finish position oprócz change?
             + "between which the path will be found. You can also save the found path or the maze with the found path\n"
-            + "in a text file using the \"Export\" button.";
+            + "in a text file using the \"Export path\" option under the \"Export\" menu. You may also export the whole maze to a text file\n"
+            + "using \"Export maze\" option in the same menu. If you export a maze with found path, the path will be marked by \'O\' symbols.";
     static final String wrongIndexError = "You tried to import a maze with a wrong extension.\nPlease import a maze with either \".txt\" or \".bin\" extension.";
     private static JTextArea eventLogLabel = new JTextArea("");
 
