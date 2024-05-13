@@ -4,6 +4,8 @@
 
 package jimp2.MazeRunner;
 
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author piotr-sosnowski
@@ -13,6 +15,7 @@ public class MazeRunner {
    static GUI GUI;
 
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new GUI());
         GUI.buildGUI();
     }
 }
