@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  * @author piotr-sosnowski
  */
 public class MazeDrawer extends JPanel{
-
+    private static int squareSize = 10;
     
     @Override
     public void paintComponent(Graphics g) {
@@ -35,11 +35,12 @@ public class MazeDrawer extends JPanel{
                         break;
                     case 'O':
                         g.setColor(Color.ORANGE);
+                        break;
                     default:
                         g.setColor(Color.RED);
                         break;
                 }
-                g.fillRect(10*j, 10*i, 10, 10);
+                g.fillRect(squareSize*j, squareSize*i, squareSize, squareSize);
             }
         }
     }

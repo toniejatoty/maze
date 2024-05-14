@@ -1,14 +1,14 @@
 package jimp2.MazeRunner;
 
 
-public class InterpretSollutionInGraphToSollutionInMaze {
+public class GraphToMazeSolutionConverter {
 private Integer [][]Maze;
 private static char [][]maze;
 private Integer [] directions;
 private int xstart, ystart;
 private int distanceFromStartToFinish;
 private PointXY [] points;
-public InterpretSollutionInGraphToSollutionInMaze(Integer[][] maze, Integer[] directions, int xstart, int ystart, int s) {
+public GraphToMazeSolutionConverter(Integer[][] maze, Integer[] directions, int xstart, int ystart, int s) {
     Maze = maze;
     distanceFromStartToFinish=s;
     this.directions = directions;
@@ -26,6 +26,7 @@ int x=xstart;
 int y=ystart;
 for(int i=1; i<distanceFromStartToFinish+1; i++)
 {
+//if(maze.isWallCell(x,y))
 if(Maze[x][y] >=0)
 {
     direction = directions[vertexcount];

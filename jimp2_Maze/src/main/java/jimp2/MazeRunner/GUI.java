@@ -274,9 +274,7 @@ public class GUI {
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
-                        saveFile = new File(fileChooser.getSelectedFile().getName() + ".txt");
-                    } else {
-                        saveFile = fileChooser.getSelectedFile();                     //z jakiegoś powodu pojawiają się wtedy pliki zapisane w jimp2_maze folderze
+                        saveFile = new File(saveFile.getName() + ".txt");
                     }
                     try {
                         for (int i = 0; i < LoadAndSave.getRows(); i++) {

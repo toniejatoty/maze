@@ -169,12 +169,12 @@ public class LoadAndSave {
             }
             int start = 0, finish = mazegraph.length - 1; // this will determine the number of vertex where maze is starting and finishing
 
-            solver Sollution = new solver(mazegraph, start);
+            Solver Sollution = new Solver(mazegraph, start);
             Sollution.solve();
-            InterpretSollutionInGraphToSollutionInMaze interpret = new InterpretSollutionInGraphToSollutionInMaze(Maze, Sollution.getDirections(), mazegraph[0].getEdge(0).getX(), mazegraph[0].getEdge(0).getY(), Sollution.getDistanceFromStartToFinish());
+            GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(Maze, Sollution.getDirections(), mazegraph[0].getEdge(0).getX(), mazegraph[0].getEdge(0).getY(), Sollution.getDistanceFromStartToFinish());
             interpret.getPoints();
-            System.out.println(InterpretSollutionInGraphToSollutionInMaze.getMaze()[1][1]);
-            maze = InterpretSollutionInGraphToSollutionInMaze.getMaze();
+            System.out.println(GraphToMazeSolutionConverter.getMaze()[1][1]);
+            maze = GraphToMazeSolutionConverter.getMaze();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
