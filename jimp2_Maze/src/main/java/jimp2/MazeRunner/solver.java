@@ -1,13 +1,13 @@
 package jimp2.MazeRunner;
 
-public class solver {
+public class Solver {
  private Graph mazegraph ; 
  private Integer [] directions;
 private int start; 
 private boolean[]visited; // is vertex visited?
 private Integer [] distanceFromStart; // like distanceFromStart[50] will have value beetween start and vertex represented by 50 number    
 private Integer [] previousVertex; // to know connetions  
- public solver(Graph mazegraph, int start) {
+ public Solver(Graph mazegraph, int start) {
     this.mazegraph = mazegraph;
     this.start=start;
  this.distanceFromStart= new Integer[mazegraph.getsize()];
