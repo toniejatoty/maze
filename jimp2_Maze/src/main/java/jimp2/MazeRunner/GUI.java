@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -27,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
 
@@ -41,16 +43,20 @@ public class GUI {
     static final int frameY = 1400;
     static final int defaultWidth = 1600;
     static final int defaultHeight = defaultWidth - 200;
-    static final String helpMessage = "Welcome to an pathfinding in a maze aplication!.\n"
-            + "Please import a maze using the \"Import maze\" option. The imported file should be\n"
-            + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths\n"
-            + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.\n"
-            + "Buttons \"Set start position\" and \"Set finish position\" allow you to change the start and finish\n" //może dodać tu info o tym set start/finish position oprócz change?
-            + "between which the path will be found. You can also save the found path or the maze with the found path\n"
-            + "in a text file using the \"Export path\" option under the \"Export\" menu. You may also export the whole maze to a text file\n"
+    private static String helpMessage = "<html><center>Welcome to an pathfinding in a maze aplication!<br>"
+            + "Please import a maze using the \"Import maze\" option. The imported file should be<br>"
+            + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths<br>"
+            + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.<br>"
+            + "Buttons \"Set start position\" and \"Set finish position\" allow you to change the start and finish<br>"
+            + "between which the path will be found. You can also save the found path or the maze with the found path<br>"
+            + "in a text file using the \"Export path\" option under the \"Export\" menu. You may also export the whole maze to a text file<br>"
             + "using \"Export maze\" option in the same menu. If you export a maze with found path, the path will be marked by \'O\' symbols.";
-    static final String wrongIndexError = "You tried to import a maze with a wrong extension.\nPlease import a maze with either \".txt\" or \".bin\" extension.";
+    private static JLabel helpMessageLabel = new JLabel(helpMessage);
+    static final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
+    private static JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
     private static JTextArea eventLogLabel = new JTextArea("");
+    
+    
 
     private static void addFrame() {
         frame = new JFrame();
@@ -83,6 +89,8 @@ public class GUI {
     public static void buildGUI() {
         addFrame();
 
+        helpMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        wrongIndexErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         eventLogLabel.setFont(new Font("Arial", Font.BOLD, 20));
         eventLogLabel.setBackground(Color.LIGHT_GRAY);
         eventLogLabel.setForeground(Color.BLACK);
@@ -131,7 +139,7 @@ public class GUI {
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent HelpAction) {
-                JOptionPane.showMessageDialog(frame, helpMessage, "Help", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         //spróbować flowlayout żeby przy zmniejszaniu guziki nie znikały
@@ -226,7 +234,7 @@ public class GUI {
                         //binary import
                     } else {
                         System.out.println("File with wrong extension");
-                        JOptionPane.showMessageDialog(frame, wrongIndexError, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(frame, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
 
                     }
 
