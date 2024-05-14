@@ -175,7 +175,7 @@ public class Load {
         
             int start = 0; // this will determine the number of vertex where maze is starting 
 
-            solver Sollution = new solver(mazegraph, start);
+            Solver Sollution = new Solver(mazegraph, start);
             Sollution.solve();
             GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(Maze, Sollution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Sollution.getDistanceFromStartToFinish());
             interpret.getPoints();
