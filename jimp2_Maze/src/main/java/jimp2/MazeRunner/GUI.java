@@ -102,9 +102,9 @@ public class GUI {
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
-                LoadAndSave.setAmountP(1);
+                Load.setAmountP(1);
                 addLogMessage("Changed start position to ");                        //dopisać x i y nowego początku
-                if (LoadAndSave.getAmountP() == 1 && LoadAndSave.getAmountK() == 1) {
+                if (Load.getAmountP() == 1 && Load.getAmountK() == 1) {
                     findShortestWayButton.setVisible(true);
                 }
             }
@@ -113,9 +113,9 @@ public class GUI {
         changeEndingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
-                LoadAndSave.setAmountK(1);
+                Load.setAmountK(1);
                 addLogMessage("Changed finish position to ");                       //dopisać x i y nowego końca
-                if (LoadAndSave.getAmountP() == 1 && LoadAndSave.getAmountK() == 1) {
+                if (Load.getAmountP() == 1 && Load.getAmountK() == 1) {
                     findShortestWayButton.setVisible(true);
                 }
             }
@@ -195,34 +195,32 @@ public class GUI {
                     File inputFile = fileChooser.getSelectedFile();
 //<<<<<<< HEAD      //TO ZAKOMENTOWANE U MNIE NIE DZIAŁA
                     if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-                        LoadAndSave.loadFromTxt(inputFile);
+                        Load.loadFromTxt(inputFile);
                         char maze[][];
-                        maze = LoadAndSave.loadFromTxt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
+                        maze = Load.loadFromTxt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
 
-                        // if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-                        //   LoadAndSave.loadFromTxt(inputFile);
                         exportMazeItem.setVisible(true);
-                        if (LoadAndSave.getAmountK() == 1 && LoadAndSave.getAmountP() == 1) {
+                        if (Load.getAmountK() == 1 && Load.getAmountP() == 1) {
                             findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
                         }
                         changeStartingPositionButton.setVisible(true);
                         changeEndingPositionButton.setVisible(true);
                         MazeDrawer mazePaint = new MazeDrawer();
-                        mazePaint.setPreferredSize(new Dimension(10 * LoadAndSave.getColumns(), 10 * LoadAndSave.getRows()));
+                        mazePaint.setPreferredSize(new Dimension(10 * Load.getColumns(), 10 * Load.getRows()));
                         canvasScrollPane.setViewportView(mazePaint);
-                        addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
+                        addLogMessage("Imported a maze with " + Load.getColumns() + " columns and " + Load.getRows() + " rows.");
                     } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {
-                        LoadAndSave.loadFromBin(inputFile);
+                        Load.loadFromBin(inputFile);
                         exportMazeItem.setVisible(true);
-                        if (LoadAndSave.getAmountK() == 1 && LoadAndSave.getAmountP() == 1) {
+                        if (Load.getAmountK() == 1 && Load.getAmountP() == 1) {
                             findShortestWayButton.setVisible(true);
                         }
                         changeStartingPositionButton.setVisible(true);
                         changeEndingPositionButton.setVisible(true);
                         MazeDrawer mazePaint = new MazeDrawer();
-                        mazePaint.setPreferredSize(new Dimension(10 * LoadAndSave.getColumns(), 10 * LoadAndSave.getRows()));
+                        mazePaint.setPreferredSize(new Dimension(10 * Load.getColumns(), 10 * Load.getRows()));
                         canvasScrollPane.setViewportView(mazePaint);
-                        addLogMessage("Imported a maze with " + LoadAndSave.getColumns() + " columns and " + LoadAndSave.getRows() + " rows.");
+                        addLogMessage("Imported a maze with " + Load.getColumns() + " columns and " + Load.getRows() + " rows.");
                         //binary import
                     } else {
                         System.out.println("File with wrong extension");
@@ -279,10 +277,10 @@ public class GUI {
                         saveFile = fileChooser.getSelectedFile();                     //z jakiegoś powodu pojawiają się wtedy pliki zapisane w jimp2_maze folderze
                     }
                     try {
-                        for (int i = 0; i < LoadAndSave.getRows(); i++) {
-                            for (int j = 0; j < LoadAndSave.getColumns(); j++) {
+                        for (int i = 0; i < Load.getRows(); i++) {
+                            for (int j = 0; j < Load.getColumns(); j++) {
 
-                                writeToFile(saveFile, LoadAndSave.getMaze()[i][j]);
+                                writeToFile(saveFile, Load.getMaze()[i][j]);
                             }
                             writeToFile(saveFile, '\n');
                         }
@@ -302,12 +300,12 @@ public class GUI {
                 exportPathItem.setVisible(true);
                 addLogMessage("Found shortest path beetwen start and finish");
                 try {
-                    LoadAndSave.findPathInMaze();
+                    Load.findPathInMaze();
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
                 MazeDrawer mazePaint = new MazeDrawer();
-                mazePaint.setPreferredSize(new Dimension(10 * LoadAndSave.getColumns(), 10 * LoadAndSave.getRows()));
+                mazePaint.setPreferredSize(new Dimension(10 * Load.getColumns(), 10 * Load.getRows()));
                 canvasScrollPane.setViewportView(mazePaint);
             }
         });

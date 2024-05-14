@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-public class LoadAndSave {
+public class Load {
 
     private static char[][] maze;
     private static int rows = 0;
@@ -173,7 +173,7 @@ public class LoadAndSave {
             }
                     System.out.println(mazegraph);
         
-            int start = 0, finish = 1; // this will determine the number of vertex where maze is starting 
+            int start = 0; // this will determine the number of vertex where maze is starting 
 
             solver Sollution = new solver(mazegraph, start);
             Sollution.solve();
@@ -296,9 +296,9 @@ public class LoadAndSave {
     }
     
     public static void setAmountP(int amountP) {
-        LoadAndSave.amountP=amountP;
+        Load.amountP=amountP;
     }
     public static void setAmountK(int amountK) {
-        LoadAndSave.amountK=amountK;
+        Load.amountK=amountK;
     }
 }   
