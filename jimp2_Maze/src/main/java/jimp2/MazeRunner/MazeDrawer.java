@@ -23,28 +23,23 @@ public class MazeDrawer extends JPanel{
                 switch(LoadAndSave.getMaze()[i][j]) {
                     case ' ':
                         g.setColor(Color.WHITE);
-                        g.fillRect(10*j, 10*i, 10, 10);
                         break;
                     case 'X':
                         g.setColor(Color.BLACK);
-                        g.fillRect(10*j, 10*i, 10, 10);
                         break;
                     case 'P':
                         g.setColor(Color.YELLOW);
-                        g.fillRect(10*j, 10*i, 10, 10);
                         break;
                     case 'K':
                         g.setColor(Color.BLUE);
-                        g.fillRect(10*j, 10*i, 10, 10);
                         break;
                     case 'O':
                         g.setColor(Color.ORANGE);
-                        g.fillRect(10*j, 10*i, 10, 10);
                     default:
                         g.setColor(Color.RED);
-                        g.fillRect(10*j, 10*i, 10, 10);
                         break;
                 }
+                g.fillRect(10*j, 10*i, 10, 10);
             }
         }
     }
