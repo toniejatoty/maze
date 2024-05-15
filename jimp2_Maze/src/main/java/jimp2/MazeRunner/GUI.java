@@ -36,14 +36,14 @@ import javax.swing.text.DefaultCaret;
  *
  * @author piotr-sosnowski
  */
-public class GUI {
+public class GUI extends JFrame{
 
-    static JFrame frame;
-    static final int frameX = 1600;
-    static final int frameY = 1400;
-    static final int defaultWidth = 1600;
-    static final int defaultHeight = defaultWidth - 200;
-    private static String helpMessage = "<html><center>Welcome to an pathfinding in a maze aplication!<br>"
+    //static JFrame frame;
+    private final int frameX = 1600;
+    private final int frameY = 1400;
+    private final int defaultWidth = 1600;
+    private final int defaultHeight = defaultWidth - 200;
+    private final String helpMessage = "<html><center>Welcome to an pathfinding in a maze aplication!<br>"
             + "Please import a maze using the \"Import maze\" option. The imported file should be<br>"
             + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths<br>"
             + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.<br>"
@@ -51,33 +51,33 @@ public class GUI {
             + "between which the path will be found. You can also save the found path or the maze with the found path<br>"
             + "in a text file using the \"Export path\" option under the \"Export\" menu. You may also export the whole maze to a text file<br>"
             + "using \"Export maze\" option in the same menu. If you export a maze with found path, the path will be marked by \'O\' symbols.";
-    private static JLabel helpMessageLabel = new JLabel(helpMessage);
-    static final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
-    private static JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
-    private static JTextArea eventLogLabel = new JTextArea("");
+    private final JLabel helpMessageLabel = new JLabel(helpMessage);
+    private final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
+    private final JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
+    private final JTextArea eventLogLabel = new JTextArea("");
     
     
 
-    private static void addFrame() {
-        frame = new JFrame();
-        frame.setSize(frameX, frameY);
-        frame.setLayout(new BorderLayout());
-        frame.setTitle("Maze");
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private void addFrame() {
+        //frame = new JFrame();
+        setSize(frameX, frameY);
+        setLayout(new BorderLayout());
+        setTitle("Maze");
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private static void addLogMessage(String text) {
+    private void addLogMessage(String text) {
         eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
     }
 
-    private static void writeToFile(File filename, char c) throws IOException {
+    private void writeToFile(File filename, char c) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
         writer.append(c);
         writer.close();
     }
 
-    private static String getFileExtension(File file) {
+    private String getFileExtension(File file) {
         String filename = file.getName();
         int lastIndexOf = filename.lastIndexOf(".");
         if (lastIndexOf == -1) {
@@ -86,7 +86,7 @@ public class GUI {
         return filename.substring(lastIndexOf);
     }
 
-    public static void buildGUI() {
+    public GUI() {
         addFrame();
 
         helpMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -139,7 +139,7 @@ public class GUI {
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent HelpAction) {
-                JOptionPane.showMessageDialog(frame, helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null , helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         //spróbować flowlayout żeby przy zmniejszaniu guziki nie znikały
@@ -174,10 +174,10 @@ public class GUI {
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
         JScrollPane canvasScrollPane = new JScrollPane();
 
-        frame.add(topPanel, BorderLayout.NORTH);
-        frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.add(canvasScrollPane, BorderLayout.CENTER);
-        frame.repaint();
+        add(topPanel, BorderLayout.NORTH);
+        add(bottomPanel, BorderLayout.SOUTH);
+        add(canvasScrollPane, BorderLayout.CENTER);
+        repaint();
 
         JMenu mazeMenu = new JMenu("Maze");
         JMenuBar menuBar = new JMenuBar();
@@ -197,11 +197,10 @@ public class GUI {
                 fileChooser.addChoosableFileFilter(binFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION) {
+                if (fileChooser.showOpenDialog(null) == fileChooser.APPROVE_OPTION) {
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
-//<<<<<<< HEAD      //TO ZAKOMENTOWANE U MNIE NIE DZIAŁA
                     if (getFileExtension(inputFile).compareTo(".txt") == 0) {
                         Load.loadFromTxt(inputFile);
                         char maze[][];
@@ -232,12 +231,12 @@ public class GUI {
                         //binary import
                     } else {
                         System.out.println("File with wrong extension");
-                        JOptionPane.showMessageDialog(frame, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
 
                     }
 
-                    frame.revalidate();
-                    frame.repaint();
+                    revalidate();
+                    repaint();
                 }
             }
 
@@ -256,7 +255,7 @@ public class GUI {
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
+                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
@@ -276,7 +275,7 @@ public class GUI {
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
+                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
@@ -321,9 +320,9 @@ public class GUI {
         exportPathItem.setVisible(false);
         exportMazeItem.setVisible(false);
         menuBar.add(mazeMenu);
-        frame.setJMenuBar(menuBar);
+        setJMenuBar(menuBar);
 
-        frame.setPreferredSize(frame.getPreferredSize());
+        setPreferredSize(this.getPreferredSize());
         //frame.setPreferedSize(); -- żeby menubar nie znikał może zadziała
         //frame.setVisible(true);
     }
