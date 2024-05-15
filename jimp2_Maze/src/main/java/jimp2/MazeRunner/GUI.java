@@ -39,11 +39,11 @@ import javax.swing.text.DefaultCaret;
 public class GUI extends JFrame{
 
     //static JFrame frame;
-    static final int frameX = 1600;
-    static final int frameY = 1400;
-    static final int defaultWidth = 1600;
-    static final int defaultHeight = defaultWidth - 200;
-    private static String helpMessage = "<html><center>Welcome to an pathfinding in a maze aplication!<br>"
+    private final int frameX = 1600;
+    private final int frameY = 1400;
+    private final int defaultWidth = 1600;
+    private final int defaultHeight = defaultWidth - 200;
+    private final String helpMessage = "<html><center>Welcome to an pathfinding in a maze aplication!<br>"
             + "Please import a maze using the \"Import maze\" option. The imported file should be<br>"
             + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths<br>"
             + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.<br>"
@@ -51,10 +51,10 @@ public class GUI extends JFrame{
             + "between which the path will be found. You can also save the found path or the maze with the found path<br>"
             + "in a text file using the \"Export path\" option under the \"Export\" menu. You may also export the whole maze to a text file<br>"
             + "using \"Export maze\" option in the same menu. If you export a maze with found path, the path will be marked by \'O\' symbols.";
-    private static JLabel helpMessageLabel = new JLabel(helpMessage);
-    static final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
-    private static JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
-    private static JTextArea eventLogLabel = new JTextArea("");
+    private final JLabel helpMessageLabel = new JLabel(helpMessage);
+    private final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
+    private final JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
+    private final JTextArea eventLogLabel = new JTextArea("");
     
     
 
@@ -67,17 +67,17 @@ public class GUI extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private static void addLogMessage(String text) {
+    private void addLogMessage(String text) {
         eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
     }
 
-    private static void writeToFile(File filename, char c) throws IOException {
+    private void writeToFile(File filename, char c) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
         writer.append(c);
         writer.close();
     }
 
-    private static String getFileExtension(File file) {
+    private String getFileExtension(File file) {
         String filename = file.getName();
         int lastIndexOf = filename.lastIndexOf(".");
         if (lastIndexOf == -1) {
@@ -201,7 +201,6 @@ public class GUI extends JFrame{
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
-//<<<<<<< HEAD      //TO ZAKOMENTOWANE U MNIE NIE DZIAŁA
                     if (getFileExtension(inputFile).compareTo(".txt") == 0) {
                         LoadAndSave.loadFromTxt(inputFile);
                         char maze[][];
