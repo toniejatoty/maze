@@ -34,14 +34,22 @@ public void solve ()
     for(int i=0; i<mazegraph.getsize()-1; i++)
     {
 numberMinVertex = findMinVertex();
-visited[numberMinVertex]=true;    
-for(int j=0; j<mazegraph.getVertex(numberMinVertex).getsize(); j++)
+visited[numberMinVertex]=true;   
+int numberconnection = mazegraph.getVertex(numberMinVertex).getsize(); 
+int destinationingraph;
+int distancefromPtovertex;
+int weightbeetwentwovertex; 
+for(int j=0; j<numberconnection; j++)
 {
-    if (!visited[mazegraph.getVertex(numberMinVertex).getEdge(j).getDestination()] &&  distanceFromStart[numberMinVertex] != Integer.MAX_VALUE 
-    && distanceFromStart [numberMinVertex] + mazegraph.getVertex(numberMinVertex).getEdge(j).getWeight() < distanceFromStart [mazegraph.getVertex(numberMinVertex).getEdge(j).getDestination()]) 
+    destinationingraph = mazegraph.getVertex(numberMinVertex).getEdge(j).getDestination();
+    distancefromPtovertex = distanceFromStart[numberMinVertex];
+    weightbeetwentwovertex = mazegraph.getVertex(numberMinVertex).getEdge(j).getWeight();
+
+    if (!visited[destinationingraph] &&  distancefromPtovertex != Integer.MAX_VALUE 
+    && distancefromPtovertex + weightbeetwentwovertex < distanceFromStart [destinationingraph]) 
     {
-    distanceFromStart [mazegraph.getVertex(numberMinVertex).getEdge(j).getDestination()] = distanceFromStart [numberMinVertex] + mazegraph.getVertex(numberMinVertex).getEdge(j).getWeight();
-previousVertex[mazegraph.getVertex(numberMinVertex).getEdge(j).getDestination()] = numberMinVertex;
+    distanceFromStart [destinationingraph] = distancefromPtovertex + weightbeetwentwovertex;
+previousVertex[destinationingraph] = numberMinVertex;
 }
 }
     }
