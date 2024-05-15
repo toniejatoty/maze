@@ -36,9 +36,9 @@ import javax.swing.text.DefaultCaret;
  *
  * @author piotr-sosnowski
  */
-public class GUI {
+public class GUI extends JFrame{
 
-    static JFrame frame;
+    //static JFrame frame;
     static final int frameX = 1600;
     static final int frameY = 1400;
     static final int defaultWidth = 1600;
@@ -58,13 +58,13 @@ public class GUI {
     
     
 
-    private static void addFrame() {
-        frame = new JFrame();
-        frame.setSize(frameX, frameY);
-        frame.setLayout(new BorderLayout());
-        frame.setTitle("Maze");
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private void addFrame() {
+        //frame = new JFrame();
+        setSize(frameX, frameY);
+        setLayout(new BorderLayout());
+        setTitle("Maze");
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private static void addLogMessage(String text) {
@@ -86,7 +86,7 @@ public class GUI {
         return filename.substring(lastIndexOf);
     }
 
-    public static void buildGUI() {
+    public GUI() {
         addFrame();
 
         helpMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -139,7 +139,7 @@ public class GUI {
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent HelpAction) {
-                JOptionPane.showMessageDialog(frame, helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null , helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         //spróbować flowlayout żeby przy zmniejszaniu guziki nie znikały
@@ -174,10 +174,10 @@ public class GUI {
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
         JScrollPane canvasScrollPane = new JScrollPane();
 
-        frame.add(topPanel, BorderLayout.NORTH);
-        frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.add(canvasScrollPane, BorderLayout.CENTER);
-        frame.repaint();
+        add(topPanel, BorderLayout.NORTH);
+        add(bottomPanel, BorderLayout.SOUTH);
+        add(canvasScrollPane, BorderLayout.CENTER);
+        repaint();
 
         JMenu mazeMenu = new JMenu("Maze");
         JMenuBar menuBar = new JMenuBar();
@@ -197,7 +197,7 @@ public class GUI {
                 fileChooser.addChoosableFileFilter(binFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showOpenDialog(frame) == fileChooser.APPROVE_OPTION) {
+                if (fileChooser.showOpenDialog(null) == fileChooser.APPROVE_OPTION) {
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
@@ -234,12 +234,12 @@ public class GUI {
                         //binary import
                     } else {
                         System.out.println("File with wrong extension");
-                        JOptionPane.showMessageDialog(frame, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
 
                     }
 
-                    frame.revalidate();
-                    frame.repaint();
+                    revalidate();
+                    repaint();
                 }
             }
 
@@ -258,7 +258,7 @@ public class GUI {
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
+                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
@@ -278,7 +278,7 @@ public class GUI {
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showSaveDialog(frame) == fileChooser.APPROVE_OPTION);
+                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION);
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
@@ -323,9 +323,9 @@ public class GUI {
         exportPathItem.setVisible(false);
         exportMazeItem.setVisible(false);
         menuBar.add(mazeMenu);
-        frame.setJMenuBar(menuBar);
+        setJMenuBar(menuBar);
 
-        frame.setPreferredSize(frame.getPreferredSize());
+        setPreferredSize(this.getPreferredSize());
         //frame.setPreferedSize(); -- żeby menubar nie znikał może zadziała
         //frame.setVisible(true);
     }
