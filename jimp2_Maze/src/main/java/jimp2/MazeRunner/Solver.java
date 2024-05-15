@@ -65,7 +65,7 @@ public class Solver {
         printSolution(distanceFromStart, previousVertex);
     }
 
-    private static void printSolution(Integer[] distance, Integer[] previousVertex) {
+    private void printSolution(Integer[] distance, Integer[] previousVertex) {
         System.out.println("Vertex \t Distance from Source");
         for (int i = 0; i < distance.length - 1; i++) {
             System.out.println(i + " \t " + distance[i] + " \t" + previousVertex[i]);
