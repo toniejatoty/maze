@@ -83,18 +83,12 @@ public class Load {
                         if (amountP >= 2) {
                             throw new IOException("File have more than one P letter");
                         }
-                        if (i != 0 && j != 0 && i != rows - 1 && j != columns - 1) {
-                            throw new IOException("In file letter P is in place it shount't be in position(" + i + "," + j + ")");
-                        }
                     }
                     if (maze[i][j] == 'K') {
                         Maze[i][j] = 1;
                         amountK++;
                         if (amountK >= 2) {
                             throw new IOException("File have more than one K letter");
-                        }
-                        if (i != 0 && j != 0 && i != rows - 1 && j != columns - 1) {
-                            throw new IOException("In file letter K is in place it shount't be in position(" + i + "," + j + ")");
                         }
                     }
                 }
