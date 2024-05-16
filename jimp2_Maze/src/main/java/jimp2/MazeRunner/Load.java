@@ -129,13 +129,7 @@ public class Load {
                     isVertex = 0;
                 }
             }
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    System.out.print(Maze[i][j] + " ");
-                }
-                System.out.println();
 
-            }
             Vertex.setMaze(Maze);
             Graph.setMaze(Maze);
             
@@ -170,7 +164,6 @@ public class Load {
 
                 }
             }
-                    System.out.println(mazegraph);
         
             int start = 0; // this will determine the number of vertex where maze is starting 
 
@@ -178,7 +171,6 @@ public class Load {
             Solution.solve();
             GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(Maze, Solution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Solution.getDistanceFromStartToFinish());
             interpret.getPoints();
-            System.out.println(GraphToMazeSolutionConverter.getMaze()[1][1]);
             maze = GraphToMazeSolutionConverter.getMaze();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -264,16 +256,6 @@ columns=maze[0].length;
     for(int i=ExitY.length-1; i>=0; i--){hexString+=String.format("%02X",ExitY[i]); }y=Integer.parseInt(hexString,16 ); hexString="";
     maze[y-1][x-1]='K';
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("importbinarnego"))) {
-            for (char[] row : maze) {
-                writer.write(row);
-                writer.newLine(); // Dodajemy nową linię po każdej tablicy
-
-            }
-            System.out.println("success");
-        } catch (IOException e) {
-            System.err.println("Wystąpił błąd podczas zapisu do pliku: " + e.getMessage());
-        }
 
 return maze;
 }catch(IOException ex)
