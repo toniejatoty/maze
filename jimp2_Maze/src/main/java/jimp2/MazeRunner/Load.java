@@ -1,13 +1,18 @@
 package jimp2.MazeRunner;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+
+import javax.swing.RowFilter.Entry;
 
 public class Load {
 
@@ -169,9 +174,9 @@ public class Load {
         
             int start = 0; // this will determine the number of vertex where maze is starting 
 
-            Solver Sollution = new Solver(mazegraph, start);
-            Sollution.solve();
-            GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(Maze, Sollution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Sollution.getDistanceFromStartToFinish());
+            Solver Solution = new Solver(mazegraph, start);
+            Solution.solve();
+            GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(Maze, Solution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Solution.getDistanceFromStartToFinish());
             interpret.getPoints();
             System.out.println(GraphToMazeSolutionConverter.getMaze()[1][1]);
             maze = GraphToMazeSolutionConverter.getMaze();
@@ -179,8 +184,106 @@ public class Load {
             System.out.println(e.getMessage());
         }
     }
-    
-    public static void loadFromBin(File file) {
+    public static char[][] loadFromBin(File file)
+{
+    byte[] FileID = new byte[4];
+    byte[] Escape = new byte[1];
+    byte[] Columns = new byte[2];
+    byte[] Lines = new byte[2];
+    byte[] EntryX = new byte[2];
+    byte[] EntryY = new byte[2];
+    byte[] ExitX = new byte[2];
+    byte[] ExitY = new byte[2];
+    byte[] Reserved = new byte [12];
+    byte[] Counter = new byte[4];
+    byte[] SolutionOffset = new byte[4];
+    byte[] Separator = new byte[1];
+    byte[] Wall = new byte[1];
+    byte[] Path = new byte[1];
+
+    try
+    {
+        FileInputStream input = new FileInputStream(file);
+        input.read(FileID);
+        input.read(Escape);
+        input.read(Columns);
+        input.read(Lines);
+        input.read(EntryX);
+        input.read(EntryY);
+        input.read(ExitX);
+        input.read(ExitY);
+        input.read(Reserved);
+        input.read(Counter);
+        input.read(SolutionOffset);
+        input.read(Separator);
+        input.read(Wall);
+        input.read(Path); 
+
+        for (int i=3; i>=0; i--) {System.out.printf("%02X", FileID[i]);} System.out.println();
+        for (int i=Escape.length-1; i>=0; i--) {System.out.printf("%02X", Escape[i]);} System.out.println();
+        for (int i=Columns.length-1; i>=0; i--) {System.out.printf("%02X", Columns[i]);} System.out.println();
+        for (int i=Lines.length-1; i>=0; i--) {System.out.printf("%02X", Lines[i]);} System.out.println();
+        for (int i=EntryX.length-1; i>=0; i--) {System.out.printf("%02X", EntryX[i]);} System.out.println();
+        for (int i=EntryY.length-1; i>=0; i--) {System.out.printf("%02X", EntryY[i]);} System.out.println();
+        for (int i=ExitX.length-1; i>=0; i--) {System.out.printf("%02X", ExitX[i]);} System.out.println();
+        for (int i=ExitY.length-1; i>=0; i--) {System.out.printf("%02X", ExitY[i]);} System.out.println();
+        for (int i=Reserved.length-1; i>=0; i--) {System.out.printf("%02X", Reserved[i]);} System.out.println();
+        for (int i=Counter.length-1; i>=0; i--) {System.out.printf("%02X", Counter[i]);} System.out.println();
+        for (int i=SolutionOffset.length-1; i>=0; i--) {System.out.printf("%02X", SolutionOffset[i]);} System.out.println();
+        for (int i=Separator.length-1; i>=0; i--) {System.out.printf("%02X", Separator[i]);} System.out.println();
+        for (int i=Wall.length-1; i>=0; i--) {System.out.printf("%02X", Wall[i]);} System.out.println();
+        for (int i=Path.length-1; i>=0; i--) {System.out.printf("%02X", Path[i]);} System.out.println();
+        String hexString="";
+        int x,y;
+        for(int i=Lines.length-1; i>=0; i--){hexString+=String.format("%02X",Lines[i]); }x=Integer.parseInt(hexString,16 ); hexString=""; 
+        for(int i=Columns.length-1; i>=0; i--){hexString+=String.format("%02X",Columns[i]); }y=Integer.parseInt(hexString,16 ); hexString="";
+        maze=new char[x][y];
+rows = maze.length;
+columns=maze[0].length;
+    int countlines=0;
+    int countcolumns=0;
+    byte [] count=new byte[1]; String Scount;
+    byte [] value=new byte[1]; 
+    byte [] separatorloop = new byte[1]; 
+    do {
+        input.read(separatorloop);		
+		input.read(value);
+        input.read(count);
+        Scount = String.format("%02X", count[0]);
+        for (int i = 0; i <= Integer.parseInt(Scount,16); i++) {
+			if(countcolumns==maze[0].length){countcolumns=0; countlines++; if(countlines==maze.length) break;} 
+			maze[countlines][countcolumns]=(char)value[0];
+            countcolumns++;
+		}
+	}while (countlines!=(maze.length));
+    System.out.println(countlines);
+    for(int i=EntryX.length-1; i>=0; i--){hexString+=String.format("%02X",EntryX[i]); }x=Integer.parseInt(hexString,16 ); hexString="";
+    for(int i=EntryY.length-1; i>=0; i--){hexString+=String.format("%02X",EntryY[i]); }y=Integer.parseInt(hexString,16 ); hexString="";
+    maze[y-1][x-1]='P';
+    for(int i=ExitX.length-1; i>=0; i--){hexString+=String.format("%02X",ExitX[i]); }x=Integer.parseInt(hexString,16 ); hexString="";
+    for(int i=ExitY.length-1; i>=0; i--){hexString+=String.format("%02X",ExitY[i]); }y=Integer.parseInt(hexString,16 ); hexString="";
+    maze[y-1][x-1]='K';
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("importbinarnego"))) {
+            for (char[] row : maze) {
+                writer.write(row);
+                writer.newLine(); // Dodajemy nową linię po każdej tablicy
+
+            }
+            System.out.println("success");
+        } catch (IOException e) {
+            System.err.println("Wystąpił błąd podczas zapisu do pliku: " + e.getMessage());
+        }
+
+return maze;
+}catch(IOException ex)
+    {
+        System.out.println("ERROR WITH BINARY FILE");
+    }
+return null;
+}
+
+    /*public static void loadFromBin(File file) {
         maze = null;
         rows=0;
         columns=0;
@@ -268,7 +371,7 @@ public class Load {
             System.out.println(ex.getMessage());
         }
    }
-    
+    */
     public static char[][] getMaze() {
         return maze;
     }
