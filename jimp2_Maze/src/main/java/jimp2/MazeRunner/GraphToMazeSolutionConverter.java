@@ -44,8 +44,7 @@ else{
 }
 }
 convertMazeIntChar();
-for(int i=0; i<distanceFromStartToFinish+1; i++)
-System.out.println(points[i]);
+
 }
 private void convertMazeIntChar()
 {
@@ -62,13 +61,7 @@ for(int i=1; i<distanceFromStartToFinish; i++)
 }
 maze[points[0].getX()][points[0].getY()] = 'P';
 maze[points[distanceFromStartToFinish].getX()][points[distanceFromStartToFinish].getY()] = 'K';
-for(int i=0; i<maze.length; i++){
-for(int j=0; j<maze[0].length; j++)
-{
-    System.out.print(maze[i][j]);
-}
-System.out.println("");
-}
+
 }
 public static char[][] getMaze() {
     return maze;

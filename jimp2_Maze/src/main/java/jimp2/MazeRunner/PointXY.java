@@ -13,8 +13,8 @@ public int getX() {
 public int getY() {
     return y;
 }
-@Override
-public String toString() {
-    return " Point (" + x + ","  +y + ")";
-}
+ @Override
+ public String toString() {
+     return " Point (" + x + ","  +y + ")";
+ }
 }

@@ -64,21 +64,14 @@ public class Solver {
         int directionsize = 0;
         for (int p = 0; p < mazegraph.getsize(); p++)
             if (directions[p] != null) {
-                System.out.println(directions[p]);
                 directionsize++;
             }
         Integer[] tmp = new Integer[directionsize];
         System.arraycopy(directions, 0, tmp, 0, directionsize);
         directions = tmp;
-        printSolution(distanceFromStart, previousVertex);
+        
     }
 
-    private static void printSolution(Integer[] distance, Integer[] previousVertex) {
-        System.out.println("Vertex \t Distance from Source");
-        for (int i = 0; i < distance.length - 1; i++) {
-            System.out.println(i + " \t " + distance[i] + " \t" + previousVertex[i]);
-        }
-    }
 
     private int findMinVertex() {
         int minvalue = Integer.MAX_VALUE;
