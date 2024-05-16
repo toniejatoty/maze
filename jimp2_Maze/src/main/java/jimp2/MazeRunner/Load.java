@@ -14,7 +14,7 @@ public class Load {
     private static int amountP;
     private static int amountK;
     
-    public static char[][] loadFromTxt(File file) {
+    public static void loadFromTxt(File file) {
         rows = 0;
         columns = 0;
         amountP = 0;
@@ -55,7 +55,7 @@ public class Load {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return maze;
+    
     }
     
     public static void findPathInMaze() throws IOException {
@@ -172,7 +172,7 @@ public class Load {
             System.out.println(e.getMessage());
         }
     }
-    public static char[][] loadFromBin(File file)
+    public static  void loadFromBin(File file)
 {
     byte[] FileID = new byte[4];
     byte[] Escape = new byte[1];
@@ -238,12 +238,12 @@ columns=maze[0].length;
 
 amountK=1;
 amountP=1;
-return maze;
+
 }catch(IOException ex)
     {
         System.out.println("ERROR WITH BINARY FILE");
     }
-return null;
+
 }
 
     /*public static void loadFromBin(File file) {

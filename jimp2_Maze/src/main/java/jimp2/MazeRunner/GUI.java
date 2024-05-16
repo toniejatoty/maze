@@ -201,11 +201,9 @@ public class GUI extends JFrame{
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
-                    char maze[][];
+                    //char maze[][];
                     if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-                        //Load.loadFromTxt(inputFile);
-                        
-                        maze = Load.loadFromTxt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
+                        Load.loadFromTxt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
                         exportMazeItem.setVisible(true);
                         if (Load.getAmountK() == 1 && Load.getAmountP() == 1) {
                             findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
@@ -217,7 +215,7 @@ public class GUI extends JFrame{
                         canvasScrollPane.setViewportView(mazePaint);
                         addLogMessage("Imported a maze with " + Load.getColumns() + " columns and " + Load.getRows() + " rows.");
                     } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {
-                        maze = Load.loadFromBin(inputFile);
+                        Load.loadFromBin(inputFile);
                         exportMazeItem.setVisible(true);
                         if (Load.getAmountK() == 1 && Load.getAmountP() == 1) {
                             findShortestWayButton.setVisible(true);
