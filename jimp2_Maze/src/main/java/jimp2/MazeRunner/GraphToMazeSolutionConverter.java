@@ -3,7 +3,7 @@ package jimp2.MazeRunner;
 
 public class GraphToMazeSolutionConverter {
 private Integer [][]Maze;
-private static char [][]maze;
+private char [][]maze;
 private Integer [] directions;
 private int xstart, ystart;
 private int distanceFromStartToFinish;
@@ -63,7 +63,7 @@ maze[points[0].getX()][points[0].getY()] = 'P';
 maze[points[distanceFromStartToFinish].getX()][points[distanceFromStartToFinish].getY()] = 'K';
 
 }
-public static char[][] getMaze() {
+public char[][] getMaze() {
     return maze;
 }
 }

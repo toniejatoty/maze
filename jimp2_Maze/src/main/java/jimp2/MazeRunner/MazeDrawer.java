@@ -13,14 +13,25 @@ import javax.swing.JPanel;
  * @author piotr-sosnowski
  */
 public class MazeDrawer extends JPanel{
-    private static int squareSize = 10;
+    
+    private int squareSize;
+    private int columns;
+    private int rows;
+    private char[][] maze;
+    
+    public MazeDrawer(int rows, int columns, char[][] maze) {
+        squareSize = 10;
+        this.rows = rows;
+        this.columns = columns;
+        this.maze = maze;
+    }
     
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for(int i = 0; i < Load.getRows(); i++) {
-            for(int j = 0; j < Load.getColumns(); j++) {
-                switch(Load.getMaze()[i][j]) {
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < columns; j++) {
+                switch(maze[i][j]) {
                     case ' ':
                         g.setColor(Color.WHITE);
                         break;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Vertex {
 private ArrayList<Edge> mazegraph = new ArrayList<>();
-private static Integer [][] Maze;
-public static void setMaze(Integer[][]newMaze)
+private Integer [][] Maze;
+public void setMaze(Integer[][]newMaze)
 {
     Maze = newMaze;
 }
@@ -68,7 +68,7 @@ protected class Edge
         return "source ("+ x+"," + y + ") " +  +source + " destination: " + destination + " weight: "+ weight+" "+ "direction" + " " + direction + " ";
     }
 }
-public void makegraph(int from, int i, int j, int xSource, int ySource)
+public void makegraph(int from, int i, int j, int xSource, int ySource, Integer [][]Maze)
 {   Integer source = Maze[xSource][ySource];
     if(Maze[i][j]>=0){ mazegraph.add(new Edge(Maze[i][j], source, 1, xSource, ySource,from)); return;}
     int weight=1;

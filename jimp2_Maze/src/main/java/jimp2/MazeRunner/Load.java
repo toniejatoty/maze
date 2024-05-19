@@ -8,13 +8,14 @@ import java.io.IOException;
 
 public class Load {
 
-    private static char[][] maze;
-    private static int rows = 0;
-    private static int columns = 0;
-    private static int amountP;
-    private static int amountK;
+    private char[][] maze;
+    private int rows = 0;
+    private int columns = 0;
+    private int amountP;
+    private int amountK;
     
-    public static void loadFromTxt(File file) {
+    
+    public void loadFromTxt(File file) {
         rows = 0;
         columns = 0;
         amountP = 0;
@@ -58,7 +59,7 @@ public class Load {
     
     }
     
-    public static void findPathInMaze() throws IOException {
+    public void findPathInMaze() throws IOException {
         try {
             amountP=0;
             amountK=0;
@@ -102,6 +103,9 @@ public class Load {
             }
             int isVertex = 0; // it will check if maze[i][j] is verticle it will check if above / under/ next to is space if isvertex>=3 maze[i][j] is vertex
             int vertexnumber = 2; // it will represent number of vertex to differ vertexs starting 2 becouse 0 is P 1 is K
+            
+            
+            
             for (int i = 1; i < rows - 1; i++) {
                 for (int j = 1; j < columns - 1; j++) {
                     if (Maze[i][j] == -1) {
@@ -125,11 +129,11 @@ public class Load {
                     isVertex = 0;
                 }
             }
-
-            Vertex.setMaze(Maze);
-            Graph.setMaze(Maze);
-            
+            Vertex vertex = new Vertex();
             Graph mazegraph = new Graph(vertexnumber +1 );
+            
+            vertex.setMaze(Maze);
+            mazegraph.setMaze(Maze);
             for (int i = 0; i < vertexnumber + 1; i++) {
                 mazegraph.add(i); 
             }
@@ -162,17 +166,16 @@ public class Load {
             }
         
             int start = 0; // this will determine the number of vertex where maze is starting 
-
             Solver Solution = new Solver(mazegraph, start);
             Solution.solve();
             GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(Maze, Solution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Solution.getDistanceFromStartToFinish());
             interpret.getPoints();
-            maze = GraphToMazeSolutionConverter.getMaze();
+            maze = interpret.getMaze();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
-    public static  void loadFromBin(File file)
+    public void loadFromBin(File file)
 {
     byte[] FileID = new byte[4];
     byte[] Escape = new byte[1];
@@ -335,30 +338,30 @@ amountP=1;
         }
    }
     */
-    public static char[][] getMaze() {
+    public char[][] getMaze() {
         return maze;
     }
     
-    public static int getRows() {
+    public int getRows() {
         return rows;
     }
     
-    public static int getColumns() {
+    public int getColumns() {
         return columns;
     }
     
-    public static int getAmountP() {
+    public int getAmountP() {
         return amountP;
     }
     
-    public static int getAmountK() {
+    public int getAmountK() {
         return amountK;
     }
     
-    public static void setAmountP(int amountP) {
-        Load.amountP=amountP;
+    public void setAmountP(int amountP) {
+        this.amountP=amountP;
     }
-    public static void setAmountK(int amountK) {
-        Load.amountK=amountK;
+    public void setAmountK(int amountK) {
+        this.amountK=amountK;
     }
 }   
