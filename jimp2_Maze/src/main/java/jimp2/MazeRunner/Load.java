@@ -7,50 +7,47 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Load {
-
+/*
     private char[][] maze;
     private int rows = 0;
     private int columns = 0;
     private int amountP;
     private int amountK;
-    private Integer[][] Maze;
-
+    private Integer[][] Maze;*/
+    Maze maze = new Maze();
+    
     public void loadFromTxt(File file) {
-        rows = 0;
-        columns = 0;
-        amountP = 0;
-        amountK = 0; // To check if File with maze is correct
         String line;
         try (BufferedReader mazeloadsize = new BufferedReader(new FileReader(file));) {
 
             while ((line = mazeloadsize.readLine()) != null) // this loop to get maze size
             {
-                if (rows == 0) {
-                    columns = line.length();
+                if (maze.getRows() == 0) {
+                    maze.setColumns(line.length());
                 }
-                if (columns != line.length()) {
+                if (maze.getColumns() != line.length()) {
                     throw new IOException("Not adequate amount of column in row " + rows);
                 }
-                rows++;
+                maze.setRows(maze.getRows()+1);
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         try (BufferedReader mazeload = new BufferedReader(new FileReader(file));) {
-            maze = new char[rows][columns];
-            rows = 0;
+            maze.setMazeSize(maze.getRows(), maze.getColumns());
+            maze.setRows(0);
             while ((line = mazeload.readLine()) != null) // this loop to load maze to char[][]
             {
-                maze[rows] = line.toCharArray();
-                rows++;
+                maze.setMazeRow(maze.getRows(), line.toCharArray());
+                maze.setRows(maze.getRows()+1);
             }
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    if (maze[i][j] == 'P') {
-                        amountP++;
+            for (int i = 0; i < maze.getRows(); i++) {
+                for (int j = 0; j < maze.getColumns(); j++) {
+                    if (maze.isMazeCellStart(i, j)) {
+                        maze.increaseAmountP();
                     }
-                    if (maze[i][j] == 'K') {
-                        amountK++;
+                    if (maze.isMazeCellFinish(i, j)) {
+                        maze.increaseAmountK();
                     }
                 }
             }
@@ -59,23 +56,24 @@ public class Load {
         }
 
     }
+    
 
-    private void translateCharMazeToIntMaze() throws IOException {
+    /*private void translateCharMazeToIntMaze() throws IOException {
         try {
-            amountP = 0;
-            amountK = 0;
+            maze.setAmountP(0);
+            maze.setAmountK(0);
             Maze = new Integer[rows][columns];
             for (int i = 0; i < rows; i++) // this loop to convert char maze to int maze -1=space -2=X -3=P -4=K  
             {
                 for (int j = 0; j < columns; j++) // and in addition to check if File with maze is correct
                 {
-                    if (maze[i][j] == ' ') {
+                    if (isMazeCellEmpty(i, j)) {
                         Maze[i][j] = -1;
-                    } else if (maze[i][j] == 'X') {
+                    } else if (isMazeCellWall(i, j)) {
                         Maze[i][j] = -2;
-                    } else if (maze[i][j] == 'P') {
+                    } else if (isMazeCellStart(i, j)) {
                         Maze[i][j] = -3;
-                    } else if (maze[i][j] == 'K') {
+                    } else if (isMazeCellFinish(i, j)) {
                         Maze[i][j] = -4;
                     } else {
                         throw new IOException("In File are existing a sight, which shouldn't be here this sight is:" + maze[i][j] + "in position(" + i + "," + j + ")");
@@ -105,31 +103,31 @@ public class Load {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-    }
+    }*/
 
     public void findPathInMaze() throws IOException{
-        translateCharMazeToIntMaze();
+       // translateCharMazeToIntMaze();
         
         int isVertex = 0; // it will check if maze[i][j] is verticle it will check if above / under/ next to is space if isvertex>=3 maze[i][j] is vertex
         int vertexnumber = 2; // it will represent number of vertex to differ vertexs starting 2 becouse 0 is P 1 is K
 
-        for (int i = 1; i < rows - 1; i++) {
-            for (int j = 1; j < columns - 1; j++) {
-                if (Maze[i][j] == -1) {
-                    if (Maze[i - 1][j] >= -1 || Maze[i - 1][j] == 0 || Maze[i - 1][j] == 1) {
+        for (int i = 1; i < maze.getRows() - 1; i++) {
+            for (int j = 1; j < maze.getColumns() - 1; j++) {
+                if (maze.isMazeCellEmpty(i, j)) {
+                    if (maze.isMazeCellEmpty(i-1, j) || maze.isMazeCellStart(i-1, j) || maze.isMazeCellFinish(i-1, j)) {
                         isVertex++;
                     }
-                    if (Maze[i + 1][j] >= -1 || Maze[i + 1][j] == 0 || Maze[i + 1][j] == 1) {
+                    if (maze.isMazeCellEmpty(i+1, j) || maze.isMazeCellStart(i+1, j) || maze.isMazeCellFinish(i+1, j)) {
                         isVertex++;
                     }
-                    if (Maze[i][j - 1] >= -1 || Maze[i][j - 1] == 0 || Maze[i][j - 1] == 1) {
+                    if (maze.isMazeCellEmpty(i, j-1) || maze.isMazeCellStart(i, j-1) || maze.isMazeCellFinish(i, j-1)) {
                         isVertex++;
                     }
-                    if (Maze[i][j + 1] >= -1 || Maze[i][j + 1] == 0 || Maze[i][j + 1] == 1) {
+                    if (maze.isMazeCellEmpty(i, j+1) || maze.isMazeCellStart(i, j+1) || maze.isMazeCellFinish(i, j+1)) {
                         isVertex++;
                     }
                     if (isVertex >= 3) {
-                        Maze[i][j] = vertexnumber;
+                        maze.setMazeCell(i, j, (char)('X'+vertexnumber));
                         vertexnumber++;
                     }
                 }
@@ -140,29 +138,29 @@ public class Load {
         Graph mazegraph = new Graph(vertexnumber + 1);
 
         vertex.setMaze(Maze);
-        mazegraph.setMaze(Maze);
+        mazegraph.setMazeInt(Maze);
         for (int i = 0; i < vertexnumber + 1; i++) {
             mazegraph.add(i);
         }
         int from = 0; //1 up 2 down 3 left 4 right to identyfy what position is vertex source
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if (Maze[i][j] >= 0) {
-                    if (i - 1 >= 0 && Maze[i - 1][j] >= -1) {
+        for (int i = 0; i < maze.getRows(); i++) {
+            for (int j = 0; j < maze.getColumns(); j++) {
+                if (maze.isMazeCellStartOrFinish(i, j)) {
+                    if (i - 1 >= 0 && (maze.isMazeCellStartOrFinish(i-1, j) || maze.isMazeCellEmpty(i-1, j))) {
                         from = 2;
                         mazegraph.makeconnection(i - 1, j, from, i, j);
                     }
-                    if (i + 1 <= rows - 1 && Maze[i + 1][j] >= -1) {
+                    if (i + 1 <= maze.getRows() - 1 && (maze.isMazeCellStartOrFinish(i+1, j) || maze.isMazeCellEmpty(i+1, j))) {
                         from = 1;
                         //mazegraph[Maze[i][j]].makegraph(Maze, from, i + 1, j, Maze[i][j], i, j);
                         mazegraph.makeconnection(i + 1, j, from, i, j);
                     }
-                    if (j + 1 <= columns - 1 && Maze[i][j + 1] >= -1) {
+                    if (j + 1 <= maze.getColumns() - 1 && (maze.isMazeCellStartOrFinish(i, j+1) || maze.isMazeCellEmpty(i, j+1))) {
                         from = 3;
                         //mazegraph[Maze[i][j]].makegraph(Maze, from, i, j + 1, Maze[i][j], i, j);
                         mazegraph.makeconnection(i, j + 1, from, i, j);
                     }
-                    if (j - 1 >= 0 && Maze[i][j - 1] >= -1) {
+                    if (j - 1 >= 0 && (maze.isMazeCellStartOrFinish(i, j-1) || maze.isMazeCellEmpty(i, j-1))) {
                         from = 4;
                         //mazegraph[Maze[i][j]].makegraph(Maze, from, i, j - 1, Maze[i][j], i, j);
                         mazegraph.makeconnection(i, j - 1, from, i, j);
@@ -175,9 +173,9 @@ public class Load {
         int start = 0; // this will determine the number of vertex where maze is starting 
         Solver Solution = new Solver(mazegraph, start);
         Solution.solve();
-        GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(Maze, Solution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Solution.getDistanceFromStartToFinish());
+        GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(maze, Solution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Solution.getDistanceFromStartToFinish());
         interpret.getPoints();
-        maze = interpret.getMaze();
+       // maze = interpret.getMaze();
 
     }
 
@@ -225,9 +223,9 @@ public class Load {
             }
             y = Integer.parseInt(hexString, 16);
             hexString = "";
-            maze = new char[x][y];
-            rows = maze.length;
-            columns = maze[0].length;
+            maze.setMazeSize(x, y);
+            maze.setRows(maze.getMaze().length);
+            maze.setColumns(maze.getMaze()[0].length);
             int countlines = 0;
             int countcolumns = 0;
             byte[] count = new byte[1];
@@ -240,17 +238,17 @@ public class Load {
                 input.read(count);
                 Scount = String.format("%02X", count[0]);
                 for (int i = 0; i <= Integer.parseInt(Scount, 16); i++) {
-                    if (countcolumns == maze[0].length) {
+                    if (countcolumns == maze.getMaze()[0].length) {
                         countcolumns = 0;
                         countlines++;
-                        if (countlines == maze.length) {
+                        if (countlines == maze.getMaze().length) {
                             break;
                         }
                     }
-                    maze[countlines][countcolumns] = (char) value[0];
+                    maze.setMazeCell(countlines, countcolumns, (char) value[0]);
                     countcolumns++;
                 }
-            } while (countlines != (maze.length));
+            } while (countlines != (maze.getMaze().length));
             for (int i = EntryX.length - 1; i >= 0; i--) {
                 hexString += String.format("%02X", EntryX[i]);
             }
@@ -261,7 +259,7 @@ public class Load {
             }
             y = Integer.parseInt(hexString, 16);
             hexString = "";
-            maze[y - 1][x - 1] = 'P';
+            maze.isMazeCellStart(y-1, x-1);
             for (int i = ExitX.length - 1; i >= 0; i--) {
                 hexString += String.format("%02X", ExitX[i]);
             }
@@ -272,10 +270,10 @@ public class Load {
             }
             y = Integer.parseInt(hexString, 16);
             hexString = "";
-            maze[y - 1][x - 1] = 'K';
+            maze.isMazeCellFinish(y-1, x-1);
 
-            amountK = 1;
-            amountP = 1;
+            maze.setAmountK(1);
+            maze.setAmountP(1);
 
         } catch (IOException ex) {
             System.out.println("ERROR WITH BINARY FILE");
@@ -372,31 +370,4 @@ public class Load {
         }
    }
      */
-    public char[][] getMaze() {
-        return maze;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
-
-    public int getAmountP() {
-        return amountP;
-    }
-
-    public int getAmountK() {
-        return amountK;
-    }
-
-    public void setAmountP(int amountP) {
-        this.amountP = amountP;
-    }
-
-    public void setAmountK(int amountK) {
-        this.amountK = amountK;
-    }
 }

@@ -3,10 +3,10 @@ package jimp2.MazeRunner;
 public class Graph {
 private Vertex [] graph;
 private int size;
-private  Integer [][]Maze;
-public void setMaze(Integer[][]newMaze)
+private  Integer [][]MazeInt;
+public void setMazeInt(Integer[][]newMazeInt)
 {
-    Maze=newMaze;
+    MazeInt=newMazeInt;
 }
 public Graph(int size) {
     this.size = size;
@@ -18,8 +18,8 @@ graph[i]=new Vertex();
 }
 public void makeconnection(int i, int j, int from, int xSource, int ySource)
 {       
-    int vertexnumber = Maze[xSource][ySource];
-    graph[vertexnumber].makegraph(from, i, j, xSource, ySource, Maze);
+    int vertexnumber = MazeInt[xSource][ySource];
+    graph[vertexnumber].makegraph(from, i, j, xSource, ySource, MazeInt);
 }
 public int getsize()
 {
