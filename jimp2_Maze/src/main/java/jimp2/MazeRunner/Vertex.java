@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 public class Vertex {
 private ArrayList<Edge> mazegraph = new ArrayList<>();
-private Integer [][] Maze;
-public void setMaze(Integer[][]newMaze)
+private Maze maze;
+//private Integer [][] Maze;
+/*public void setMaze(Integer[][]newMaze)
 {
     Maze = newMaze;
+}*/
+public Vertex(Maze maze) {
+    this.maze=maze;
 }
 public int findVertexConnection(int x)
 { 
@@ -68,29 +72,29 @@ protected class Edge
         return "source ("+ x+"," + y + ") " +  +source + " destination: " + destination + " weight: "+ weight+" "+ "direction" + " " + direction + " ";
     }
 }
-public void makegraph(int from, int i, int j, int xSource, int ySource, Integer [][]Maze)
-{   Integer source = Maze[xSource][ySource];
-    if(Maze[i][j]>=0){ mazegraph.add(new Edge(Maze[i][j], source, 1, xSource, ySource,from)); return;}
+public void makegraph(int from, int i, int j, int xSource, int ySource)
+{   Integer source = maze.getMazeCell(xSource, ySource)-'X';
+    if(maze.isMazeCellStartOrFinish(i, j)){ mazegraph.add(new Edge(maze.getMazeCell(i, j)-'X', source, 1, xSource, ySource,from)); return;}
     int weight=1;
     int howmanyspace=2;
     while(howmanyspace==2){
-    if(Maze[i-1][j]>=0 && Maze[i-1][j]!=source){mazegraph.add(new Edge(Maze[i-1][j], source, weight+1, xSource, ySource,2)); return;}    
-    if(Maze[i+1][j]>=0 && Maze[i+1][j]!=source){mazegraph.add(new Edge(Maze[i+1][j], source, weight+1, xSource, ySource,1)); return; }
-    if(Maze[i][j+1]>=0 && Maze[i][j+1]!=source){mazegraph.add(new Edge(Maze[i][j+1], source, weight+1, xSource, ySource,3));return;}
-    if(Maze[i][j-1]>=0 && Maze[i][j-1]!=source){mazegraph.add(new Edge(Maze[i][j-1], source, weight+1, xSource, ySource,4)); return;}
+    if(maze.isMazeCellStartOrFinish(i-1, j) && (maze.getMazeCell(i-1, j)-'X') != source){mazegraph.add(new Edge(maze.getMazeCell(i-1, j)-'X', source, weight+1, xSource, ySource,2)); return;}    
+    if(maze.isMazeCellStartOrFinish(i+1, j) && (maze.getMazeCell(i+1, j)-'X') != source){mazegraph.add(new Edge(maze.getMazeCell(i+1, j)-'X', source, weight+1, xSource, ySource,1)); return; }
+    if(maze.isMazeCellStartOrFinish(i, j+1) && (maze.getMazeCell(i, j+1)-'X') != source){mazegraph.add(new Edge(maze.getMazeCell(i, j+1)-'X', source, weight+1, xSource, ySource,3));return;}
+    if(maze.isMazeCellStartOrFinish(i, j-1) && (maze.getMazeCell(i, j-1)-'X') != source){mazegraph.add(new Edge(maze.getMazeCell(i, j-2)-'X', source, weight+1, xSource, ySource,4)); return;}
     howmanyspace=0;
-    if(Maze[i-1][j]!=-2 ){ howmanyspace++;   }
-    if(Maze[i+1][j]!=-2 ){ howmanyspace++;   }
-    if(Maze[i][j+1]!=-2 ){ howmanyspace++;   }
-    if(Maze[i][j-1]!=-2 ){ howmanyspace++;   }
+    if(!maze.isMazeCellWall(i-1, j)){ howmanyspace++;   }
+    if(!maze.isMazeCellWall(i+1, j)){ howmanyspace++;   }
+    if(!maze.isMazeCellWall(i, j+1)){ howmanyspace++;   }
+    if(!maze.isMazeCellWall(i, j-1)){ howmanyspace++;   }
     if(howmanyspace==2)
     {
-    if(Maze[i-1][j]!=-2 && from!=1 ){ i--; from=2; }
-   else if(Maze[i+1][j]!=-2 && from!= 2){   i++;  from = 1;}
-    else if(Maze[i][j+1]!=-2 && from !=4){   j++; from = 3;}
-    else if(Maze[i][j-1]!=-2 && from!=3){   j--; from =4;}
+    if((!maze.isMazeCellWall(i-1, j)) && from!=1 ){ i--; from=2; }
+   else if((!maze.isMazeCellWall(i+1, j)) && from!= 2){   i++;  from = 1;}
+    else if((!maze.isMazeCellWall(i, j+1)) && from !=4){   j++; from = 3;}
+    else if((!maze.isMazeCellWall(i, j-1)) && from!=3){   j--; from =4;}
     }
-    if(i==0 || j==0 || i==Maze.length || j==Maze[0].length)return;
+    if(i==0 || j==0 || i==maze.getMaze().length || j==maze.getMaze()[0].length)return;
 weight++;    
 }
 }

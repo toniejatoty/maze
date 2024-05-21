@@ -14,7 +14,14 @@ public class Load {
     private int amountP;
     private int amountK;
     private Integer[][] Maze;*/
-    Maze maze = new Maze();
+    Maze maze;
+    public Load(Maze maze) {
+        this.maze=maze;
+        maze.setRows(0);
+        maze.setColumns(0);
+        maze.setAmountP(0);
+        maze.setAmountK(0);
+    }
     
     public void loadFromTxt(File file) {
         String line;
@@ -26,7 +33,7 @@ public class Load {
                     maze.setColumns(line.length());
                 }
                 if (maze.getColumns() != line.length()) {
-                    throw new IOException("Not adequate amount of column in row " + rows);
+                    throw new IOException("Not adequate amount of column in row " + maze.getRows());
                 }
                 maze.setRows(maze.getRows()+1);
             }
@@ -134,11 +141,11 @@ public class Load {
                 isVertex = 0;
             }
         }
-        Vertex vertex = new Vertex();
-        Graph mazegraph = new Graph(vertexnumber + 1);
+        Vertex vertex = new Vertex(maze);
+        Graph mazegraph = new Graph(vertexnumber + 1, maze);
 
-        vertex.setMaze(Maze);
-        mazegraph.setMazeInt(Maze);
+        //vertex.setMaze(Maze);
+        //mazegraph.setMazeInt(Maze);
         for (int i = 0; i < vertexnumber + 1; i++) {
             mazegraph.add(i);
         }
