@@ -1,12 +1,13 @@
 package jimp2.MazeRunner;
 
 public class Solver {
+
     private Graph mazegraph;
     private Integer[] directions;
     private int start;
     private boolean[] visited; // is vertex visited?
     private Integer[] distanceFromStart; // like distanceFromStart[50] will have value beetween start and vertex
-                                         // represented by 50 number
+    // represented by 50 number
     private Integer[] previousVertex; // to know connections
 
     public Solver(Graph mazegraph, int start) {
@@ -16,7 +17,7 @@ public class Solver {
         previousVertex = new Integer[mazegraph.getsize()];
         for (int i = 0; i < distanceFromStart.length; i++) {
             distanceFromStart[i] = Integer.MAX_VALUE; // nie pamiętam czy Chaber przy C nie czepiał się tego
-                                                      // Integer.MAX_VALUE
+            // Integer.MAX_VALUE
         }
         visited = new boolean[mazegraph.getsize()];
     }
@@ -49,7 +50,7 @@ public class Solver {
             }
         }
         directions = new Integer[mazegraph.getsize()]; // it will containts direction 1-up 2-down 3-left 4-right i
-                                                       // should head in maze from finish to start
+        // should head in maze from finish to start
 
         int vertexNumberIterator = 1;
         int i = 0; // to chronology assign values to way
@@ -61,16 +62,16 @@ public class Solver {
             vertexNumberIterator = previousVertex[vertexNumberIterator];
         }
         int directionsize = 0;
-        for (int p = 0; p < mazegraph.getsize(); p++)
+        for (int p = 0; p < mazegraph.getsize(); p++) {
             if (directions[p] != null) {
                 directionsize++;
             }
+        }
         Integer[] tmp = new Integer[directionsize];
         System.arraycopy(directions, 0, tmp, 0, directionsize);
         directions = tmp;
-        
-    }
 
+    }
 
     private int findMinVertex() {
         int minvalue = Integer.MAX_VALUE;

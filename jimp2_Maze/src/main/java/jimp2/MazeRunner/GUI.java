@@ -36,7 +36,7 @@ import javax.swing.text.DefaultCaret;
  *
  * @author piotr-sosnowski
  */
-public class GUI extends JFrame{
+public class GUI extends JFrame {
 
     private final int frameX = 1600;
     private final int frameY = 1400;
@@ -54,9 +54,6 @@ public class GUI extends JFrame{
     private final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
     private final JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
     private final JTextArea eventLogLabel = new JTextArea("");
-    
-    
-    
 
     private void addFrame() {
         //frame = new JFrame();
@@ -108,7 +105,7 @@ public class GUI extends JFrame{
         JButton exitButton = new JButton("Exit");
         Maze maze = new Maze();
         Load loader = new Load(maze);               //może nie działać że przy wczytywaniu nowy loader a find shortest way może ten wykorzystywać
-        
+
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
@@ -141,7 +138,7 @@ public class GUI extends JFrame{
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent HelpAction) {
-                JOptionPane.showMessageDialog(null , helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         //spróbować flowlayout żeby przy zmniejszaniu guziki nie znikały
@@ -305,8 +302,8 @@ public class GUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 exportPathItem.setVisible(true);
                 addLogMessage("Found shortest path beetwen start and finish");
-               // int rows = loader.getRows();
-               // int columns = loader.getColumns();
+                // int rows = loader.getRows();
+                // int columns = loader.getColumns();
                 //Load newLoader = new Load();
                 try {
                     //newLoader.findPathInMaze();
@@ -314,7 +311,7 @@ public class GUI extends JFrame{
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
-                
+
                 MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze.getMaze());
                 mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
                 canvasScrollPane.setViewportView(mazePaint);
