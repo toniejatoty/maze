@@ -19,8 +19,8 @@ public void add(int i)
 graph[i]=new Vertex(maze);
 }
 public void makeconnection(int i, int j, int from, int xSource, int ySource)
-{       
-    int vertexnumber = maze.getMazeCell(xSource, ySource) - 'X';
+{   
+    int vertexnumber = maze.getVertexNumberArrayCell(xSource, ySource);
     graph[vertexnumber].makegraph(from, i, j, xSource, ySource);
 }
 public int getsize()

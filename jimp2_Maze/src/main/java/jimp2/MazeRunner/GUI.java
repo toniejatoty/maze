@@ -311,7 +311,6 @@ public class GUI extends JFrame{
                 try {
                     //newLoader.findPathInMaze();
                     loader.findPathInMaze();
-                                    System.out.println("TEST2");
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }

@@ -73,15 +73,15 @@ protected class Edge
     }
 }
 public void makegraph(int from, int i, int j, int xSource, int ySource)
-{   Integer source = maze.getMazeCell(xSource, ySource)-'X';
-    if(maze.isMazeCellStartOrFinish(i, j)){ mazegraph.add(new Edge(maze.getMazeCell(i, j)-'X', source, 1, xSource, ySource,from)); return;}
+{   Integer source = maze.getVertexNumberArrayCell(xSource, ySource);
+    if(maze.getVertexNumberArrayCell(i, j)>=0){ mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i, j), source, 1, xSource, ySource,from)); return;}
     int weight=1;
     int howmanyspace=2;
     while(howmanyspace==2){
-    if(maze.isMazeCellStartOrFinish(i-1, j) && (maze.getMazeCell(i-1, j)-'X') != source){mazegraph.add(new Edge(maze.getMazeCell(i-1, j)-'X', source, weight+1, xSource, ySource,2)); return;}    
-    if(maze.isMazeCellStartOrFinish(i+1, j) && (maze.getMazeCell(i+1, j)-'X') != source){mazegraph.add(new Edge(maze.getMazeCell(i+1, j)-'X', source, weight+1, xSource, ySource,1)); return; }
-    if(maze.isMazeCellStartOrFinish(i, j+1) && (maze.getMazeCell(i, j+1)-'X') != source){mazegraph.add(new Edge(maze.getMazeCell(i, j+1)-'X', source, weight+1, xSource, ySource,3));return;}
-    if(maze.isMazeCellStartOrFinish(i, j-1) && (maze.getMazeCell(i, j-1)-'X') != source){mazegraph.add(new Edge(maze.getMazeCell(i, j-2)-'X', source, weight+1, xSource, ySource,4)); return;}
+    if(maze.getVertexNumberArrayCell(i-1, j)>=0 && (!maze.getVertexNumberArrayCell(i-1, j).equals(source))){mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i-1, j), source, weight+1, xSource, ySource,2)); return;}    
+    if(maze.getVertexNumberArrayCell(i+1, j)>=0 && (!maze.getVertexNumberArrayCell(i+1, j).equals(source))){mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i+1, j), source, weight+1, xSource, ySource,1)); return; }
+    if(maze.getVertexNumberArrayCell(i, j+1)>=0 && (!maze.getVertexNumberArrayCell(i, j+1).equals(source))){mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i, j+1), source, weight+1, xSource, ySource,3));return;}
+    if(maze.getVertexNumberArrayCell(i, j-1)>=0 && (!maze.getVertexNumberArrayCell(i, j-1).equals(source))){mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i, j-1), source, weight+1, xSource, ySource,4)); return;}
     howmanyspace=0;
     if(!maze.isMazeCellWall(i-1, j)){ howmanyspace++;   }
     if(!maze.isMazeCellWall(i+1, j)){ howmanyspace++;   }

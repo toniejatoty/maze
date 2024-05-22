@@ -26,7 +26,7 @@ int y=ystart;
 for(int i=1; i<distanceFromStartToFinish+1; i++)
 {
 //if(maze.isWallCell(x,y))
-if(maze.isMazeCellStart(x, y))
+if(maze.getVertexNumberArrayCell(x, y)>=0)
 {
     direction = directions[vertexcount];
     if(direction==1) {points[i] = new PointXY(x-1, y); x--;}
@@ -36,10 +36,10 @@ if(maze.isMazeCellStart(x, y))
     vertexcount--;
 }
 else{
-    if(maze.isMazeCellEmpty(x-1, y) && direction!=2){ direction = 1; points[i] = new PointXY(x-1, y); x--;}    
-    else if(maze.isMazeCellEmpty(x-1, y) && direction!=1 ){ direction = 2; points[i] = new PointXY(x+1, y); x++;}
-    else if(maze.isMazeCellEmpty(x-1, y) && direction!= 3){ direction = 4; points[i] = new PointXY(x, y+1); y++;}
-    else if(maze.isMazeCellEmpty(x-1, y) && direction!= 4){ direction = 3; points[i] = new PointXY(x, y-1); y--;}
+    if(maze.getVertexNumberArrayCell(x-1, y)>=-1 && direction!=2){ direction = 1; points[i] = new PointXY(x-1, y); x--;}    
+    else if(maze.getVertexNumberArrayCell(x+1, y)>=-1 && direction!=1 ){ direction = 2; points[i] = new PointXY(x+1, y); x++;}
+    else if(maze.getVertexNumberArrayCell(x, y+1)>=-1 && direction!= 3){ direction = 4; points[i] = new PointXY(x, y+1); y++;}
+    else if(maze.getVertexNumberArrayCell(x, y-1)>=-1 && direction!= 4){ direction = 3; points[i] = new PointXY(x, y-1); y--;}
 }
 }
 convertMazeIntChar();
@@ -52,7 +52,6 @@ private void convertMazeIntChar()
 
 for(int i=1; i<distanceFromStartToFinish; i++)
 {
-    System.out.println("TEST1");
     maze.setMazeCellPath(points[i].getX(), points[i].getY());
 }
 //maze[points[0].getX()][points[0].getY()] = 'P';

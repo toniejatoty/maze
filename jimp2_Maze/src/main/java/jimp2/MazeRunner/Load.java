@@ -118,26 +118,29 @@ public class Load {
         int isVertex = 0; // it will check if maze[i][j] is verticle it will check if above / under/ next to is space if isvertex>=3 maze[i][j] is vertex
         int vertexnumber = 2; // it will represent number of vertex to differ vertexs starting 2 becouse 0 is P 1 is K
 
+        maze.setVertexNumberArraySize(maze.getRows(), maze.getColumns());
         for (int i = 1; i < maze.getRows() - 1; i++) {
             for (int j = 1; j < maze.getColumns() - 1; j++) {
                 if (maze.isMazeCellEmpty(i, j)) {
-                    if (maze.isMazeCellEmpty(i-1, j) || maze.isMazeCellStart(i-1, j) || maze.isMazeCellFinish(i-1, j)) {
+                    if (maze.getVertexNumberArrayCell(i-1, j)>=-1 || maze.isMazeCellStart(i-1, j) || maze.isMazeCellFinish(i-1, j)) {
                         isVertex++;
                     }
-                    if (maze.isMazeCellEmpty(i+1, j) || maze.isMazeCellStart(i+1, j) || maze.isMazeCellFinish(i+1, j)) {
+                    if (maze.getVertexNumberArrayCell(i+1, j)>=-1 || maze.isMazeCellStart(i+1, j) || maze.isMazeCellFinish(i+1, j)) {
                         isVertex++;
                     }
-                    if (maze.isMazeCellEmpty(i, j-1) || maze.isMazeCellStart(i, j-1) || maze.isMazeCellFinish(i, j-1)) {
+                    if (maze.getVertexNumberArrayCell(i, j-1)>=-1 || maze.isMazeCellStart(i, j-1) || maze.isMazeCellFinish(i, j-1)) {
                         isVertex++;
                     }
-                    if (maze.isMazeCellEmpty(i, j+1) || maze.isMazeCellStart(i, j+1) || maze.isMazeCellFinish(i, j+1)) {
+                    if (maze.getVertexNumberArrayCell(i, j+1)>=-1 || maze.isMazeCellStart(i, j+1) || maze.isMazeCellFinish(i, j+1)) {
                         isVertex++;
                     }
                     if (isVertex >= 3) {
-                        maze.setMazeCell(i, j, (char)('X'+vertexnumber));
+                        maze.setVertexNumberArrayCell(i, j, vertexnumber);
+                        //maze.setMazeCell(i, j, (char)('X'+vertexnumber));
                         vertexnumber++;
-                    }
+                    } 
                 }
+                    
                 isVertex = 0;
             }
         }
@@ -152,22 +155,22 @@ public class Load {
         int from = 0; //1 up 2 down 3 left 4 right to identyfy what position is vertex source
         for (int i = 0; i < maze.getRows(); i++) {
             for (int j = 0; j < maze.getColumns(); j++) {
-                if (maze.isMazeCellStartOrFinish(i, j)) {
-                    if (i - 1 >= 0 && (maze.isMazeCellStartOrFinish(i-1, j) || maze.isMazeCellEmpty(i-1, j))) {
+                if (maze.getVertexNumberArrayCell(i, j)>=0) {
+                    if (i - 1 >= 0 && (maze.getVertexNumberArrayCell(i-1, j)>=-1)) {
                         from = 2;
                         mazegraph.makeconnection(i - 1, j, from, i, j);
                     }
-                    if (i + 1 <= maze.getRows() - 1 && (maze.isMazeCellStartOrFinish(i+1, j) || maze.isMazeCellEmpty(i+1, j))) {
+                    if (i + 1 <= maze.getRows() - 1 && (maze.getVertexNumberArrayCell(i+1, j)>=-1)) {
                         from = 1;
                         //mazegraph[Maze[i][j]].makegraph(Maze, from, i + 1, j, Maze[i][j], i, j);
                         mazegraph.makeconnection(i + 1, j, from, i, j);
                     }
-                    if (j + 1 <= maze.getColumns() - 1 && (maze.isMazeCellStartOrFinish(i, j+1) || maze.isMazeCellEmpty(i, j+1))) {
+                    if (j + 1 <= maze.getColumns() - 1 && (maze.getVertexNumberArrayCell(i, j+1)>=-1)) {
                         from = 3;
                         //mazegraph[Maze[i][j]].makegraph(Maze, from, i, j + 1, Maze[i][j], i, j);
                         mazegraph.makeconnection(i, j + 1, from, i, j);
                     }
-                    if (j - 1 >= 0 && (maze.isMazeCellStartOrFinish(i, j-1) || maze.isMazeCellEmpty(i, j-1))) {
+                    if (j - 1 >= 0 && (maze.getVertexNumberArrayCell(i, j-1)>=-1)) {
                         from = 4;
                         //mazegraph[Maze[i][j]].makegraph(Maze, from, i, j - 1, Maze[i][j], i, j);
                         mazegraph.makeconnection(i, j - 1, from, i, j);
@@ -176,9 +179,9 @@ public class Load {
 
             }
         }
-
         int start = 0; // this will determine the number of vertex where maze is starting 
         Solver Solution = new Solver(mazegraph, start);
+
         Solution.solve();
         GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(maze, Solution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Solution.getDistanceFromStartToFinish());
         interpret.getPoints();

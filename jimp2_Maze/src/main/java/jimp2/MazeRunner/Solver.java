@@ -7,7 +7,7 @@ public class Solver {
     private boolean[] visited; // is vertex visited?
     private Integer[] distanceFromStart; // like distanceFromStart[50] will have value beetween start and vertex
                                          // represented by 50 number
-    private Integer[] previousVertex; // to know connetions
+    private Integer[] previousVertex; // to know connections
 
     public Solver(Graph mazegraph, int start) {
         this.mazegraph = mazegraph;
@@ -41,7 +41,6 @@ public class Solver {
                 destinationingraph = mazegraph.getVertex(numberMinVertex).getEdge(j).getDestination();
                 distancefromPtovertex = distanceFromStart[numberMinVertex];
                 weightbeetwentwovertex = mazegraph.getVertex(numberMinVertex).getEdge(j).getWeight();
-
                 if (!visited[destinationingraph] && distancefromPtovertex != Integer.MAX_VALUE
                         && distancefromPtovertex + weightbeetwentwovertex < distanceFromStart[destinationingraph]) {
                     distanceFromStart[destinationingraph] = distancefromPtovertex + weightbeetwentwovertex;
