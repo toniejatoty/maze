@@ -15,13 +15,15 @@ public class Maze {
     private int columns;
     private int amountP;            // To check if File with maze is correct
     private int amountK;            // To check if File with maze is correct
-    private Integer[][] vertexNumberArray;
+   // private Integer[][] vertexNumberArray;
+    private VertexNumber vertexNumber;
     
     public Maze() {
         rows = 0;
         columns = 0;
         amountP = 0;
         amountK = 0; 
+        vertexNumber = new VertexNumber();
     }
     
     public boolean isMazeCellEmpty(int i, int j) {
@@ -76,7 +78,7 @@ public class Maze {
     public void setMazeSize(int rows, int columns) {
         maze = new char[rows][columns];
     }
-    public void setVertexNumberArraySize(int rows, int columns) {
+ /*   public void setVertexNumberArraySize(int rows, int columns) {
         vertexNumberArray = new Integer[rows][columns];
         for(int i = 0; i < rows; i++) {
             for(int j =0; j < columns; j++) {
@@ -89,7 +91,7 @@ public class Maze {
                 else setVertexNumberArrayCell(i,j,-2);
             }
         }
-    }
+    }*/
     public void setMazeRow(int row, char[] line) {
         maze[row] = line;
     }
@@ -117,10 +119,13 @@ public class Maze {
     public char[][] getMaze() {
         return maze;
     }
-    public void setVertexNumberArrayCell(int i, int j, int value) {
+    public VertexNumber getVertexNumber(){
+        return vertexNumber;
+    }
+   /* public void setVertexNumberArrayCell(int i, int j, int value) {
         vertexNumberArray[i][j]=value;
     }
     public Integer getVertexNumberArrayCell(int i, int j) {
         return vertexNumberArray[i][j];
-    }
+    }*/
  }
