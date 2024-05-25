@@ -9,6 +9,11 @@ import java.io.IOException;
 public class Load {
 
     Maze maze;
+    static MazeCellType emptyCell = new EmptyCell();
+    static MazeCellType wallCell = new WallCell();
+    static MazeCellType startCell = new StartCell();
+    static MazeCellType finishCell = new FinishCell();
+    static MazeCellType pathCell = new PathCell();
 
     public Load(Maze maze) {
         this.maze = maze;
@@ -37,21 +42,24 @@ public class Load {
         }
         try (BufferedReader mazeload = new BufferedReader(new FileReader(file));) {
             maze.setMazeSize(maze.getRows(), maze.getColumns());
-            maze.setRows(0);
-            while ((line = mazeload.readLine()) != null) // this loop to load maze to char[][]
-            {
-                maze.setMazeRow(maze.getRows(), line.toCharArray());
-                maze.setRows(maze.getRows() + 1);
-            }
-            for (int i = 0; i < maze.getRows(); i++) {
-                for (int j = 0; j < maze.getColumns(); j++) {
-                    if (maze.isMazeCellStart(i, j)) {
-                        maze.increaseAmountP();
+            int lineNumber = 0;
+            while ((line = mazeload.readLine()) != null) {
+                for (int columnNumber = 0; columnNumber < maze.getColumns(); columnNumber++) {
+                    if (line.charAt(columnNumber) == 'P') {
+                        maze.setMazeCell(lineNumber, columnNumber, Load.startCell);
                     }
-                    if (maze.isMazeCellFinish(i, j)) {
-                        maze.increaseAmountK();
+                    if (line.charAt(columnNumber) == 'K') {
+                        maze.setMazeCell(lineNumber, columnNumber, Load.finishCell);
                     }
+                    if (line.charAt(columnNumber) == 'X') {
+                        maze.setMazeCell(lineNumber, columnNumber, Load.wallCell);
+                    }
+                    if (line.charAt(columnNumber) == ' ') {
+                        maze.setMazeCell(lineNumber, columnNumber, Load.emptyCell);
+                    }
+                    maze.getMazeCell(lineNumber, columnNumber).getCellType().increaseStartOrFinishAmount(maze);
                 }
+                lineNumber++;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -67,22 +75,21 @@ public class Load {
         maze.getVertexNumber().setVertexNumberArraySize(maze);
         for (int i = 1; i < maze.getRows() - 1; i++) {
             for (int j = 1; j < maze.getColumns() - 1; j++) {
-                if (maze.isMazeCellEmpty(i, j)) {
-                    if (maze.getVertexNumber().getVertexNumberArrayCell(i - 1, j) >= -1 || maze.isMazeCellStart(i - 1, j) || maze.isMazeCellFinish(i - 1, j)) {
+                if (maze.getMazeCell(i, j).getCellType() == emptyCell) {
+                    if (maze.getVertexNumber().getVertexNumberArrayCell(i - 1, j) >= -1 || (maze.getMazeCell(i - 1, j).getCellType() == startCell) || (maze.getMazeCell(i - 1, j).getCellType() == finishCell)) {
                         isVertex++;
                     }
-                    if (maze.getVertexNumber().getVertexNumberArrayCell(i + 1, j) >= -1 || maze.isMazeCellStart(i + 1, j) || maze.isMazeCellFinish(i + 1, j)) {
+                    if (maze.getVertexNumber().getVertexNumberArrayCell(i + 1, j) >= -1 || (maze.getMazeCell(i + 1, j).getCellType() == startCell) || (maze.getMazeCell(i + 1, j).getCellType() == finishCell)) {
                         isVertex++;
                     }
-                    if (maze.getVertexNumber().getVertexNumberArrayCell(i, j - 1) >= -1 || maze.isMazeCellStart(i, j - 1) || maze.isMazeCellFinish(i, j - 1)) {
+                    if (maze.getVertexNumber().getVertexNumberArrayCell(i, j - 1) >= -1 || (maze.getMazeCell(i, j - 1).getCellType() == startCell) || (maze.getMazeCell(i, j - 1).getCellType() == finishCell)) {
                         isVertex++;
                     }
-                    if (maze.getVertexNumber().getVertexNumberArrayCell(i, j + 1) >= -1 || maze.isMazeCellStart(i, j + 1) || maze.isMazeCellFinish(i, j + 1)) {
+                    if (maze.getVertexNumber().getVertexNumberArrayCell(i, j + 1) >= -1 || (maze.getMazeCell(i, j + 1).getCellType() == startCell) || (maze.getMazeCell(i, j + 1).getCellType() == finishCell)) {
                         isVertex++;
                     }
                     if (isVertex >= 3) {
                         maze.getVertexNumber().setVertexNumberArrayCell(i, j, vertexnumber);
-                        //maze.setMazeCell(i, j, (char)('X'+vertexnumber));
                         vertexnumber++;
                     }
                 }
@@ -106,17 +113,14 @@ public class Load {
                     }
                     if (i + 1 <= maze.getRows() - 1 && (maze.getVertexNumber().getVertexNumberArrayCell(i + 1, j) >= -1)) {
                         from = 1;
-                        //mazegraph[Maze[i][j]].makegraph(Maze, from, i + 1, j, Maze[i][j], i, j);
                         mazegraph.makeconnection(i + 1, j, from, i, j);
                     }
                     if (j + 1 <= maze.getColumns() - 1 && (maze.getVertexNumber().getVertexNumberArrayCell(i, j + 1) >= -1)) {
                         from = 3;
-                        //mazegraph[Maze[i][j]].makegraph(Maze, from, i, j + 1, Maze[i][j], i, j);
                         mazegraph.makeconnection(i, j + 1, from, i, j);
                     }
                     if (j - 1 >= 0 && (maze.getVertexNumber().getVertexNumberArrayCell(i, j - 1) >= -1)) {
                         from = 4;
-                        //mazegraph[Maze[i][j]].makegraph(Maze, from, i, j - 1, Maze[i][j], i, j);
                         mazegraph.makeconnection(i, j - 1, from, i, j);
                     }
                 }
@@ -198,7 +202,19 @@ public class Load {
                             break;
                         }
                     }
-                    maze.setMazeCell(countlines, countcolumns, (char) value[0]);
+                    if ((char) value[0] == 'X') {
+                        maze.getMaze()[countlines][countcolumns] = new MazeCell(countlines, countcolumns, wallCell);
+                    }
+                    if ((char) value[0] == ' ') {
+                        maze.getMaze()[countlines][countcolumns] = new MazeCell(countlines, countcolumns, emptyCell);
+                    }
+                    if ((char) value[0] == 'P') {
+                        maze.getMaze()[countlines][countcolumns] = new MazeCell(countlines, countcolumns, startCell);
+                    }
+                    if ((char) value[0] == 'K') {
+                        maze.getMaze()[countlines][countcolumns] = new MazeCell(countlines, countcolumns, finishCell);
+                    }
+                    //maze.setMazeCell(countlines, countcolumns, (char) value[0]);
                     countcolumns++;
                 }
             } while (countlines != (maze.getMaze().length));
@@ -212,7 +228,7 @@ public class Load {
             }
             y = Integer.parseInt(hexString, 16);
             hexString = "";
-            maze.isMazeCellStart(y - 1, x - 1);
+            //maze.isMazeCellStart(y - 1, x - 1);
             for (int i = ExitX.length - 1; i >= 0; i--) {
                 hexString += String.format("%02X", ExitX[i]);
             }
@@ -223,7 +239,7 @@ public class Load {
             }
             y = Integer.parseInt(hexString, 16);
             hexString = "";
-            maze.isMazeCellFinish(y - 1, x - 1);
+            //maze.isMazeCellFinish(y - 1, x - 1);
 
             maze.setAmountK(1);
             maze.setAmountP(1);

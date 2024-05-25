@@ -16,11 +16,11 @@ public class VertexNumber {
         vertexNumberArray = new Integer[maze.getRows()][maze.getColumns()];
         for (int i = 0; i < maze.getRows(); i++) {
             for (int j = 0; j < maze.getColumns(); j++) {
-                if (maze.isMazeCellStart(i, j)) {
+                if (maze.getMazeCell(i, j).getCellType() == Load.startCell) {
                     setVertexNumberArrayCell(i, j, 0);
-                } else if (maze.isMazeCellFinish(i, j)) {
+                } else if (maze.getMazeCell(i, j).getCellType() == Load.finishCell) {
                     setVertexNumberArrayCell(i, j, 1);
-                } else if (maze.isMazeCellEmpty(i, j)) {
+                } else if (maze.getMazeCell(i, j).getCellType() == Load.emptyCell) {
                     setVertexNumberArrayCell(i, j, -1);
                 } else {
                     setVertexNumberArrayCell(i, j, -2);
