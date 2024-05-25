@@ -97,7 +97,7 @@ public class Load {
                 isVertex = 0;
             }
         }
-        Vertex vertex = new Vertex(maze);
+        
         Graph mazegraph = new Graph(vertexnumber + 1, maze);
 
         for (int i = 0; i < vertexnumber + 1; i++) {

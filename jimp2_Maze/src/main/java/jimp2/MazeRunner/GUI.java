@@ -11,6 +11,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -36,7 +38,7 @@ import javax.swing.text.DefaultCaret;
  *
  * @author piotr-sosnowski
  */
-public class GUI extends JFrame {
+public class GUI extends JFrame implements PropertyChangeListener{
 
     private final int frameX = 1600;
     private final int frameY = 1400;
@@ -54,7 +56,15 @@ public class GUI extends JFrame {
     private final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
     private final JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
     private final JTextArea eventLogLabel = new JTextArea("");
-
+    private TerminalInputObserver inputObserver;
+    private JMenuItem exportMazeItem;
+    private JButton findShortestWayButton;
+    private JButton changeStartingPositionButton;
+        private JButton changeEndingPositionButton;
+        private Load loader;
+private Maze maze;
+private JScrollPane canvasScrollPane;
+private JMenuItem exportPathItem;
     private void addFrame() {
         //frame = new JFrame();
         setSize(frameX, frameY);
@@ -63,6 +73,7 @@ public class GUI extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+   
 
     private void addLogMessage(String text) {
         eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
@@ -84,8 +95,10 @@ public class GUI extends JFrame {
     }
 
     public GUI() {
+        inputObserver = new TerminalInputObserver();
+        inputObserver.addPropertyChangeListener(this);
+        
         addFrame();
-
         helpMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         wrongIndexErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         eventLogLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -94,17 +107,17 @@ public class GUI extends JFrame {
         eventLogLabel.setText("Please import a maze");
         DefaultCaret caret = (DefaultCaret) eventLogLabel.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);                           //so text in event log is always at the top
-        JButton findShortestWayButton = new JButton("Find the shortest path");
+        findShortestWayButton = new JButton("Find the shortest path");
         findShortestWayButton.setVisible(false);
-        JButton changeStartingPositionButton = new JButton("Set start position");
+        changeStartingPositionButton = new JButton("Set start position");
         changeStartingPositionButton.setVisible(false);
-        JButton changeEndingPositionButton = new JButton("Set finish position");
+        changeEndingPositionButton = new JButton("Set finish position");
         changeEndingPositionButton.setVisible(false);
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
-        Maze maze = new Maze();
-        Load loader = new Load(maze);
+        maze = new Maze();
+        loader = new Load(maze);
 
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
@@ -171,7 +184,7 @@ public class GUI extends JFrame {
         topMenuPanel.add(exitButton);
 
         topPanel.add(topMenuPanel, BorderLayout.NORTH);
-        JScrollPane canvasScrollPane = new JScrollPane();
+        canvasScrollPane = new JScrollPane();
 
         add(topPanel, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.SOUTH);
@@ -181,8 +194,8 @@ public class GUI extends JFrame {
         JMenu mazeMenu = new JMenu("Maze");
         JMenuBar menuBar = new JMenuBar();
         JMenuItem importItem = new JMenuItem("Import");
-        JMenuItem exportPathItem = new JMenuItem("Export path");
-        JMenuItem exportMazeItem = new JMenuItem("Export maze");
+        exportPathItem = new JMenuItem("Export path");
+        exportMazeItem = new JMenuItem("Export maze");
 
         importItem.addActionListener(new ActionListener() {
             @Override
@@ -200,41 +213,8 @@ public class GUI extends JFrame {
                     exportPathItem.setVisible(false);
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
-                    //char maze[][];
-                    if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-                        Load loader = new Load(maze);
-                        loader.loadFromTxt(inputFile); // the difference beetween this char[][] and the examples of mazes (txt) is that here letter 'O' shows the shortest way 
-                        exportMazeItem.setVisible(true);
-                        if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                            findShortestWayButton.setVisible(true);                                     //do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
-                        }
-                        changeStartingPositionButton.setVisible(true);
-                        changeEndingPositionButton.setVisible(true);
-                        MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
-                        mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
-                        canvasScrollPane.setViewportView(mazePaint);
-                        addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
-                    } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {        //binary import
-                        Load loader = new Load(maze);
-                        loader.loadFromBin(inputFile);
-                        exportMazeItem.setVisible(true);
-                        if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                            findShortestWayButton.setVisible(true);
-                        }
-                        changeStartingPositionButton.setVisible(true);
-                        changeEndingPositionButton.setVisible(true);
-                        MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
-                        mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
-                        canvasScrollPane.setViewportView(mazePaint);
-                        addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
-                    } else {
-                        System.out.println("File with wrong extension");
-                        JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
 
-                    }
-
-                    revalidate();
-                    repaint();
+                   importMazeFromFile(inputFile);
                 }
             }
 
@@ -300,17 +280,7 @@ public class GUI extends JFrame {
         findShortestWayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                exportPathItem.setVisible(true);
-                addLogMessage("Found shortest path beetwen start and finish");
-                try {
-                    loader.findPathInMaze();
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-
-                MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
-                mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
-                canvasScrollPane.setViewportView(mazePaint);
+                findShortestPath();
             }
         });
 
@@ -322,5 +292,63 @@ public class GUI extends JFrame {
         setJMenuBar(menuBar);
 
         setPreferredSize(this.getPreferredSize());
+        inputObserver.startObserving();
+    }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("fileInput".equals(evt.getPropertyName())) {
+            File inputFile=(File)evt.getNewValue();
+            importMazeFromFile(inputFile);
+            findShortestPath();
+        }
+    }
+    private void importMazeFromFile(File inputFile) {
+        if (getFileExtension(inputFile).compareTo(".txt") == 0) {
+            Load loader = new Load(maze);
+            loader.loadFromTxt(inputFile);
+            exportMazeItem.setVisible(true);
+            if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
+                findShortestWayButton.setVisible(true); // Do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
+            }
+            changeStartingPositionButton.setVisible(true);
+            changeEndingPositionButton.setVisible(true);
+            MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+            mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
+            canvasScrollPane.setViewportView(mazePaint);
+            addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+        } else if (getFileExtension(inputFile).compareTo(".bin") == 0) { // Binary import
+            Load loader = new Load(maze);
+            loader.loadFromBin(inputFile);
+            exportMazeItem.setVisible(true);
+            if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
+                findShortestWayButton.setVisible(true);
+            }
+            changeStartingPositionButton.setVisible(true);
+            changeEndingPositionButton.setVisible(true);
+            MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+            mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
+            canvasScrollPane.setViewportView(mazePaint);
+            addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+        } else {
+            System.out.println("File with wrong extension");
+            JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        revalidate();
+        repaint();
+    }
+    private void findShortestPath()
+    {
+        exportPathItem.setVisible(true);
+                addLogMessage("Found shortest path beetwen start and finish");
+                try {
+                    loader.findPathInMaze();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+
+                MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+                mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
+                canvasScrollPane.setViewportView(mazePaint);
     }
 }
