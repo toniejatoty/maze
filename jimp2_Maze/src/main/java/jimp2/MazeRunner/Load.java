@@ -228,7 +228,7 @@ public class Load {
             }
             y = Integer.parseInt(hexString, 16);
             hexString = "";
-            //maze.isMazeCellStart(y - 1, x - 1);
+            maze.setMazeCell(y-1, x-1, startCell);
             for (int i = ExitX.length - 1; i >= 0; i--) {
                 hexString += String.format("%02X", ExitX[i]);
             }
@@ -239,7 +239,7 @@ public class Load {
             }
             y = Integer.parseInt(hexString, 16);
             hexString = "";
-            //maze.isMazeCellFinish(y - 1, x - 1);
+            maze.setMazeCell(y-1, x-1, finishCell);
 
             maze.setAmountK(1);
             maze.setAmountP(1);
