@@ -102,29 +102,29 @@ public class Vertex {
                 return;
             }
             howmanyspace = 0;
-            if (!maze.isMazeCellWall(i - 1, j)) {
+            if (!(maze.getMazeCell(i - 1, j).getCellType() == Load.wallCell)) {
                 howmanyspace++;
             }
-            if (!maze.isMazeCellWall(i + 1, j)) {
+            if (!(maze.getMazeCell(i + 1, j).getCellType() == Load.wallCell)) {
                 howmanyspace++;
             }
-            if (!maze.isMazeCellWall(i, j + 1)) {
+            if (!(maze.getMazeCell(i, j + 1).getCellType() == Load.wallCell)) {
                 howmanyspace++;
             }
-            if (!maze.isMazeCellWall(i, j - 1)) {
+            if (!(maze.getMazeCell(i, j - 1).getCellType() == Load.wallCell)) {
                 howmanyspace++;
             }
             if (howmanyspace == 2) {
-                if ((!maze.isMazeCellWall(i - 1, j)) && from != 1) {
+                if ((!(maze.getMazeCell(i - 1, j).getCellType() == Load.wallCell)) && from != 1) {
                     i--;
                     from = 2;
-                } else if ((!maze.isMazeCellWall(i + 1, j)) && from != 2) {
+                } else if ((!(maze.getMazeCell(i + 1, j).getCellType() == Load.wallCell)) && from != 2) {
                     i++;
                     from = 1;
-                } else if ((!maze.isMazeCellWall(i, j + 1)) && from != 4) {
+                } else if ((!(maze.getMazeCell(i, j + 1).getCellType() == Load.wallCell)) && from != 4) {
                     j++;
                     from = 3;
-                } else if ((!maze.isMazeCellWall(i, j - 1)) && from != 3) {
+                } else if ((!(maze.getMazeCell(i, j - 1).getCellType() == Load.wallCell)) && from != 3) {
                     j--;
                     from = 4;
                 }

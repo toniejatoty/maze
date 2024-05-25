@@ -10,7 +10,7 @@ package jimp2.MazeRunner;
  */
 public class Maze {
 
-    private char[][] maze;
+    private MazeCell[][] maze;
     private int rows;
     private int columns;
     private int amountP;            // To check if File with maze is correct
@@ -25,47 +25,12 @@ public class Maze {
         vertexNumber = new VertexNumber();
     }
 
-    public boolean isMazeCellEmpty(int i, int j) {
-        if (maze[i][j] == ' ') {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isMazeCellWall(int i, int j) {
-        if (maze[i][j] == 'X') {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isMazeCellStart(int i, int j) {
-        if (maze[i][j] == 'P') {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isMazeCellFinish(int i, int j) {
-        if (maze[i][j] == 'K') {
-            return true;
-        }
-        return false;
-    }
-
-    public void setMazeCellPath(int i, int j) {
-        maze[i][j] = 'O';
-    }
-
-    public char getMazeCell(int i, int j) {
+    public MazeCell getMazeCell(int i, int j) {
         return maze[i][j];
     }
 
-    public boolean isMazeCellStartOrFinish(int i, int j) {
-        if (maze[i][j] == 'P' || maze[i][j] == 'K') {
-            return true;
-        }
-        return false;
+    public void setMazeCell(int i, int j, MazeCellType mazeCellType) {
+        maze[i][j] = new MazeCell(i, j, mazeCellType);
     }
 
     public int getRows() {
@@ -85,11 +50,7 @@ public class Maze {
     }
 
     public void setMazeSize(int rows, int columns) {
-        maze = new char[rows][columns];
-    }
-
-    public void setMazeRow(int row, char[] line) {
-        maze[row] = line;
+        maze = new MazeCell[rows][columns];
     }
 
     public int getAmountP() {
@@ -116,11 +77,7 @@ public class Maze {
         amountK = value;
     }
 
-    public void setMazeCell(int i, int j, char value) {
-        maze[i][j] = value;
-    }
-
-    public char[][] getMaze() {
+    public MazeCell[][] getMaze() {
         return maze;
     }
 

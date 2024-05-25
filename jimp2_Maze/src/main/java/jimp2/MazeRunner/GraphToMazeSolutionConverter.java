@@ -24,7 +24,6 @@ public class GraphToMazeSolutionConverter {
         int x = xstart;
         int y = ystart;
         for (int i = 1; i < distanceFromStartToFinish + 1; i++) {
-//if(maze.isWallCell(x,y))
             if (maze.getVertexNumber().getVertexNumberArrayCell(x, y) >= 0) {
                 direction = directions[vertexcount];
                 if (direction == 1) {
@@ -64,14 +63,14 @@ public class GraphToMazeSolutionConverter {
                 }
             }
         }
-        convertMazeIntChar();
+        convertSolutionToCharMaze();
 
     }
 
-    private void convertMazeIntChar() {
+    private void convertSolutionToCharMaze() {
 
         for (int i = 1; i < distanceFromStartToFinish; i++) {
-            maze.setMazeCellPath(points[i].getX(), points[i].getY());
+            maze.getMaze()[points[i].getX()][points[i].getY()] = new MazeCell(points[i].getX(), points[i].getY(), Load.pathCell);
         }
 
     }

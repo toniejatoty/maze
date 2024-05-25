@@ -104,7 +104,7 @@ public class GUI extends JFrame {
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
         Maze maze = new Maze();
-        Load loader = new Load(maze);               //może nie działać że przy wczytywaniu nowy loader a find shortest way może ten wykorzystywać
+        Load loader = new Load(maze);
 
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
@@ -210,7 +210,7 @@ public class GUI extends JFrame {
                         }
                         changeStartingPositionButton.setVisible(true);
                         changeEndingPositionButton.setVisible(true);
-                        MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze.getMaze());
+                        MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
                         mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
                         canvasScrollPane.setViewportView(mazePaint);
                         addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
@@ -223,7 +223,7 @@ public class GUI extends JFrame {
                         }
                         changeStartingPositionButton.setVisible(true);
                         changeEndingPositionButton.setVisible(true);
-                        MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze.getMaze());
+                        MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
                         mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
                         canvasScrollPane.setViewportView(mazePaint);
                         addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
@@ -283,7 +283,7 @@ public class GUI extends JFrame {
                         for (int i = 0; i < maze.getRows(); i++) {
                             for (int j = 0; j < maze.getColumns(); j++) {
 
-                                writeToFile(saveFile, maze.getMaze()[i][j]);
+                                writeToFile(saveFile, maze.getMaze()[i][j].getCellType().getCharacter());
                             }
                             writeToFile(saveFile, '\n');
                         }
@@ -302,17 +302,13 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 exportPathItem.setVisible(true);
                 addLogMessage("Found shortest path beetwen start and finish");
-                // int rows = loader.getRows();
-                // int columns = loader.getColumns();
-                //Load newLoader = new Load();
                 try {
-                    //newLoader.findPathInMaze();
                     loader.findPathInMaze();
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
 
-                MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze.getMaze());
+                MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
                 mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
                 canvasScrollPane.setViewportView(mazePaint);
             }
@@ -326,7 +322,5 @@ public class GUI extends JFrame {
         setJMenuBar(menuBar);
 
         setPreferredSize(this.getPreferredSize());
-        //frame.setPreferedSize(); -- żeby menubar nie znikał może zadziała
-        //frame.setVisible(true);
     }
 }
