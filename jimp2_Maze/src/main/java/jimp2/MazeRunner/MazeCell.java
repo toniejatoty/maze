@@ -10,13 +10,13 @@ package jimp2.MazeRunner;
  */
 public class MazeCell {
 
-    private int i;
-    private int j;
+    //private int i;
+    //private int j;
     private MazeCellType cellType;
 
     public MazeCell(int i, int j, MazeCellType cellType) {
-        this.i = i;
-        this.j = j;
+       // this.i = i;
+        //this.j = j;
         this.cellType = cellType;
     }
 

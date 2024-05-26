@@ -63,11 +63,11 @@ public class GraphToMazeSolutionConverter {
                 }
             }
         }
-        convertSolutionToCharMaze();
+        convertSolutionToMaze();
 
     }
 
-    private void convertSolutionToCharMaze() {
+    private void convertSolutionToMaze() {
 
         for (int i = 1; i < distanceFromStartToFinish; i++) {
             maze.getMaze()[points[i].getX()][points[i].getY()] = new MazeCell(points[i].getX(), points[i].getY(), Load.pathCell);

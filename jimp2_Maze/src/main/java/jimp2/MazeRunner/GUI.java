@@ -38,7 +38,7 @@ import javax.swing.text.DefaultCaret;
  *
  * @author piotr-sosnowski
  */
-public class GUI extends JFrame implements PropertyChangeListener{
+public class GUI extends JFrame implements PropertyChangeListener {
 
     private final int frameX = 1600;
     private final int frameY = 1400;
@@ -60,20 +60,20 @@ public class GUI extends JFrame implements PropertyChangeListener{
     private JMenuItem exportMazeItem;
     private JButton findShortestWayButton;
     private JButton changeStartingPositionButton;
-        private JButton changeEndingPositionButton;
-        private Load loader;
-private Maze maze;
-private JScrollPane canvasScrollPane;
-private JMenuItem exportPathItem;
+    private JButton changeEndingPositionButton;
+    private Load loader;
+    private Maze maze;
+    private JScrollPane canvasScrollPane;
+    private JMenuItem exportPathItem;
+
     private void addFrame() {
-        //frame = new JFrame();
+        // frame = new JFrame();
         setSize(frameX, frameY);
         setLayout(new BorderLayout());
         setTitle("Maze");
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-   
 
     private void addLogMessage(String text) {
         eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
@@ -89,7 +89,7 @@ private JMenuItem exportPathItem;
         String filename = file.getName();
         int lastIndexOf = filename.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            return "";           //without extension
+            return ""; // without extension
         }
         return filename.substring(lastIndexOf);
     }
@@ -97,7 +97,7 @@ private JMenuItem exportPathItem;
     public GUI() {
         inputObserver = new TerminalInputObserver();
         inputObserver.addPropertyChangeListener(this);
-        
+
         addFrame();
         helpMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         wrongIndexErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -106,7 +106,7 @@ private JMenuItem exportPathItem;
         eventLogLabel.setForeground(Color.BLACK);
         eventLogLabel.setText("Please import a maze");
         DefaultCaret caret = (DefaultCaret) eventLogLabel.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);                           //so text in event log is always at the top
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE); // so text in event log is always at the top
         findShortestWayButton = new JButton("Find the shortest path");
         findShortestWayButton.setVisible(false);
         changeStartingPositionButton = new JButton("Set start position");
@@ -123,7 +123,7 @@ private JMenuItem exportPathItem;
             @Override
             public void actionPerformed(ActionEvent ev) {
                 maze.setAmountP(1);
-                addLogMessage("Changed start position to ");                        //dopisać x i y nowego początku
+                addLogMessage("Changed start position to "); // dopisać x i y nowego początku
                 if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
                     findShortestWayButton.setVisible(true);
                 }
@@ -134,7 +134,7 @@ private JMenuItem exportPathItem;
             @Override
             public void actionPerformed(ActionEvent ev) {
                 maze.setAmountK(1);
-                addLogMessage("Changed finish position to ");                       //dopisać x i y nowego końca
+                addLogMessage("Changed finish position to "); // dopisać x i y nowego końca
                 if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
                     findShortestWayButton.setVisible(true);
                 }
@@ -154,7 +154,7 @@ private JMenuItem exportPathItem;
                 JOptionPane.showMessageDialog(null, helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        //spróbować flowlayout żeby przy zmniejszaniu guziki nie znikały
+        // spróbować flowlayout żeby przy zmniejszaniu guziki nie znikały
         JPanel bottomMenuPanel = new JPanel();
         bottomMenuPanel.setBackground(Color.LIGHT_GRAY);
         JPanel bottomPanel = new JPanel();
@@ -201,10 +201,10 @@ private JMenuItem exportPathItem;
             @Override
             public void actionPerformed(ActionEvent LoadEvent) {
                 JFileChooser fileChooser = new JFileChooser();
-                //setting deafult extension choosing option as .txt and .bin
+                // setting deafult extension choosing option as .txt and .bin
                 FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
                 FileNameExtensionFilter binFilter = new FileNameExtensionFilter("bin files (*.bin)", "bin");
-                //adding filters
+                // adding filters
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.addChoosableFileFilter(binFilter);
                 fileChooser.setFileFilter(txtFilter);
@@ -214,7 +214,7 @@ private JMenuItem exportPathItem;
                     findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
 
-                   importMazeFromFile(inputFile);
+                    importMazeFromFile(inputFile);
                 }
             }
 
@@ -229,11 +229,12 @@ private JMenuItem exportPathItem;
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
                 FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
-                //adding filters
+                // adding filters
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION);
+                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION)
+                    ;
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
@@ -248,12 +249,20 @@ private JMenuItem exportPathItem;
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");        //we can add more extension in the future if needed(ex. binary)
-                //adding filters
+                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt"); // we can
+                                                                                                             // add more
+                                                                                                             // extension
+                                                                                                             // in the
+                                                                                                             // future
+                                                                                                             // if
+                                                                                                             // needed(ex.
+                                                                                                             // binary)
+                // adding filters
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION);
+                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION)
+                    ;
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
@@ -294,21 +303,24 @@ private JMenuItem exportPathItem;
         setPreferredSize(this.getPreferredSize());
         inputObserver.startObserving();
     }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("fileInput".equals(evt.getPropertyName())) {
-            File inputFile=(File)evt.getNewValue();
+            File inputFile = (File) evt.getNewValue();
             importMazeFromFile(inputFile);
             findShortestPath();
         }
     }
+
     private void importMazeFromFile(File inputFile) {
         if (getFileExtension(inputFile).compareTo(".txt") == 0) {
             Load loader = new Load(maze);
             loader.loadFromTxt(inputFile);
             exportMazeItem.setVisible(true);
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                findShortestWayButton.setVisible(true); // Do zrobienia żeby nie wyświetlało się gdy nie ma P i K w labiryncie
+                findShortestWayButton.setVisible(true); // Do zrobienia żeby nie wyświetlało się gdy nie ma P i K w
+                                                        // labiryncie
             }
             changeStartingPositionButton.setVisible(true);
             changeEndingPositionButton.setVisible(true);
@@ -337,18 +349,18 @@ private JMenuItem exportPathItem;
         revalidate();
         repaint();
     }
-    private void findShortestPath()
-    {
-        exportPathItem.setVisible(true);
-                addLogMessage("Found shortest path beetwen start and finish");
-                try {
-                    loader.findPathInMaze();
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
 
-                MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
-                mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
-                canvasScrollPane.setViewportView(mazePaint);
+    private void findShortestPath() {
+        exportPathItem.setVisible(true);
+        addLogMessage("Found shortest path beetwen start and finish");
+        try {
+            loader.findPathInMaze();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+        mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
+        canvasScrollPane.setViewportView(mazePaint);
     }
 }
