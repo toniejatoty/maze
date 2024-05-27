@@ -211,7 +211,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
 
                 if (fileChooser.showOpenDialog(null) == fileChooser.APPROVE_OPTION) {
                     exportPathItem.setVisible(false);
-                    findShortestWayButton.setVisible(false);
+                    //findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
 
                     importMazeFromFile(inputFile);
@@ -317,6 +317,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
         if (getFileExtension(inputFile).compareTo(".txt") == 0) {
             Load loader = new Load(maze);
             loader.loadFromTxt(inputFile);
+            findShortestWayButton.setVisible(false);
             exportMazeItem.setVisible(true);
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
                 findShortestWayButton.setVisible(true); // Do zrobienia żeby nie wyświetlało się gdy nie ma P i K w
@@ -331,6 +332,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
         } else if (getFileExtension(inputFile).compareTo(".bin") == 0) { // Binary import
             Load loader = new Load(maze);
             loader.loadFromBin(inputFile);
+            findShortestWayButton.setVisible(false);
             exportMazeItem.setVisible(true);
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
                 findShortestWayButton.setVisible(true);
@@ -342,7 +344,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
             canvasScrollPane.setViewportView(mazePaint);
             addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
         } else {
-            System.out.println("File with wrong extension");
+            System.err.println("File with wrong extension");
             JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
         }
 
