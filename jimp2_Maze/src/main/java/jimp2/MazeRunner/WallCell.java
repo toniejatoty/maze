@@ -22,6 +22,11 @@ public class WallCell implements MazeCellType {
     public char getCharacter() {
         return 'X';
     }
+    
+    @Override
+    public int getNumber() {
+        return -2;
+    }
 
     @Override
     public void drawCell(Graphics g, int i, int j, int squareSize) {

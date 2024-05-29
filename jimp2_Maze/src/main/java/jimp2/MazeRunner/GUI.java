@@ -67,7 +67,6 @@ public class GUI extends JFrame implements PropertyChangeListener {
     private JMenuItem exportPathItem;
 
     private void addFrame() {
-        // frame = new JFrame();
         setSize(frameX, frameY);
         setLayout(new BorderLayout());
         setTitle("Maze");
@@ -211,7 +210,6 @@ public class GUI extends JFrame implements PropertyChangeListener {
 
                 if (fileChooser.showOpenDialog(null) == fileChooser.APPROVE_OPTION) {
                     exportPathItem.setVisible(false);
-                    //findShortestWayButton.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
 
                     importMazeFromFile(inputFile);
@@ -249,20 +247,12 @@ public class GUI extends JFrame implements PropertyChangeListener {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt"); // we can
-                                                                                                             // add more
-                                                                                                             // extension
-                                                                                                             // in the
-                                                                                                             // future
-                                                                                                             // if
-                                                                                                             // needed(ex.
-                                                                                                             // binary)
+                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt"); // we can add more extensions in the future
                 // adding filters
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
                 if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION)
-                    ;
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
@@ -320,8 +310,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
             findShortestWayButton.setVisible(false);
             exportMazeItem.setVisible(true);
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                findShortestWayButton.setVisible(true); // Do zrobienia żeby nie wyświetlało się gdy nie ma P i K w
-                                                        // labiryncie
+                findShortestWayButton.setVisible(true);
             }
             changeStartingPositionButton.setVisible(true);
             changeEndingPositionButton.setVisible(true);

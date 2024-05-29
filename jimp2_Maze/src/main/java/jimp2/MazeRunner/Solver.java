@@ -16,7 +16,7 @@ public class Solver {
         this.distanceFromStart = new Integer[mazegraph.getsize()];
         previousVertex = new Integer[mazegraph.getsize()];
         for (int i = 0; i < distanceFromStart.length; i++) {
-            distanceFromStart[i] = Integer.MAX_VALUE; // nie pamiętam czy Chaber przy C nie czepiał się tego
+            distanceFromStart[i] = Integer.MAX_VALUE;
             // Integer.MAX_VALUE
         }
         visited = new boolean[mazegraph.getsize()];

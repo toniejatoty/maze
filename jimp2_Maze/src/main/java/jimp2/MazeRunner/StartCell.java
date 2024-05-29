@@ -22,6 +22,11 @@ public class StartCell implements MazeCellType {
     public char getCharacter() {
         return 'P';
     }
+    
+    @Override
+    public int getNumber() {
+        return 0;
+    }
 
     @Override
     public void drawCell(Graphics g, int i, int j, int squareSize) {

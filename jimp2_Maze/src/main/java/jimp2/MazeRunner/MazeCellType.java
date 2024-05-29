@@ -15,6 +15,8 @@ public interface MazeCellType {
     public void increaseStartOrFinishAmount(Maze maze);
 
     public char getCharacter();
+    
+    public int getNumber();
 
     public void drawCell(Graphics g, int i, int j, int squareSize);
 }

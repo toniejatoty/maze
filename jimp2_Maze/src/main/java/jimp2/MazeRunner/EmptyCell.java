@@ -22,6 +22,11 @@ public class EmptyCell implements MazeCellType {
     public char getCharacter() {
         return ' ';
     }
+    
+    @Override
+    public int getNumber() {
+        return -1;
+    }
 
     @Override
     public void drawCell(Graphics g, int i, int j, int squareSize) {

@@ -15,14 +15,15 @@ public class Maze {
     private int columns;
     private int amountP;            // To check if File with maze is correct
     private int amountK;            // To check if File with maze is correct
-    private VertexNumber vertexNumber;
+    //private VertexNumber vertexNumber;
+    private Integer[][] vertexNumberArray;
 
     public Maze() {
         rows = 0;
         columns = 0;
         amountP = 0;
         amountK = 0;
-        vertexNumber = new VertexNumber();
+        //vertexNumber = new VertexNumber();
     }
 
     public MazeCell getMazeCell(int i, int j) {
@@ -80,8 +81,21 @@ public class Maze {
     public MazeCell[][] getMaze() {
         return maze;
     }
+    
+    public void setVertexNumberArraySize() {
+        vertexNumberArray = new Integer[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                setVertexNumberArrayCell(i, j, getMazeCell(i,j).getCellType().getNumber());
+            }
+        }
+    }
 
-    public VertexNumber getVertexNumber() {
-        return vertexNumber;
+    public void setVertexNumberArrayCell(int i, int j, int value) {
+        vertexNumberArray[i][j] = value;
+    }
+
+    public Integer getVertexNumberArrayCell(int i, int j) {
+        return vertexNumberArray[i][j];
     }
 }

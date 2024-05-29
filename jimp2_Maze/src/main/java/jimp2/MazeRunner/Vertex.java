@@ -77,28 +77,28 @@ public class Vertex {
     }
 
     public void makegraph(int from, int i, int j, int xSource, int ySource) {
-        Integer source = maze.getVertexNumber().getVertexNumberArrayCell(xSource, ySource);
-        if (maze.getVertexNumber().getVertexNumberArrayCell(i, j) >= 0) {
-            mazegraph.add(new Edge(maze.getVertexNumber().getVertexNumberArrayCell(i, j), source, 1, xSource, ySource, from));
+        Integer source = maze.getVertexNumberArrayCell(xSource, ySource);
+        if (maze.getVertexNumberArrayCell(i, j) >= 0) {
+            mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i, j), source, 1, xSource, ySource, from));
             return;
         }
         int weight = 1;
         int howmanyspace = 2;
         while (howmanyspace == 2) {
-            if (maze.getVertexNumber().getVertexNumberArrayCell(i - 1, j) >= 0 && (!maze.getVertexNumber().getVertexNumberArrayCell(i - 1, j).equals(source))) {
-                mazegraph.add(new Edge(maze.getVertexNumber().getVertexNumberArrayCell(i - 1, j), source, weight + 1, xSource, ySource, 2));
+            if (maze.getVertexNumberArrayCell(i - 1, j) >= 0 && (!maze.getVertexNumberArrayCell(i - 1, j).equals(source))) {
+                mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i - 1, j), source, weight + 1, xSource, ySource, 2));
                 return;
             }
-            if (maze.getVertexNumber().getVertexNumberArrayCell(i + 1, j) >= 0 && (!maze.getVertexNumber().getVertexNumberArrayCell(i + 1, j).equals(source))) {
-                mazegraph.add(new Edge(maze.getVertexNumber().getVertexNumberArrayCell(i + 1, j), source, weight + 1, xSource, ySource, 1));
+            if (maze.getVertexNumberArrayCell(i + 1, j) >= 0 && (!maze.getVertexNumberArrayCell(i + 1, j).equals(source))) {
+                mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i + 1, j), source, weight + 1, xSource, ySource, 1));
                 return;
             }
-            if (maze.getVertexNumber().getVertexNumberArrayCell(i, j + 1) >= 0 && (!maze.getVertexNumber().getVertexNumberArrayCell(i, j + 1).equals(source))) {
-                mazegraph.add(new Edge(maze.getVertexNumber().getVertexNumberArrayCell(i, j + 1), source, weight + 1, xSource, ySource, 3));
+            if (maze.getVertexNumberArrayCell(i, j + 1) >= 0 && (!maze.getVertexNumberArrayCell(i, j + 1).equals(source))) {
+                mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i, j + 1), source, weight + 1, xSource, ySource, 3));
                 return;
             }
-            if (maze.getVertexNumber().getVertexNumberArrayCell(i, j - 1) >= 0 && (!maze.getVertexNumber().getVertexNumberArrayCell(i, j - 1).equals(source))) {
-                mazegraph.add(new Edge(maze.getVertexNumber().getVertexNumberArrayCell(i, j - 1), source, weight + 1, xSource, ySource, 4));
+            if (maze.getVertexNumberArrayCell(i, j - 1) >= 0 && (!maze.getVertexNumberArrayCell(i, j - 1).equals(source))) {
+                mazegraph.add(new Edge(maze.getVertexNumberArrayCell(i, j - 1), source, weight + 1, xSource, ySource, 4));
                 return;
             }
             howmanyspace = 0;
