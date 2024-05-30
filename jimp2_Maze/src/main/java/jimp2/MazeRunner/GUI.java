@@ -13,9 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -42,8 +40,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
 
     private final int frameX = 1600;
     private final int frameY = 1400;
-    private final int defaultWidth = 1600;
-    private final int defaultHeight = defaultWidth - 200;
+
     private final String helpMessage = "<html><center>Welcome to an pathfinding in a maze aplication!<br>"
             + "Please import a maze using the \"Import maze\" option. The imported file should be<br>"
             + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths<br>"
@@ -79,11 +76,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
         eventLogLabel.setText(text + " \n " + eventLogLabel.getText());
     }
 
-    private void writeToFile(File filename, char c) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
-        writer.append(c);
-        writer.close();
-    }
+
 
     private String getFileExtension(File file) {
         String filename = file.getName();
@@ -209,7 +202,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
                 fileChooser.addChoosableFileFilter(binFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showOpenDialog(null) == fileChooser.APPROVE_OPTION) {
+                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     exportPathItem.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
 
@@ -233,7 +226,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION)
+                if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
                     
                 {
                     File saveFile = fileChooser.getSelectedFile();
@@ -256,7 +249,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
                 fileChooser.addChoosableFileFilter(txtFilter);
                 fileChooser.setFileFilter(txtFilter);
 
-                if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION)
+                if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
