@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Load {
 
-    Maze maze;
+    private Maze maze;
     static MazeCellType emptyCell = new EmptyCell();
     static MazeCellType wallCell = new WallCell();
     static MazeCellType startCell = new StartCell();
@@ -64,7 +64,6 @@ public class Load {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public void findPathInMaze() throws IOException {

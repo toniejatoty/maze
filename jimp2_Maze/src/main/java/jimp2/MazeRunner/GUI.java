@@ -65,6 +65,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
     private Maze maze;
     private JScrollPane canvasScrollPane;
     private JMenuItem exportPathItem;
+    private Save save;
 
     private void addFrame() {
         setSize(frameX, frameY);
@@ -223,8 +224,9 @@ public class GUI extends JFrame implements PropertyChangeListener {
         exportPathItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
+                
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
                 FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
                 // adding filters
@@ -232,11 +234,13 @@ public class GUI extends JFrame implements PropertyChangeListener {
                 fileChooser.setFileFilter(txtFilter);
 
                 if (fileChooser.showSaveDialog(null) == fileChooser.APPROVE_OPTION)
-                    ;
+                    
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
-                        saveFile = new File(fileChooser.getSelectedFile().getName() + ".txt");
+                        saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".txt");
+                        save = new Save(maze,saveFile);
+                        save.exportpath();
                     }
                     addLogMessage("Saved the path as " + saveFile.getName());
 
@@ -256,20 +260,11 @@ public class GUI extends JFrame implements PropertyChangeListener {
                 {
                     File saveFile = fileChooser.getSelectedFile();
                     if (fileChooser.getFileFilter() == txtFilter) {
-                        saveFile = new File(saveFile.getName() + ".txt");
+                        saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".txt");
+                    save = new Save(maze, saveFile);
+                    save.exportpathmaze();
                     }
-                    try {
-                        for (int i = 0; i < maze.getRows(); i++) {
-                            for (int j = 0; j < maze.getColumns(); j++) {
-
-                                writeToFile(saveFile, maze.getMaze()[i][j].getCellType().getCharacter());
-                            }
-                            writeToFile(saveFile, '\n');
-                        }
-                        writeToFile(saveFile, '\n');
-                    } catch (IOException ex) {
-                        System.err.println("Cannon write to file " + fileChooser.getSelectedFile().getName());
-                    }
+                   
                     addLogMessage("Saved maze as " + saveFile.getName());
                 }
             }
