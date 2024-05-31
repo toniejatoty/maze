@@ -11,6 +11,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -63,6 +65,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
     private JScrollPane canvasScrollPane;
     private JMenuItem exportPathItem;
     private Save save;
+    private MazeDrawer mazePaint;
 
     private void addFrame() {
         setSize(frameX, frameY);
@@ -116,10 +119,21 @@ public class GUI extends JFrame implements PropertyChangeListener {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 maze.setAmountP(1);
-                addLogMessage("Changed start position to "); // dopisać x i y nowego początku
-                if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
-                    findShortestWayButton.setVisible(true);
-                }
+                mazePaint.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int c = (int) (e.getX() / mazePaint.getSquareSize());
+                        int r = (int) (e.getY() / mazePaint.getSquareSize());
+                        loader.setStart(r, c);
+                        mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+                        mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
+                        canvasScrollPane.setViewportView(mazePaint);
+                        addLogMessage("Changed start position to row: " + r + ", column: " + c);
+                        if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
+                            findShortestWayButton.setVisible(true);
+                        }
+                    }
+                });
             }
         });
 
@@ -127,10 +141,21 @@ public class GUI extends JFrame implements PropertyChangeListener {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 maze.setAmountK(1);
-                addLogMessage("Changed finish position to "); // dopisać x i y nowego końca
-                if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
-                    findShortestWayButton.setVisible(true);
-                }
+                mazePaint.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int c = (int) (e.getX() / mazePaint.getSquareSize());
+                        int r = (int) (e.getY() / mazePaint.getSquareSize());
+                        loader.setFinish(r, c);
+                        mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+                        mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
+                        canvasScrollPane.setViewportView(mazePaint);
+                        addLogMessage("Changed finish position to row: " + r + ", column: " + c);
+                        if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
+                            findShortestWayButton.setVisible(true);
+                        }
+                    }
+                });
             }
         });
 
@@ -283,6 +308,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
     }
 
     @Override
+
     public void propertyChange(PropertyChangeEvent evt) {
         if ("fileInput".equals(evt.getPropertyName())) {
             File inputFile = (File) evt.getNewValue();
@@ -302,7 +328,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
             }
             changeStartingPositionButton.setVisible(true);
             changeEndingPositionButton.setVisible(true);
-            MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+            mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
             mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
             canvasScrollPane.setViewportView(mazePaint);
             addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");

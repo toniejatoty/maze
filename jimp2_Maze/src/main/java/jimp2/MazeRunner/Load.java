@@ -14,6 +14,10 @@ public class Load {
     static MazeCellType startCell = new StartCell();
     static MazeCellType finishCell = new FinishCell();
     static MazeCellType pathCell = new PathCell();
+    //private int startRow;
+    //private int startColumn;
+    //private int finishRow;
+    //private int finishColumn;
 
     public Load(Maze maze) {
         this.maze = maze;
@@ -47,9 +51,13 @@ public class Load {
                 for (int columnNumber = 0; columnNumber < maze.getColumns(); columnNumber++) {
                     if (line.charAt(columnNumber) == 'P') {
                         maze.setMazeCell(lineNumber, columnNumber, Load.startCell);
+                        maze.setStartColumn(columnNumber);
+                        maze.setStartRow(lineNumber);
                     }
                     if (line.charAt(columnNumber) == 'K') {
                         maze.setMazeCell(lineNumber, columnNumber, Load.finishCell);
+                        maze.setFinishColumn(columnNumber);
+                        maze.setFinishRow(lineNumber);
                     }
                     if (line.charAt(columnNumber) == 'X') {
                         maze.setMazeCell(lineNumber, columnNumber, Load.wallCell);
@@ -209,9 +217,13 @@ public class Load {
                     }
                     if ((char) value[0] == 'P') {
                         maze.getMaze()[countlines][countcolumns] = new MazeCell(countlines, countcolumns, startCell);
+                        maze.setStartRow(countlines);
+                        maze.setStartColumn(countcolumns);
                     }
                     if ((char) value[0] == 'K') {
                         maze.getMaze()[countlines][countcolumns] = new MazeCell(countlines, countcolumns, finishCell);
+                        maze.setFinishRow(countlines);
+                        maze.setFinishColumn(countcolumns);
                     }
                     //maze.setMazeCell(countlines, countcolumns, (char) value[0]);
                     countcolumns++;
@@ -248,5 +260,19 @@ public class Load {
         }
 
     }
-
+    
+    public void setStart(int r, int c) {
+        maze.setMazeCell(r, c, startCell);
+        maze.setMazeCell(maze.getStartRow(), maze.getStartColumn(), wallCell);
+        maze.setStartRow(r);
+        maze.setStartColumn(c);
+    }
+    
+    public void setFinish(int r, int c) {
+        maze.setMazeCell(r, c, finishCell);
+        maze.setMazeCell(maze.getFinishRow(), maze.getFinishColumn(), wallCell);
+        maze.setFinishRow(r);
+        maze.setFinishColumn(c);
+    }
+    
 }

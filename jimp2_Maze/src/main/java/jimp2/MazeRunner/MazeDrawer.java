@@ -35,4 +35,8 @@ public class MazeDrawer extends JPanel {
             }
         }
     }
+    
+    public int getSquareSize() {
+        return squareSize;
+    }
 }

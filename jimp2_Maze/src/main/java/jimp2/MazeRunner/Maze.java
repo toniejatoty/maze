@@ -17,6 +17,10 @@ public class Maze {
     private int amountK;            // To check if File with maze is correct
     //private VertexNumber vertexNumber;
     private Integer[][] vertexNumberArray;
+    private int startRow;
+    private int startColumn;
+    private int finishRow;
+    private int finishColumn;
 
     public Maze() {
         rows = 0;
@@ -81,12 +85,12 @@ public class Maze {
     public MazeCell[][] getMaze() {
         return maze;
     }
-    
+
     public void setVertexNumberArraySize() {
         vertexNumberArray = new Integer[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                setVertexNumberArrayCell(i, j, getMazeCell(i,j).getCellType().getNumber());
+                setVertexNumberArrayCell(i, j, getMazeCell(i, j).getCellType().getNumber());
             }
         }
     }
@@ -97,5 +101,37 @@ public class Maze {
 
     public Integer getVertexNumberArrayCell(int i, int j) {
         return vertexNumberArray[i][j];
+    }
+    
+    public void setStartRow(int startRow){
+        this.startRow=startRow;
+    }
+    
+    public void setStartColumn(int startColumn){
+        this.startColumn=startColumn;
+    }
+    
+    public int getStartRow() {
+        return startRow;
+    }
+    
+    public int getStartColumn() {
+        return startColumn;
+    }
+    
+    public void setFinishRow(int finishRow) {
+        this.finishRow=finishRow;
+    }
+    
+    public void setFinishColumn(int finishColumn) {
+        this.finishColumn=finishColumn;
+    }
+    
+    public int getFinishRow() {
+        return finishRow;
+    }
+    
+    public int getFinishColumn() {
+        return finishColumn;
     }
 }
