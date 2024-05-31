@@ -342,7 +342,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
             }
             changeStartingPositionButton.setVisible(true);
             changeEndingPositionButton.setVisible(true);
-            MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+            mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
             mazePaint.setPreferredSize(new Dimension(10 * maze.getColumns(), 10 * maze.getRows()));
             canvasScrollPane.setViewportView(mazePaint);
             addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");

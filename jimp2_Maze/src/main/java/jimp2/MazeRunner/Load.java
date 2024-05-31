@@ -217,13 +217,9 @@ public class Load {
                     }
                     if ((char) value[0] == 'P') {
                         maze.getMaze()[countlines][countcolumns] = new MazeCell(countlines, countcolumns, startCell);
-                        maze.setStartRow(countlines);
-                        maze.setStartColumn(countcolumns);
                     }
                     if ((char) value[0] == 'K') {
                         maze.getMaze()[countlines][countcolumns] = new MazeCell(countlines, countcolumns, finishCell);
-                        maze.setFinishRow(countlines);
-                        maze.setFinishColumn(countcolumns);
                     }
                     //maze.setMazeCell(countlines, countcolumns, (char) value[0]);
                     countcolumns++;
@@ -240,6 +236,8 @@ public class Load {
             y = Integer.parseInt(hexString, 16);
             hexString = "";
             maze.setMazeCell(y-1, x-1, startCell);
+            maze.setStartRow(y-1);
+            maze.setStartColumn(x-1);
             for (int i = ExitX.length - 1; i >= 0; i--) {
                 hexString += String.format("%02X", ExitX[i]);
             }
@@ -251,6 +249,8 @@ public class Load {
             y = Integer.parseInt(hexString, 16);
             hexString = "";
             maze.setMazeCell(y-1, x-1, finishCell);
+            maze.setFinishRow(y-1);
+            maze.setFinishColumn(x-1);  
 
             maze.setAmountK(1);
             maze.setAmountP(1);
