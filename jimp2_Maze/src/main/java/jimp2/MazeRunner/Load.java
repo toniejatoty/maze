@@ -75,7 +75,8 @@ public class Load {
     }
 
     public void findPathInMaze() throws IOException {
-
+        
+        clearMaze();
         int isVertex = 0; // it will check if maze[i][j] is verticle it will check if above / under/ next to is space if isvertex>=3 maze[i][j] is vertex
         int vertexnumber = 2; // it will represent number of vertex to differ vertexs starting 2 becouse 0 is P 1 is K
 
@@ -273,6 +274,13 @@ public class Load {
         maze.setMazeCell(maze.getFinishRow(), maze.getFinishColumn(), wallCell);
         maze.setFinishRow(r);
         maze.setFinishColumn(c);
+    }
+    
+    public void clearMaze() {
+        for(int i = 0; i < maze.getRows(); i++)
+            for(int j = 0; j < maze.getColumns(); j++)
+                if(maze.getMazeCell(i, j).getCellType()==pathCell)
+                    maze.setMazeCell(i, j, emptyCell);
     }
     
 }
