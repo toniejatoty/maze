@@ -55,7 +55,6 @@ public class GUI extends JFrame implements PropertyChangeListener {
     private final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
     private final JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
     private final JTextArea eventLogLabel = new JTextArea("");
-    private TerminalInputObserver inputObserver;
     private JMenuItem exportMazeItem;
     private JButton findShortestWayButton;
     private JButton changeStartingPositionButton;
@@ -96,8 +95,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
     }
 
     public GUI() {
-        inputObserver = new TerminalInputObserver();
-        inputObserver.addPropertyChangeListener(this);
+
 
         addFrame();
         helpMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -319,7 +317,6 @@ public class GUI extends JFrame implements PropertyChangeListener {
         setJMenuBar(menuBar);
 
         setPreferredSize(this.getPreferredSize());
-        inputObserver.startObserving();
     }
 
     @Override
