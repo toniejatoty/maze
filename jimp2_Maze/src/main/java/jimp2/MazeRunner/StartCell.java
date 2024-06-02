@@ -13,6 +13,15 @@ import java.awt.Graphics;
  */
 public class StartCell implements MazeCellType {
 
+    private static final StartCell instance = new StartCell();          /*MazeCellType implementations are singletons so we don't create unnecessary instances*/
+
+    private StartCell() {
+    }
+
+    public static StartCell getInstance() {
+        return instance;
+    }
+
     @Override
     public void increaseStartOrFinishAmount(Maze maze) {
         maze.increaseAmountP();
@@ -22,7 +31,7 @@ public class StartCell implements MazeCellType {
     public char getCharacter() {
         return 'P';
     }
-    
+
     @Override
     public int getNumber() {
         return 0;
@@ -32,5 +41,10 @@ public class StartCell implements MazeCellType {
     public void drawCell(Graphics g, int i, int j, int squareSize) {
         g.setColor(Color.YELLOW);
         g.fillRect(squareSize * j, squareSize * i, squareSize, squareSize);
+    }
+
+    @Override
+    public boolean isWallCell() {
+        return false;
     }
 }

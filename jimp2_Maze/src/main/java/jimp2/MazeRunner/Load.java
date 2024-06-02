@@ -9,11 +9,11 @@ import java.io.IOException;
 public class Load {
 
     private Maze maze;
-    static MazeCellType emptyCell = new EmptyCell();
-    static MazeCellType wallCell = new WallCell();
-    static MazeCellType startCell = new StartCell();
-    static MazeCellType finishCell = new FinishCell();
-    static MazeCellType pathCell = new PathCell();
+    private MazeCellType emptyCell;
+    private MazeCellType wallCell;
+    private MazeCellType startCell;
+    private MazeCellType finishCell;
+    private MazeCellType pathCell;
     //private int startRow;
     //private int startColumn;
     //private int finishRow;
@@ -25,6 +25,11 @@ public class Load {
         maze.setColumns(0);
         maze.setAmountP(0);
         maze.setAmountK(0);
+        emptyCell = EmptyCell.getInstance();
+        wallCell = WallCell.getInstance();
+        startCell = StartCell.getInstance();
+        finishCell = FinishCell.getInstance();
+        pathCell = PathCell.getInstance();
     }
 
     public void loadFromTxt(File file) {
@@ -50,20 +55,20 @@ public class Load {
             while ((line = mazeload.readLine()) != null) {
                 for (int columnNumber = 0; columnNumber < maze.getColumns(); columnNumber++) {
                     if (line.charAt(columnNumber) == 'P') {
-                        maze.setMazeCell(lineNumber, columnNumber, Load.startCell);
+                        maze.setMazeCell(lineNumber, columnNumber, startCell);
                         maze.setStartColumn(columnNumber);
                         maze.setStartRow(lineNumber);
                     }
                     if (line.charAt(columnNumber) == 'K') {
-                        maze.setMazeCell(lineNumber, columnNumber, Load.finishCell);
+                        maze.setMazeCell(lineNumber, columnNumber, finishCell);
                         maze.setFinishColumn(columnNumber);
                         maze.setFinishRow(lineNumber);
                     }
                     if (line.charAt(columnNumber) == 'X') {
-                        maze.setMazeCell(lineNumber, columnNumber, Load.wallCell);
+                        maze.setMazeCell(lineNumber, columnNumber, wallCell);
                     }
                     if (line.charAt(columnNumber) == ' ') {
-                        maze.setMazeCell(lineNumber, columnNumber, Load.emptyCell);
+                        maze.setMazeCell(lineNumber, columnNumber, emptyCell);
                     }
                     maze.getMazeCell(lineNumber, columnNumber).getCellType().increaseStartOrFinishAmount(maze);
                 }
@@ -140,7 +145,7 @@ public class Load {
 
         Solution.solve();
         GraphToMazeSolutionConverter interpret = new GraphToMazeSolutionConverter(maze, Solution.getDirections(), mazegraph.getVertex(start).getEdge(0).getX(), mazegraph.getVertex(start).getEdge(0).getY(), Solution.getDistanceFromStartToFinish());
-        interpret.getPoints();
+        interpret.getPoints(pathCell);
 
     }
 

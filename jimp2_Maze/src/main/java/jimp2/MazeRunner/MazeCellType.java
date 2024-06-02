@@ -19,4 +19,6 @@ public interface MazeCellType {
     public int getNumber();
 
     public void drawCell(Graphics g, int i, int j, int squareSize);
+    
+    public boolean isWallCell();
 }

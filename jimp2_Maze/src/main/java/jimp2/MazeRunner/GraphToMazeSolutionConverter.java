@@ -16,7 +16,7 @@ public class GraphToMazeSolutionConverter {
         this.ystart = ystart;
     }
 
-    public void getPoints() {
+    public void getPoints(MazeCellType pathCell) {
         points = new PointXY[distanceFromStartToFinish + 1];
         points[0] = new PointXY(xstart, ystart);
         int direction = 0;
@@ -63,14 +63,14 @@ public class GraphToMazeSolutionConverter {
                 }
             }
         }
-        convertSolutionToMaze();
+        convertSolutionToMaze(pathCell);
 
     }
 
-    private void convertSolutionToMaze() {
+    private void convertSolutionToMaze(MazeCellType pathCell) {
 
         for (int i = 1; i < distanceFromStartToFinish; i++) {
-            maze.getMaze()[points[i].getX()][points[i].getY()] = new MazeCell(points[i].getX(), points[i].getY(), Load.pathCell);
+            maze.getMaze()[points[i].getX()][points[i].getY()] = new MazeCell(points[i].getX(), points[i].getY(), pathCell);
         }
 
     }

@@ -12,6 +12,15 @@ import java.awt.Graphics;
  * @author piotr-sosnowski
  */
 public class FinishCell implements MazeCellType {
+    
+    private static final FinishCell instance = new FinishCell();            /*MazeCellType implementations are singletons so we don't create unnecessary instances*/
+
+    private FinishCell() {
+    }
+
+    public static FinishCell getInstance() {
+        return instance;
+    }
 
     @Override
     public void increaseStartOrFinishAmount(Maze maze) {
@@ -32,5 +41,10 @@ public class FinishCell implements MazeCellType {
     public void drawCell(Graphics g, int i, int j, int squareSize) {
         g.setColor(Color.BLUE);
         g.fillRect(squareSize * j, squareSize * i, squareSize, squareSize);
+    }
+    
+    @Override
+    public boolean isWallCell() {
+        return false;
     }
 }
