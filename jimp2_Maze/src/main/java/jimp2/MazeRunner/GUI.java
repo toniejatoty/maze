@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jimp2.MazeRunner;
 
 import java.awt.BorderLayout;
@@ -42,20 +38,21 @@ public class GUI extends JFrame implements ObserverInterface {
     private final int frameY = 1400;
 
     private final String helpMessage = "<html><center>Welcome to an pathfinding in a maze aplication!<br>"
-            + "Please import a maze using the \"Import maze\" option. The imported file should be<br>"
-            + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as paths<br>"
-            + "or a binary file. Next, you may use the \"Find shortest path\" button to find the shortest path in the maze.<br>"
+            + "Please import a maze using the \"Import maze\" option int the \"Maze\" menu. The imported file should be<br>"
+            + "a text file with P as the maze start, K as it's finish, X as a wall and empty space as possible paths<br>"
+            + "or a binary file. Next, you may use the \"Find the shortest path\" button to find the shortest path in the maze.<br>"
+            + "You may also clear the maze using \"Clear maze\" button.<br>"
             + "Buttons \"Set start position\" and \"Set finish position\" allow you to change the start and finish<br>"
-            + "between which the path will be found. You can also save the found path or the maze with the found path<br>"
-            + "in a text file using the \"Export path\" option under the \"Export\" menu. You may also export the whole maze to a text file<br>"
-            + "using \"Export maze\" option in the same menu. If you export a maze with found path, the path will be marked by \'O\' symbols.";
+            + "between which the path will be found. You can also save the maze with the found path or the maze without the found path<br>"
+            + "in a text file using the \"Export maze with path\" or \"Export maze without path\" options under the \"Maze\" menu.<br>"
+            + "If you export a maze with found path, the path will be marked by \'O\' symbols.";
     private final JLabel helpMessageLabel = new JLabel(helpMessage);
     private final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
     private final String wrongMazeErrorMessage = "<html><center>You tried to import an incorrect maze.<br>. Please import a correct maze with a \".txt\" or \".bin\" format.";
     private final JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
     private final JLabel wrongMazeErrorLabel = new JLabel(wrongMazeErrorMessage);
     private final JTextArea eventLogLabel = new JTextArea("");
-    private JMenuItem exportMazeItem;
+    private JMenuItem exportMazeWithoutItem;
     private JButton findShortestWayButton;
     private JButton changeStartingPositionButton;
     private JButton changeEndingPositionButton;
@@ -63,10 +60,10 @@ public class GUI extends JFrame implements ObserverInterface {
     private Load loader;
     private Maze maze;
     private JScrollPane canvasScrollPane;
-    private JMenuItem exportPathItem;
+    private JMenuItem exportMazeWithPathItem;
     private Save save;
     private MazeDrawer mazePaint;
-    private Observer subject;
+    private Subject subject;
 
     private void addFrame() {
         setSize(frameX, frameY);
@@ -98,7 +95,7 @@ public class GUI extends JFrame implements ObserverInterface {
     public void clearMazeAction() {
         loader.clearMaze();
         redrawMaze();
-        subject.notifyObservers("Cleared maze");
+        subject.notifyAllObservers("Cleared maze");
     }
 
     public void savePathAction() {
@@ -115,9 +112,9 @@ public class GUI extends JFrame implements ObserverInterface {
             if (fileChooser.getFileFilter() == txtFilter) {
                 saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".txt");
                 save = new Save(maze, saveFile);
-                save.exportpath();
+                save.exportMazeWithPath();
             }
-            subject.notifyObservers("Saved the path as " + saveFile.getName());
+            subject.notifyAllObservers("Saved the path as " + saveFile.getName());
         }
     }
 
@@ -133,9 +130,9 @@ public class GUI extends JFrame implements ObserverInterface {
             if (fileChooser.getFileFilter() == txtFilter) {
                 saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".txt");
                 save = new Save(maze, saveFile);
-                save.exportpathmaze();
+                save.exportMazeWithoutPath();
             }
-            subject.notifyObservers("Saved maze as " + saveFile.getName());
+            subject.notifyAllObservers("Saved maze as " + saveFile.getName());
         }
     }
 
@@ -145,7 +142,7 @@ public class GUI extends JFrame implements ObserverInterface {
                 Load loader = new Load(maze);
                 loader.loadFromTxt(inputFile);
                 findShortestWayButton.setVisible(false);
-                exportMazeItem.setVisible(true);
+                exportMazeWithoutItem.setVisible(true);
                 if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
                     findShortestWayButton.setVisible(true);
                     clearMazeButton.setVisible(true);
@@ -153,12 +150,12 @@ public class GUI extends JFrame implements ObserverInterface {
                 changeStartingPositionButton.setVisible(true);
                 changeEndingPositionButton.setVisible(true);
                 redrawMaze();
-                subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+                subject.notifyAllObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
             } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {                        // Binary import
                 Load loader = new Load(maze);
                 loader.loadFromBin(inputFile);
                 findShortestWayButton.setVisible(false);
-                exportMazeItem.setVisible(true);
+                exportMazeWithoutItem.setVisible(true);
                 if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
                     findShortestWayButton.setVisible(true);
                     clearMazeButton.setVisible(true);
@@ -166,7 +163,7 @@ public class GUI extends JFrame implements ObserverInterface {
                 changeStartingPositionButton.setVisible(true);
                 changeEndingPositionButton.setVisible(true);
                 redrawMaze();
-                subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+                subject.notifyAllObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
             } else {
                 System.err.println("File with wrong extension");
                 JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
@@ -188,8 +185,8 @@ public class GUI extends JFrame implements ObserverInterface {
     }
 
     private void findShortestPath() {
-        exportPathItem.setVisible(true);
-        subject.notifyObservers("Found shortest path beetwen start and finish");
+        exportMazeWithPathItem.setVisible(true);
+        subject.notifyAllObservers("Found shortest path beetwen start and finish");
         try {
             loader.findPathInMaze();
         } catch (IOException ex) {
@@ -208,7 +205,7 @@ public class GUI extends JFrame implements ObserverInterface {
         addLogMessage(message);
     }
 
-    public GUI(Load loader, Maze maze, Save save, MazeDrawer mazePaint, Observer subject) {
+    public GUI(Load loader, Maze maze, Save save, MazeDrawer mazePaint, Subject subject) {
         this.maze = maze;
         this.save = save;
         this.loader = loader;
@@ -251,7 +248,7 @@ public class GUI extends JFrame implements ObserverInterface {
                         int r = (int) (e.getY() / newMazePaint.getSquareSize());
                         loader.setStart(r, c, maze.getAmountP() == 1);
                         redrawMaze();
-                        subject.notifyObservers("Changed start position to row: " + r + ", column: " + c);
+                        subject.notifyAllObservers("Changed start position to row: " + r + ", column: " + c);
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
                             findShortestWayButton.setVisible(true);
                             clearMazeButton.setVisible(true);
@@ -274,7 +271,7 @@ public class GUI extends JFrame implements ObserverInterface {
                         int r = (int) (e.getY() / newMazePaint.getSquareSize());
                         loader.setFinish(r, c, maze.getAmountK() == 1);
                         redrawMaze();
-                        subject.notifyObservers("Changed finish position to row: " + r + ", column: " + c);
+                        subject.notifyAllObservers("Changed finish position to row: " + r + ", column: " + c);
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
                             findShortestWayButton.setVisible(true);
                             clearMazeButton.setVisible(true);
@@ -344,9 +341,9 @@ public class GUI extends JFrame implements ObserverInterface {
 
         JMenu mazeMenu = new JMenu("Maze");
         JMenuBar menuBar = new JMenuBar();
-        JMenuItem importItem = new JMenuItem("Import");
-        exportPathItem = new JMenuItem("Export path");
-        exportMazeItem = new JMenuItem("Export maze");
+        JMenuItem importItem = new JMenuItem("Import maze");
+        exportMazeWithPathItem = new JMenuItem("Export maze with path");
+        exportMazeWithoutItem = new JMenuItem("Export maze without path");
 
         importItem.addActionListener(new ActionListener() {
             @Override
@@ -361,7 +358,7 @@ public class GUI extends JFrame implements ObserverInterface {
                 fileChooser.setFileFilter(txtFilter);
 
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    exportPathItem.setVisible(false);
+                    exportMazeWithPathItem.setVisible(false);
                     File inputFile = fileChooser.getSelectedFile();
 
                     importMazeFromFile(inputFile);
@@ -372,13 +369,13 @@ public class GUI extends JFrame implements ObserverInterface {
 
         mazeMenu.add(importItem);
 
-        exportPathItem.addActionListener(new ActionListener() {
+        exportMazeWithPathItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 savePathAction();
             }
         });
-        exportMazeItem.addActionListener(new ActionListener() {
+        exportMazeWithoutItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
                 saveMazeAction();
@@ -392,10 +389,10 @@ public class GUI extends JFrame implements ObserverInterface {
             }
         });
 
-        mazeMenu.add(exportPathItem);
-        mazeMenu.add(exportMazeItem);
-        exportPathItem.setVisible(false);
-        exportMazeItem.setVisible(false);
+        mazeMenu.add(exportMazeWithPathItem);
+        mazeMenu.add(exportMazeWithoutItem);
+        exportMazeWithPathItem.setVisible(false);
+        exportMazeWithoutItem.setVisible(false);
         menuBar.add(mazeMenu);
         setJMenuBar(menuBar);
 

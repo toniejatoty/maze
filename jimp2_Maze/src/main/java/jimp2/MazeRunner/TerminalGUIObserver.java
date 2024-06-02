@@ -3,9 +3,10 @@ package jimp2.MazeRunner;
 import java.io.File;
 import java.io.IOException;
 
-public class TerminalObserver implements ObserverInterface {
+public class TerminalGUIObserver implements ObserverInterface {
+
     private Maze maze;
-    Observer subject = Observer.getInstance();
+    private Subject subject = Subject.getInstance();
 
     public void Terminalsolve(File file) {
         importMazeFromFile(file);
@@ -15,7 +16,7 @@ public class TerminalObserver implements ObserverInterface {
         String filename = file.getName();
         int lastIndexOf = filename.lastIndexOf(".");
         if (lastIndexOf == -1) {
-            return ""; // without extension
+            return "";                                  // without extension
         }
         return filename.substring(lastIndexOf);
     }
@@ -27,33 +28,37 @@ public class TerminalObserver implements ObserverInterface {
             try {
                 loader.loadFromTxt(inputFile);
             } catch (IOException ex) {
-                System.err.println("Error with observer importing maze");
+                System.err.println("Error with observer importing txt maze.");
             }
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                subject.notifyObservers("Found shortest path beetwen start and finish");
+                subject.notifyAllObservers("Found shortest path beetwen start and finish");
                 try {
                     loader.findPathInMaze();
                 } catch (IOException ex) {
-                    subject.notifyObservers(ex.getMessage());
+                    subject.notifyAllObservers(ex.getMessage());
                 }
             }
-            subject.notifyObservers(
+            subject.notifyAllObservers(
                     "Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
-        } else if (getFileExtension(inputFile).compareTo(".bin") == 0) { // Binary import
+        } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {                // Binary import
             Load loader = new Load(maze);
-            loader.loadFromBin(inputFile);
+            try {
+                loader.loadFromBin(inputFile);
+            } catch (IOException ex) {
+                System.err.println("Error with observer importing binaty maze.");
+            }
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                subject.notifyObservers("Found shortest path beetwen start and finish");
+                subject.notifyAllObservers("Found shortest path beetwen start and finish");
                 try {
                     loader.findPathInMaze();
                 } catch (IOException ex) {
-                    subject.notifyObservers(ex.getMessage());
+                    subject.notifyAllObservers(ex.getMessage());
                 }
             }
-            subject.notifyObservers(
+            subject.notifyAllObservers(
                     "Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
         } else {
-            subject.notifyObservers("File with wrong extension");
+            subject.notifyAllObservers("File with wrong extension");
         }
     }
 

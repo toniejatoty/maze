@@ -138,7 +138,7 @@ public class Load {
 
     }
 
-    public void loadFromBin(File file) throws IOException{
+    public void loadFromBin(File file) throws IOException {
         byte[] fileID = new byte[4];
         byte[] escape = new byte[1];
         byte[] columns = new byte[2];

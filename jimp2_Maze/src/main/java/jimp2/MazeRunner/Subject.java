@@ -3,16 +3,20 @@ package jimp2.MazeRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observer {
+public class Subject {
+
     private List<ObserverInterface> observers = new ArrayList<>();
-private static Observer instance;
-private Observer() {}
-public static Observer getInstance() { //singlethon
-    if (instance == null) {
-        instance = new Observer();
+    private static Subject instance;
+
+    private Subject() {
     }
-    return instance;
-}
+
+    public static Subject getInstance() {                  //singleton
+        if (instance == null) {
+            instance = new Subject();
+        }
+        return instance;
+    }
 
     public void addObserver(ObserverInterface observer) {
         observers.add(observer);
@@ -22,7 +26,7 @@ public static Observer getInstance() { //singlethon
         observers.remove(observer);
     }
 
-    public void notifyObservers(String message) {
+    public void notifyAllObservers(String message) {
         for (ObserverInterface observer : observers) {
             observer.update(message);
         }

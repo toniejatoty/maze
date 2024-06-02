@@ -9,18 +9,17 @@ import javax.swing.SwingUtilities;
  */
 public class MazeRunner {
 
-    GUI GUI;
-
     public static void main(String[] args) {
         Maze maze = new Maze();
         Load loader = new Load(maze);
         Save save = new Save(maze, new File("Solved Maze.txt"));
         MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
-        Observer subject = Observer.getInstance();
+        Subject subject = Subject.getInstance();
         boolean useGUI = false;
         boolean useTerminal = false;
         String filePath = null;
-        Observer observer = Observer.getInstance();
+        Subject observer = Subject.getInstance();
+
         for (String arg : args) {
             if (arg.equals("--gui")) {
                 useGUI = true;
@@ -34,7 +33,7 @@ public class MazeRunner {
         if (useGUI && useTerminal) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    TerminalObserver terminalObserver = new TerminalObserver();
+                    TerminalGUIObserver terminalObserver = new TerminalGUIObserver();
                     observer.addObserver(terminalObserver);
                     GUI MazeGUI = new GUI(loader, maze, save, mazePaint, subject);
                     observer.addObserver(MazeGUI);
@@ -43,7 +42,7 @@ public class MazeRunner {
             });
         } else {
             if (useTerminal) {
-                TerminalObserver terminalObserver = new TerminalObserver();
+                TerminalGUIObserver terminalObserver = new TerminalGUIObserver();
                 observer.addObserver(terminalObserver);
                 terminalObserver.Terminalsolve(new File(filePath));
             }

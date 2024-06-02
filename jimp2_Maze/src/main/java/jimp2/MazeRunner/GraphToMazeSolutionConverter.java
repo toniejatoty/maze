@@ -6,7 +6,7 @@ public class GraphToMazeSolutionConverter {
     private int xStart, yStart;
     private int distanceFromStartToFinish;
     private PointXY[] points;
-    Maze maze;
+    private Maze maze;
 
     public GraphToMazeSolutionConverter(Maze maze, Integer[] directions, int xstart, int ystart, int s) {
         this.maze = maze;
@@ -27,7 +27,7 @@ public class GraphToMazeSolutionConverter {
             if (maze.getVertexNumberArrayCell(x, y) >= 0) {
                 direction = directions[vertexCount];
                 points[i] = new PointXY(x, y, direction);
-                switch(direction) {
+                switch (direction) {
                     case 1:
                         x--;
                         break;

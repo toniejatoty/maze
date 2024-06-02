@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jimp2.MazeRunner;
 
 /**
@@ -10,13 +6,13 @@ package jimp2.MazeRunner;
  */
 public class MazeCell {
 
-    //private int i;
-    //private int j;
+    private int i;
+    private int j;
     private MazeCellType cellType;
 
     public MazeCell(int i, int j, MazeCellType cellType) {
-       // this.i = i;
-        //this.j = j;
+        this.i = i;
+        this.j = j;
         this.cellType = cellType;
     }
 

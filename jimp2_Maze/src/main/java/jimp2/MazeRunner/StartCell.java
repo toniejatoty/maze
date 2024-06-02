@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jimp2.MazeRunner;
 
 import java.awt.Color;
@@ -13,7 +9,9 @@ import java.awt.Graphics;
  */
 public class StartCell implements MazeCellType {
 
-    private static final StartCell instance = new StartCell();          /*MazeCellType implementations are singletons so we don't create unnecessary instances*/
+    private static final StartCell instance = new StartCell();
+
+    /*MazeCellType implementations are singletons so we don't create unnecessary instances*/
 
     private StartCell() {
     }

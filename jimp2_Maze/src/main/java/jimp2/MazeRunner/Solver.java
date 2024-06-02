@@ -5,10 +5,9 @@ public class Solver {
     private Graph mazegraph;
     private Integer[] directions;
     private int start;
-    private boolean[] visited; // is vertex visited?
-    private Integer[] distanceFromStart; // like distanceFromStart[50] will have value beetween start and vertex
-    // represented by 50 number
-    private Integer[] previousVertex; // to know connections
+    private boolean[] visited;                      // is vertex visited?
+    private Integer[] distanceFromStart;            // like distanceFromStart[50] will have value beetween start and vertex represented by 50 number
+    private Integer[] previousVertex;               // to know connections
 
     public Solver(Graph mazegraph, int start) {
         this.mazegraph = mazegraph;
@@ -17,7 +16,6 @@ public class Solver {
         previousVertex = new Integer[mazegraph.getSize()];
         for (int i = 0; i < distanceFromStart.length; i++) {
             distanceFromStart[i] = Integer.MAX_VALUE;
-            // Integer.MAX_VALUE
         }
         visited = new boolean[mazegraph.getSize()];
     }
@@ -49,11 +47,11 @@ public class Solver {
                 }
             }
         }
-        directions = new Integer[mazegraph.getSize()]; // it will containts direction 1-up 2-down 3-left 4-right i
-        // should head in maze from finish to start
+
+        directions = new Integer[mazegraph.getSize()];              // it will containts direction 1-up 2-down 3-left 4-right
 
         int vertexNumberIterator = 1;
-        int i = 0; // to chronology assign values to way
+        int i = 0;                                                  // to chronology assign values to way
 
         while (previousVertex[vertexNumberIterator] != -1) {
             directions[i] = mazegraph.getVertex(vertexNumberIterator).getEdge(mazegraph.getVertex(vertexNumberIterator)
@@ -70,7 +68,6 @@ public class Solver {
         Integer[] tmp = new Integer[directionsize];
         System.arraycopy(directions, 0, tmp, 0, directionsize);
         directions = tmp;
-
     }
 
     private int findMinVertex() {

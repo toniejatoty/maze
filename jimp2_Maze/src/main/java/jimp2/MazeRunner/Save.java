@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Save {
+
     private File savefile;
     private Maze maze;
 
@@ -14,7 +15,7 @@ public class Save {
         this.savefile = savefile;
     }
 
-    public void exportpath() {
+    public void exportMazeWithPath() {
         try {
             FileWriter fileWriter = new FileWriter(savefile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -30,14 +31,17 @@ public class Save {
             System.out.println("File Error: " + ex.getMessage());
         }
     }
-    public void exportpathmaze() {
+
+    public void exportMazeWithoutPath() {
         try {
             FileWriter fileWriter = new FileWriter(savefile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for (int i = 0; i < maze.getRows(); i++) {
                 for (int j = 0; j < maze.getColumns(); j++) {
                     char character = maze.getMazeCell(i, j).getCellType().getCharacter();
-                    if(character=='O')character=' '; 
+                    if (character == 'O') {
+                        character = ' ';
+                    }
                     bufferedWriter.write(character);
                 }
                 bufferedWriter.write("\n");
@@ -47,5 +51,5 @@ public class Save {
             System.out.println("File Error: " + ex.getMessage());
         }
     }
-    
+
 }
