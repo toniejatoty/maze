@@ -13,7 +13,7 @@ public class MazeRunner {
         boolean useGUI = false;
         boolean useTerminal = false;
         String filePath = null;
-        Subject subject = Subject.getInstance();
+        Observer observer = Observer.getInstance();
         for (String arg : args) {
             if (arg.equals("--gui")) {
                 useGUI = true;
@@ -25,25 +25,25 @@ public class MazeRunner {
         }
         if (useGUI && useTerminal) {
             TerminalObserver terminalObserver = new TerminalObserver();
-            subject.addObserver(terminalObserver);
+            observer.addObserver(terminalObserver);
             GUI Mazegui = new GUI();
-            subject.addObserver(Mazegui);
+            observer.addObserver(Mazegui);
          Mazegui.solveFromObserver(new File(filePath));
         }
         else{
         if (useTerminal) {
             TerminalObserver terminalObserver = new TerminalObserver();
-            subject.addObserver(terminalObserver);
+            observer.addObserver(terminalObserver);
             terminalObserver.Terminalsolve(new File(filePath));
         }
         if (useGUI) {
             GUI Mazegui = new GUI();
-            subject.addObserver(Mazegui);
+            observer.addObserver(Mazegui);
         }
     }
         if (args.length == 0) {
             GUI Mazegui = new GUI();
-            subject.addObserver(Mazegui);
+            observer.addObserver(Mazegui);
         }
         // SwingUtilities.invokeLater(() -> new GUI());
     }

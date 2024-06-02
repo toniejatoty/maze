@@ -3,9 +3,9 @@ package jimp2.MazeRunner;
 import java.io.File;
 import java.io.IOException;
 
-public class TerminalObserver implements Observer {
+public class TerminalObserver implements ObserverInterface {
     private Maze maze;
-    Subject subject = Subject.getInstance();
+    Observer subject = Observer.getInstance();
 
     public void Terminalsolve(File file) {
         importMazeFromFile(file);

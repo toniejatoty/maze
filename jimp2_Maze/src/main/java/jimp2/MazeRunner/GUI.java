@@ -36,7 +36,7 @@ import javax.swing.text.DefaultCaret;
  *
  * @author piotr-sosnowski
  */
-public class GUI extends JFrame implements Observer {
+public class GUI extends JFrame implements ObserverInterface {
 
     private final int frameX = 1600;
     private final int frameY = 1400;
@@ -64,7 +64,7 @@ public class GUI extends JFrame implements Observer {
     private JMenuItem exportPathItem;
     private Save save;
     private MazeDrawer mazePaint;
-    private Subject  subject = Subject.getInstance();
+    private Observer  subject = Observer.getInstance();
 
     private void addFrame() {
         setSize(frameX, frameY);
