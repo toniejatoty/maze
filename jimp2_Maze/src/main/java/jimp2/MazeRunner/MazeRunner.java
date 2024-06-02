@@ -1,6 +1,7 @@
 package jimp2.MazeRunner;
 
 import java.io.File;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -23,12 +24,13 @@ public class MazeRunner {
                 useTerminal = true;
             }
         }
+        GUI MazeGUI;
         if (useGUI && useTerminal) {
             TerminalObserver terminalObserver = new TerminalObserver();
             observer.addObserver(terminalObserver);
-            GUI Mazegui = new GUI();
-            observer.addObserver(Mazegui);
-         Mazegui.solveFromObserver(new File(filePath));
+            MazeGUI = new GUI();
+            observer.addObserver(MazeGUI);
+         MazeGUI.solveFromObserver(new File(filePath));
         }
         else{
         if (useTerminal) {
@@ -37,14 +39,14 @@ public class MazeRunner {
             terminalObserver.Terminalsolve(new File(filePath));
         }
         if (useGUI) {
-            GUI Mazegui = new GUI();
-            observer.addObserver(Mazegui);
+            MazeGUI = new GUI();
+            observer.addObserver(MazeGUI);
         }
     }
         if (args.length == 0) {
-            GUI Mazegui = new GUI();
-            observer.addObserver(Mazegui);
+            MazeGUI = new GUI();
+            observer.addObserver(MazeGUI);
         }
-        // SwingUtilities.invokeLater(() -> new GUI());
+        //SwingUtilities.invokeLater(() -> new GUI());
     }
 }
