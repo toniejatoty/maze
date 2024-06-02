@@ -181,7 +181,7 @@ public class GUI extends JFrame implements ObserverInterface {
                         System.err.println("TEST AFTER");
                         int c = (int) (e.getX() / newMazePaint.getSquareSize());
                         int r = (int) (e.getY() / newMazePaint.getSquareSize());
-                        loader.setStart(r, c);
+                        loader.setStart(r, c, maze.getAmountP()==1);
                         redrawMaze();
                         subject.notifyObservers("Changed start position to row: " + r + ", column: " + c);
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
@@ -204,7 +204,7 @@ public class GUI extends JFrame implements ObserverInterface {
                     public void mouseClicked(MouseEvent e) {
                         int c = (int) (e.getX() / newMazePaint.getSquareSize());
                         int r = (int) (e.getY() / newMazePaint.getSquareSize());
-                        loader.setFinish(r, c);
+                        loader.setFinish(r, c, maze.getAmountK()==1);
                         redrawMaze();
                         subject.notifyObservers("Changed finish position to row: " + r + ", column: " + c);
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {

@@ -267,16 +267,18 @@ public class Load {
 
     }
     
-    public void setStart(int r, int c) {
+    public void setStart(int r, int c, boolean isStart) {
         maze.setMazeCell(r, c, startCell);
-        maze.setMazeCell(maze.getStartRow(), maze.getStartColumn(), wallCell);
+        if(isStart)
+            maze.setMazeCell(maze.getStartRow(), maze.getStartColumn(), wallCell);
         maze.setStartRow(r);
         maze.setStartColumn(c);
     }
     
-    public void setFinish(int r, int c) {
+    public void setFinish(int r, int c, boolean isFinish) {
         maze.setMazeCell(r, c, finishCell);
-        maze.setMazeCell(maze.getFinishRow(), maze.getFinishColumn(), wallCell);
+        if(isFinish)
+            maze.setMazeCell(maze.getFinishRow(), maze.getFinishColumn(), wallCell);
         maze.setFinishRow(r);
         maze.setFinishColumn(c);
     }
