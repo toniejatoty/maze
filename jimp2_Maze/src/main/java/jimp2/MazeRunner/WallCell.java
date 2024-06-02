@@ -24,7 +24,6 @@ public class WallCell implements MazeCellType {
 
     @Override
     public void increaseStartOrFinishAmount(Maze maze) {
-        ;
     }
 
     @Override

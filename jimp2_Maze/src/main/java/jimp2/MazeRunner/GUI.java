@@ -121,7 +121,7 @@ public class GUI extends JFrame implements ObserverInterface {
 
     public void saveMazeAction() {
         JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt"); // we can add more extensions in the future
+        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
         // adding filters
         fileChooser.addChoosableFileFilter(txtFilter);
         fileChooser.setFileFilter(txtFilter);
@@ -137,8 +137,64 @@ public class GUI extends JFrame implements ObserverInterface {
         }
     }
 
+    private void importMazeFromFile(File inputFile) {
+        if (getFileExtension(inputFile).compareTo(".txt") == 0) {
+            Load loader = new Load(maze);
+            loader.loadFromTxt(inputFile);
+            findShortestWayButton.setVisible(false);
+            exportMazeItem.setVisible(true);
+            if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
+                findShortestWayButton.setVisible(true);
+                clearMazeButton.setVisible(true);
+            }
+            changeStartingPositionButton.setVisible(true);
+            changeEndingPositionButton.setVisible(true);
+            redrawMaze();
+            subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+        } else if (getFileExtension(inputFile).compareTo(".bin") == 0) { // Binary import
+            Load loader = new Load(maze);
+            loader.loadFromBin(inputFile);
+            findShortestWayButton.setVisible(false);
+            exportMazeItem.setVisible(true);
+            if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
+                findShortestWayButton.setVisible(true);
+                clearMazeButton.setVisible(true);
+            }
+            changeStartingPositionButton.setVisible(true);
+            changeEndingPositionButton.setVisible(true);
+            redrawMaze();
+            subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+        } else {
+            System.err.println("File with wrong extension");
+            JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        revalidate();
+        repaint();
+    }
+
+    private void findShortestPath() {
+        exportPathItem.setVisible(true);
+        subject.notifyObservers("Found shortest path beetwen start and finish");
+        try {
+            loader.findPathInMaze();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        redrawMaze();
+    }
+
+    public void solveFromObserver(File file) {
+        importMazeFromFile(file);
+        findShortestPath();
+    }
+
+    @Override
+    public void update(String message) {
+        addLogMessage(message);
+    }
+
     public GUI(Load loader, Maze maze, Save save, MazeDrawer mazePaint, Observer subject) {
-        //subject = Observer.getInstance();
         this.maze = maze;
         this.save = save;
         this.loader = loader;
@@ -153,7 +209,7 @@ public class GUI extends JFrame implements ObserverInterface {
         eventLogLabel.setForeground(Color.BLACK);
         eventLogLabel.setText("Please import a maze");
         DefaultCaret caret = (DefaultCaret) eventLogLabel.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE); // so text in event log is always at the top
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);                       // so text in event log is always at the top
         findShortestWayButton = new JButton("Find the shortest path");
         findShortestWayButton.setVisible(false);
         changeStartingPositionButton = new JButton("Set start position");
@@ -166,8 +222,6 @@ public class GUI extends JFrame implements ObserverInterface {
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
-        //maze = new Maze();
-        //loader = new Load(maze);
 
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
@@ -181,7 +235,7 @@ public class GUI extends JFrame implements ObserverInterface {
                         System.err.println("TEST AFTER");
                         int c = (int) (e.getX() / newMazePaint.getSquareSize());
                         int r = (int) (e.getY() / newMazePaint.getSquareSize());
-                        loader.setStart(r, c, maze.getAmountP()==1);
+                        loader.setStart(r, c, maze.getAmountP() == 1);
                         redrawMaze();
                         subject.notifyObservers("Changed start position to row: " + r + ", column: " + c);
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
@@ -204,7 +258,7 @@ public class GUI extends JFrame implements ObserverInterface {
                     public void mouseClicked(MouseEvent e) {
                         int c = (int) (e.getX() / newMazePaint.getSquareSize());
                         int r = (int) (e.getY() / newMazePaint.getSquareSize());
-                        loader.setFinish(r, c, maze.getAmountK()==1);
+                        loader.setFinish(r, c, maze.getAmountK() == 1);
                         redrawMaze();
                         subject.notifyObservers("Changed finish position to row: " + r + ", column: " + c);
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
@@ -236,7 +290,7 @@ public class GUI extends JFrame implements ObserverInterface {
                 JOptionPane.showMessageDialog(null, helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        // spróbować flowlayout żeby przy zmniejszaniu guziki nie znikały
+        
         JPanel bottomMenuPanel = new JPanel();
         bottomMenuPanel.setBackground(Color.LIGHT_GRAY);
         JPanel bottomPanel = new JPanel();
@@ -332,62 +386,5 @@ public class GUI extends JFrame implements ObserverInterface {
         setJMenuBar(menuBar);
 
         setPreferredSize(this.getPreferredSize());
-    }
-
-    private void importMazeFromFile(File inputFile) {
-        if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-            Load loader = new Load(maze);
-            loader.loadFromTxt(inputFile);
-            findShortestWayButton.setVisible(false);
-            exportMazeItem.setVisible(true);
-            if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                findShortestWayButton.setVisible(true);
-                clearMazeButton.setVisible(true);
-            }
-            changeStartingPositionButton.setVisible(true);
-            changeEndingPositionButton.setVisible(true);
-            redrawMaze();
-            subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
-        } else if (getFileExtension(inputFile).compareTo(".bin") == 0) { // Binary import
-            Load loader = new Load(maze);
-            loader.loadFromBin(inputFile);
-            findShortestWayButton.setVisible(false);
-            exportMazeItem.setVisible(true);
-            if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                findShortestWayButton.setVisible(true);
-                clearMazeButton.setVisible(true);
-            }
-            changeStartingPositionButton.setVisible(true);
-            changeEndingPositionButton.setVisible(true);
-            redrawMaze();
-            subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
-        } else {
-            System.err.println("File with wrong extension");
-            JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        revalidate();
-        repaint();
-    }
-
-    private void findShortestPath() {
-        exportPathItem.setVisible(true);
-        subject.notifyObservers("Found shortest path beetwen start and finish");
-        try {
-            loader.findPathInMaze();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-        redrawMaze();
-    }
-
-    public void solveFromObserver(File file) {
-        importMazeFromFile(file);
-        findShortestPath();
-    }
-
-    @Override
-    public void update(String message) {
-        addLogMessage(message);
     }
 }

@@ -16,12 +16,12 @@ public class Graph {
         graph[i] = new Vertex(maze);
     }
 
-    public void makeconnection(int i, int j, int from, int xSource, int ySource) {
+    public void makeConnection(int i, int j, int from, int xSource, int ySource) {
         int vertexnumber = maze.getVertexNumberArrayCell(xSource, ySource);
         graph[vertexnumber].makegraph(from, i, j, xSource, ySource);
     }
 
-    public int getsize() {
+    public int getSize() {
         return this.size;
     }
 

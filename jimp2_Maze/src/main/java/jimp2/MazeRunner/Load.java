@@ -122,19 +122,19 @@ public class Load {
                 if (maze.getVertexNumberArrayCell(i, j) >= 0) {
                     if (i - 1 >= 0 && (maze.getVertexNumberArrayCell(i - 1, j) >= -1)) {
                         from = 2;
-                        mazegraph.makeconnection(i - 1, j, from, i, j);
+                        mazegraph.makeConnection(i - 1, j, from, i, j);
                     }
                     if (i + 1 <= maze.getRows() - 1 && (maze.getVertexNumberArrayCell(i + 1, j) >= -1)) {
                         from = 1;
-                        mazegraph.makeconnection(i + 1, j, from, i, j);
+                        mazegraph.makeConnection(i + 1, j, from, i, j);
                     }
                     if (j + 1 <= maze.getColumns() - 1 && (maze.getVertexNumberArrayCell(i, j + 1) >= -1)) {
                         from = 3;
-                        mazegraph.makeconnection(i, j + 1, from, i, j);
+                        mazegraph.makeConnection(i, j + 1, from, i, j);
                     }
                     if (j - 1 >= 0 && (maze.getVertexNumberArrayCell(i, j - 1) >= -1)) {
                         from = 4;
-                        mazegraph.makeconnection(i, j - 1, from, i, j);
+                        mazegraph.makeConnection(i, j - 1, from, i, j);
                     }
                 }
 

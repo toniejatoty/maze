@@ -24,7 +24,6 @@ public class PathCell implements MazeCellType {
 
     @Override
     public void increaseStartOrFinishAmount(Maze maze) {
-        ;
     }
 
     @Override

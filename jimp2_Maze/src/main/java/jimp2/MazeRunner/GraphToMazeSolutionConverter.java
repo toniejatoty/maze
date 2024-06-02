@@ -3,7 +3,7 @@ package jimp2.MazeRunner;
 public class GraphToMazeSolutionConverter {
 
     private Integer[] directions;
-    private int xstart, ystart;
+    private int xStart, yStart;
     private int distanceFromStartToFinish;
     private PointXY[] points;
     Maze maze;
@@ -12,37 +12,38 @@ public class GraphToMazeSolutionConverter {
         this.maze = maze;
         distanceFromStartToFinish = s;
         this.directions = directions;
-        this.xstart = xstart;
-        this.ystart = ystart;
+        this.xStart = xstart;
+        this.yStart = ystart;
     }
 
     public void getPoints(MazeCellType pathCell) {
         points = new PointXY[distanceFromStartToFinish + 1];
-        points[0] = new PointXY(xstart, ystart);
+        points[0] = new PointXY(xStart, yStart);
         int direction = 0;
-        int vertexcount = directions.length - 1;
-        int x = xstart;
-        int y = ystart;
+        int vertexCount = directions.length - 1;
+        int x = xStart;
+        int y = yStart;
         for (int i = 1; i < distanceFromStartToFinish + 1; i++) {
             if (maze.getVertexNumberArrayCell(x, y) >= 0) {
-                direction = directions[vertexcount];
-                if (direction == 1) {
-                    points[i] = new PointXY(x - 1, y);
-                    x--;
+                direction = directions[vertexCount];
+                points[i] = new PointXY(x, y, direction);
+                switch(direction) {
+                    case 1:
+                        x--;
+                        break;
+                    case 2:
+                        x++;
+                        break;
+                    case 3:
+                        y--;
+                        break;
+                    case 4:
+                        y++;
+                        break;
+                    default:
+                        break;
                 }
-                if (direction == 2) {
-                    points[i] = new PointXY(x + 1, y);
-                    x++;
-                }
-                if (direction == 3) {
-                    points[i] = new PointXY(x, y - 1);
-                    y--;
-                }
-                if (direction == 4) {
-                    points[i] = new PointXY(x, y + 1);
-                    y++;
-                }
-                vertexcount--;
+                vertexCount--;
             } else {
                 if (maze.getVertexNumberArrayCell(x - 1, y) >= -1 && direction != 2) {
                     direction = 1;

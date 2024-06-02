@@ -56,6 +56,5 @@ public class MazeRunner {
                 });
             }
         }
-        //SwingUtilities.invokeLater(() -> new GUI());
     }
 }
