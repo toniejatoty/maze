@@ -51,7 +51,9 @@ public class GUI extends JFrame implements ObserverInterface {
             + "using \"Export maze\" option in the same menu. If you export a maze with found path, the path will be marked by \'O\' symbols.";
     private final JLabel helpMessageLabel = new JLabel(helpMessage);
     private final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
+    private final String wrongMazeErrorMessage = "<html><center>You tried to import an incorrect maze.<br>. Please import a correct maze with a \".txt\" or \".bin\" format.";
     private final JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
+    private final JLabel wrongMazeErrorLabel = new JLabel(wrongMazeErrorMessage);
     private final JTextArea eventLogLabel = new JTextArea("");
     private JMenuItem exportMazeItem;
     private JButton findShortestWayButton;
@@ -138,39 +140,51 @@ public class GUI extends JFrame implements ObserverInterface {
     }
 
     private void importMazeFromFile(File inputFile) {
-        if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-            Load loader = new Load(maze);
-            loader.loadFromTxt(inputFile);
-            findShortestWayButton.setVisible(false);
-            exportMazeItem.setVisible(true);
-            if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                findShortestWayButton.setVisible(true);
-                clearMazeButton.setVisible(true);
+        try {
+            if (getFileExtension(inputFile).compareTo(".txt") == 0) {
+                Load loader = new Load(maze);
+                loader.loadFromTxt(inputFile);
+                findShortestWayButton.setVisible(false);
+                exportMazeItem.setVisible(true);
+                if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
+                    findShortestWayButton.setVisible(true);
+                    clearMazeButton.setVisible(true);
+                }
+                changeStartingPositionButton.setVisible(true);
+                changeEndingPositionButton.setVisible(true);
+                redrawMaze();
+                subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+            } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {                        // Binary import
+                Load loader = new Load(maze);
+                loader.loadFromBin(inputFile);
+                findShortestWayButton.setVisible(false);
+                exportMazeItem.setVisible(true);
+                if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
+                    findShortestWayButton.setVisible(true);
+                    clearMazeButton.setVisible(true);
+                }
+                changeStartingPositionButton.setVisible(true);
+                changeEndingPositionButton.setVisible(true);
+                redrawMaze();
+                subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+            } else {
+                System.err.println("File with wrong extension");
+                JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
             }
-            changeStartingPositionButton.setVisible(true);
-            changeEndingPositionButton.setVisible(true);
-            redrawMaze();
-            subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
-        } else if (getFileExtension(inputFile).compareTo(".bin") == 0) { // Binary import
-            Load loader = new Load(maze);
-            loader.loadFromBin(inputFile);
-            findShortestWayButton.setVisible(false);
-            exportMazeItem.setVisible(true);
-            if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                findShortestWayButton.setVisible(true);
-                clearMazeButton.setVisible(true);
-            }
-            changeStartingPositionButton.setVisible(true);
-            changeEndingPositionButton.setVisible(true);
-            redrawMaze();
-            subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
-        } else {
-            System.err.println("File with wrong extension");
-            JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
-        }
 
-        revalidate();
-        repaint();
+            revalidate();
+            repaint();
+        } catch (IOException ex) {
+            System.err.println("Error with loading maze.");
+            JOptionPane.showMessageDialog(null, wrongMazeErrorLabel, "Wrong Maze Error", JOptionPane.ERROR_MESSAGE);
+            maze = new Maze();
+            loader = new Load(maze);
+            redrawMaze();
+            clearMazeButton.setVisible(false);
+            findShortestWayButton.setVisible(false);
+            changeStartingPositionButton.setVisible(false);
+            changeEndingPositionButton.setVisible(false);
+        }
     }
 
     private void findShortestPath() {
@@ -290,7 +304,7 @@ public class GUI extends JFrame implements ObserverInterface {
                 JOptionPane.showMessageDialog(null, helpMessageLabel, "Help", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        
+
         JPanel bottomMenuPanel = new JPanel();
         bottomMenuPanel.setBackground(Color.LIGHT_GRAY);
         JPanel bottomPanel = new JPanel();

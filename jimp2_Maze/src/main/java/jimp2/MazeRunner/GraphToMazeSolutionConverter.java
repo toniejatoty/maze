@@ -47,19 +47,19 @@ public class GraphToMazeSolutionConverter {
             } else {
                 if (maze.getVertexNumberArrayCell(x - 1, y) >= -1 && direction != 2) {
                     direction = 1;
-                    points[i] = new PointXY(x - 1, y);
+                    points[i] = new PointXY(x, y, direction);
                     x--;
                 } else if (maze.getVertexNumberArrayCell(x + 1, y) >= -1 && direction != 1) {
                     direction = 2;
-                    points[i] = new PointXY(x + 1, y);
+                    points[i] = new PointXY(x, y, direction);
                     x++;
                 } else if (maze.getVertexNumberArrayCell(x, y + 1) >= -1 && direction != 3) {
                     direction = 4;
-                    points[i] = new PointXY(x, y + 1);
+                    points[i] = new PointXY(x, y, direction);
                     y++;
                 } else if (maze.getVertexNumberArrayCell(x, y - 1) >= -1 && direction != 4) {
                     direction = 3;
-                    points[i] = new PointXY(x, y - 1);
+                    points[i] = new PointXY(x, y, direction);
                     y--;
                 }
             }

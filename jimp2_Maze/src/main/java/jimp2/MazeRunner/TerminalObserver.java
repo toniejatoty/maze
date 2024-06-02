@@ -24,7 +24,11 @@ public class TerminalObserver implements ObserverInterface {
         if (getFileExtension(inputFile).compareTo(".txt") == 0) {
             maze = new Maze();
             Load loader = new Load(maze);
-            loader.loadFromTxt(inputFile);
+            try {
+                loader.loadFromTxt(inputFile);
+            } catch (IOException ex) {
+                System.err.println("Error with observer importing maze");
+            }
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
                 subject.notifyObservers("Found shortest path beetwen start and finish");
                 try {
