@@ -8,9 +8,15 @@ import javax.swing.SwingUtilities;
  * @author piotr-sosnowski
  */
 public class MazeRunner {
+
     GUI GUI;
 
     public static void main(String[] args) {
+        Maze maze = new Maze();
+        Load loader = new Load(maze);
+        Save save = new Save(maze, new File("Solved Maze.txt"));
+        MazeDrawer mazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+        Observer subject = Observer.getInstance();
         boolean useGUI = false;
         boolean useTerminal = false;
         String filePath = null;
@@ -24,28 +30,31 @@ public class MazeRunner {
                 useTerminal = true;
             }
         }
-        GUI MazeGUI;
+        final String finalFilePath = filePath;
         if (useGUI && useTerminal) {
-            TerminalObserver terminalObserver = new TerminalObserver();
-            observer.addObserver(terminalObserver);
-            MazeGUI = new GUI();
-            observer.addObserver(MazeGUI);
-         MazeGUI.solveFromObserver(new File(filePath));
-        }
-        else{
-        if (useTerminal) {
-            TerminalObserver terminalObserver = new TerminalObserver();
-            observer.addObserver(terminalObserver);
-            terminalObserver.Terminalsolve(new File(filePath));
-        }
-        if (useGUI) {
-            MazeGUI = new GUI();
-            observer.addObserver(MazeGUI);
-        }
-    }
-        if (args.length == 0) {
-            MazeGUI = new GUI();
-            observer.addObserver(MazeGUI);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    TerminalObserver terminalObserver = new TerminalObserver();
+                    observer.addObserver(terminalObserver);
+                    GUI MazeGUI = new GUI(loader, maze, save, mazePaint, subject);
+                    observer.addObserver(MazeGUI);
+                    MazeGUI.solveFromObserver(new File(finalFilePath));
+                }
+            });
+        } else {
+            if (useTerminal) {
+                TerminalObserver terminalObserver = new TerminalObserver();
+                observer.addObserver(terminalObserver);
+                terminalObserver.Terminalsolve(new File(filePath));
+            }
+            if (useGUI || args.length == 0) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        GUI MazeGUI = new GUI(loader, maze, save, mazePaint, subject);
+                        observer.addObserver(MazeGUI);
+                    }
+                });
+            }
         }
         //SwingUtilities.invokeLater(() -> new GUI());
     }

@@ -64,7 +64,7 @@ public class GUI extends JFrame implements ObserverInterface {
     private JMenuItem exportPathItem;
     private Save save;
     private MazeDrawer mazePaint;
-    private Observer  subject = Observer.getInstance();
+    private Observer subject;
 
     private void addFrame() {
         setSize(frameX, frameY);
@@ -93,8 +93,57 @@ public class GUI extends JFrame implements ObserverInterface {
         canvasScrollPane.setViewportView(mazePaint);
     }
 
-    public GUI() {
+    public void clearMazeAction() {
+        loader.clearMaze();
+        redrawMaze();
+        subject.notifyObservers("Cleared maze");
+    }
 
+    public void savePathAction() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
+        // adding filters
+        fileChooser.addChoosableFileFilter(txtFilter);
+        fileChooser.setFileFilter(txtFilter);
+
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File saveFile = fileChooser.getSelectedFile();
+            if (fileChooser.getFileFilter() == txtFilter) {
+                saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".txt");
+                save = new Save(maze, saveFile);
+                save.exportpath();
+            }
+            subject.notifyObservers("Saved the path as " + saveFile.getName());
+        }
+    }
+
+    public void saveMazeAction() {
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt"); // we can add more extensions in the future
+        // adding filters
+        fileChooser.addChoosableFileFilter(txtFilter);
+        fileChooser.setFileFilter(txtFilter);
+
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File saveFile = fileChooser.getSelectedFile();
+            if (fileChooser.getFileFilter() == txtFilter) {
+                saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".txt");
+                save = new Save(maze, saveFile);
+                save.exportpathmaze();
+            }
+            subject.notifyObservers("Saved maze as " + saveFile.getName());
+        }
+    }
+
+    public GUI(Load loader, Maze maze, Save save, MazeDrawer mazePaint, Observer subject) {
+        //subject = Observer.getInstance();
+        this.maze = maze;
+        this.save = save;
+        this.loader = loader;
+        this.mazePaint = mazePaint;
+        this.subject = subject;
 
         addFrame();
         helpMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -117,23 +166,24 @@ public class GUI extends JFrame implements ObserverInterface {
         Icon helpIcon = new ImageIcon("images/helpIcon2.jpg");
         JButton helpButton = new JButton(helpIcon);
         JButton exitButton = new JButton("Exit");
-        maze = new Maze();
-        loader = new Load(maze);
+        //maze = new Maze();
+        //loader = new Load(maze);
 
         changeStartingPositionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
-                System.err.println("TEST1");
                 maze.setAmountP(1);
-                mazePaint.addMouseListener(new MouseAdapter() {
+                MazeDrawer newMazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+                canvasScrollPane.setViewportView(newMazePaint);
+                newMazePaint.addMouseListener(new MouseAdapter() {
                     @Override
-                    public void mouseClicked(MouseEvent e) {
-                        System.err.println("TEST2");
-                        int c = (int) (e.getX() / mazePaint.getSquareSize());
-                        int r = (int) (e.getY() / mazePaint.getSquareSize());
+                    public void mousePressed(MouseEvent e) {
+                        System.err.println("TEST AFTER");
+                        int c = (int) (e.getX() / newMazePaint.getSquareSize());
+                        int r = (int) (e.getY() / newMazePaint.getSquareSize());
                         loader.setStart(r, c);
                         redrawMaze();
-                        subject.notifyObservers("Changed start position to row: \" + r + \", column: \" + c");
+                        subject.notifyObservers("Changed start position to row: " + r + ", column: " + c);
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
                             findShortestWayButton.setVisible(true);
                             clearMazeButton.setVisible(true);
@@ -147,11 +197,13 @@ public class GUI extends JFrame implements ObserverInterface {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 maze.setAmountK(1);
-                mazePaint.addMouseListener(new MouseAdapter() {
+                MazeDrawer newMazePaint = new MazeDrawer(maze.getRows(), maze.getColumns(), maze);
+                canvasScrollPane.setViewportView(newMazePaint);
+                newMazePaint.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        int c = (int) (e.getX() / mazePaint.getSquareSize());
-                        int r = (int) (e.getY() / mazePaint.getSquareSize());
+                        int c = (int) (e.getX() / newMazePaint.getSquareSize());
+                        int r = (int) (e.getY() / newMazePaint.getSquareSize());
                         loader.setFinish(r, c);
                         redrawMaze();
                         subject.notifyObservers("Changed finish position to row: " + r + ", column: " + c);
@@ -167,9 +219,7 @@ public class GUI extends JFrame implements ObserverInterface {
         clearMazeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
-                loader.clearMaze();
-                redrawMaze();
-                subject.notifyObservers("Cleared maze");
+                clearMazeAction();
             }
         });
 
@@ -257,47 +307,14 @@ public class GUI extends JFrame implements ObserverInterface {
         exportPathItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
-
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-
-                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
-                // adding filters
-                fileChooser.addChoosableFileFilter(txtFilter);
-                fileChooser.setFileFilter(txtFilter);
-
-                if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    File saveFile = fileChooser.getSelectedFile();
-                    if (fileChooser.getFileFilter() == txtFilter) {
-                        saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".txt");
-                        save = new Save(maze, saveFile);
-                        save.exportpath();
-                    }
-                    subject.notifyObservers("Saved the path as " + saveFile.getName());
-
-                }
+                savePathAction();
             }
         });
         exportMazeItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent SaveAction) {
-                JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt"); // we can add more extensions in the future
-                // adding filters
-                fileChooser.addChoosableFileFilter(txtFilter);
-                fileChooser.setFileFilter(txtFilter);
-
-                if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    File saveFile = fileChooser.getSelectedFile();
-                    if (fileChooser.getFileFilter() == txtFilter) {
-                        saveFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".txt");
-                        save = new Save(maze, saveFile);
-                        save.exportpathmaze();
-                    }
-                    subject.notifyObservers("Saved maze as " + saveFile.getName());
-                }
+                saveMazeAction();
             }
-
         });
 
         findShortestWayButton.addActionListener(new ActionListener() {
@@ -363,13 +380,14 @@ public class GUI extends JFrame implements ObserverInterface {
         }
         redrawMaze();
     }
-    public void solveFromObserver(File file)
-    {
+
+    public void solveFromObserver(File file) {
         importMazeFromFile(file);
         findShortestPath();
     }
+
     @Override
     public void update(String message) {
-    addLogMessage(message);
+        addLogMessage(message);
     }
 }
