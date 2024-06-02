@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.Icon;
@@ -38,7 +36,7 @@ import javax.swing.text.DefaultCaret;
  *
  * @author piotr-sosnowski
  */
-public class GUI extends JFrame implements PropertyChangeListener {
+public class GUI extends JFrame implements Observer {
 
     private final int frameX = 1600;
     private final int frameY = 1400;
@@ -66,6 +64,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
     private JMenuItem exportPathItem;
     private Save save;
     private MazeDrawer mazePaint;
+    private Subject  subject = Subject.getInstance();
 
     private void addFrame() {
         setSize(frameX, frameY);
@@ -134,7 +133,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
                         int r = (int) (e.getY() / mazePaint.getSquareSize());
                         loader.setStart(r, c);
                         redrawMaze();
-                        addLogMessage("Changed start position to row: " + r + ", column: " + c);
+                        subject.notifyObservers("Changed start position to row: \" + r + \", column: \" + c");
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
                             findShortestWayButton.setVisible(true);
                             clearMazeButton.setVisible(true);
@@ -155,7 +154,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
                         int r = (int) (e.getY() / mazePaint.getSquareSize());
                         loader.setFinish(r, c);
                         redrawMaze();
-                        addLogMessage("Changed finish position to row: " + r + ", column: " + c);
+                        subject.notifyObservers("Changed finish position to row: " + r + ", column: " + c);
                         if (maze.getAmountP() == 1 && maze.getAmountK() == 1) {
                             findShortestWayButton.setVisible(true);
                             clearMazeButton.setVisible(true);
@@ -170,7 +169,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
             public void actionPerformed(ActionEvent ev) {
                 loader.clearMaze();
                 redrawMaze();
-                addLogMessage("Cleared maze");
+                subject.notifyObservers("Cleared maze");
             }
         });
 
@@ -274,7 +273,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
                         save = new Save(maze, saveFile);
                         save.exportpath();
                     }
-                    addLogMessage("Saved the path as " + saveFile.getName());
+                    subject.notifyObservers("Saved the path as " + saveFile.getName());
 
                 }
             }
@@ -295,8 +294,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
                         save = new Save(maze, saveFile);
                         save.exportpathmaze();
                     }
-
-                    addLogMessage("Saved maze as " + saveFile.getName());
+                    subject.notifyObservers("Saved maze as " + saveFile.getName());
                 }
             }
 
@@ -319,16 +317,6 @@ public class GUI extends JFrame implements PropertyChangeListener {
         setPreferredSize(this.getPreferredSize());
     }
 
-    @Override
-
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("fileInput".equals(evt.getPropertyName())) {
-            File inputFile = (File) evt.getNewValue();
-            importMazeFromFile(inputFile);
-            findShortestPath();
-        }
-    }
-
     private void importMazeFromFile(File inputFile) {
         if (getFileExtension(inputFile).compareTo(".txt") == 0) {
             Load loader = new Load(maze);
@@ -342,7 +330,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
             changeStartingPositionButton.setVisible(true);
             changeEndingPositionButton.setVisible(true);
             redrawMaze();
-            addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+            subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
         } else if (getFileExtension(inputFile).compareTo(".bin") == 0) { // Binary import
             Load loader = new Load(maze);
             loader.loadFromBin(inputFile);
@@ -355,7 +343,7 @@ public class GUI extends JFrame implements PropertyChangeListener {
             changeStartingPositionButton.setVisible(true);
             changeEndingPositionButton.setVisible(true);
             redrawMaze();
-            addLogMessage("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
+            subject.notifyObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
         } else {
             System.err.println("File with wrong extension");
             JOptionPane.showMessageDialog(null, wrongIndexErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
@@ -367,12 +355,21 @@ public class GUI extends JFrame implements PropertyChangeListener {
 
     private void findShortestPath() {
         exportPathItem.setVisible(true);
-        addLogMessage("Found shortest path beetwen start and finish");
+        subject.notifyObservers("Found shortest path beetwen start and finish");
         try {
             loader.findPathInMaze();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         redrawMaze();
+    }
+    public void solveFromObserver(File file)
+    {
+        importMazeFromFile(file);
+        findShortestPath();
+    }
+    @Override
+    public void update(String message) {
+    addLogMessage(message);
     }
 }
