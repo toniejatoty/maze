@@ -99,7 +99,8 @@ public class GUI extends JFrame implements ObserverInterface {
     }
 
     public void savePathAction() {
-        JFileChooser fileChooser = new JFileChooser();
+        String dir = System.getProperty("user.dir");
+        JFileChooser fileChooser = new JFileChooser(dir);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
         FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
@@ -119,7 +120,8 @@ public class GUI extends JFrame implements ObserverInterface {
     }
 
     public void saveMazeAction() {
-        JFileChooser fileChooser = new JFileChooser();
+        String dir = System.getProperty("user.dir");
+        JFileChooser fileChooser = new JFileChooser(dir);
         FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
         // adding filters
         fileChooser.addChoosableFileFilter(txtFilter);
@@ -174,13 +176,13 @@ public class GUI extends JFrame implements ObserverInterface {
         } catch (IOException ex) {
             System.err.println("Error with loading maze.");
             JOptionPane.showMessageDialog(null, wrongMazeErrorLabel, "Wrong Maze Error", JOptionPane.ERROR_MESSAGE);
-            maze = new Maze();
-            loader = new Load(maze);
+            loader.resetMaze();
             redrawMaze();
             clearMazeButton.setVisible(false);
             findShortestWayButton.setVisible(false);
             changeStartingPositionButton.setVisible(false);
             changeEndingPositionButton.setVisible(false);
+            exportMazeWithoutItem.setVisible(false);
         }
     }
 
@@ -266,7 +268,7 @@ public class GUI extends JFrame implements ObserverInterface {
                 canvasScrollPane.setViewportView(newMazePaint);
                 newMazePaint.addMouseListener(new MouseAdapter() {
                     @Override
-                    public void mouseClicked(MouseEvent e) {
+                    public void mousePressed(MouseEvent e) {
                         int c = (int) (e.getX() / newMazePaint.getSquareSize());
                         int r = (int) (e.getY() / newMazePaint.getSquareSize());
                         loader.setFinish(r, c, maze.getAmountK() == 1);
@@ -348,7 +350,8 @@ public class GUI extends JFrame implements ObserverInterface {
         importItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent LoadEvent) {
-                JFileChooser fileChooser = new JFileChooser();
+                String dir = System.getProperty("user.dir");
+                JFileChooser fileChooser = new JFileChooser(dir);
                 // setting deafult extension choosing option as .txt and .bin
                 FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("txt files (*.txt)", "txt");
                 FileNameExtensionFilter binFilter = new FileNameExtensionFilter("bin files (*.bin)", "bin");

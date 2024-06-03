@@ -282,5 +282,17 @@ public class Load {
             }
         }
     }
+    
+    public void resetMaze() {
+        for (int i =0; i < maze.getRows(); i++) {
+            for (int j = 0; j < maze.getColumns(); j++) {
+                maze.setMazeCell(i, j, emptyCell);
+            }
+        }
+        maze.setRows(0);
+        maze.setColumns(0);
+        maze.setAmountK(0);
+        maze.setAmountP(0);
+    }
 
 }
