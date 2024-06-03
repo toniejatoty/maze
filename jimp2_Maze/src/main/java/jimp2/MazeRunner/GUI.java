@@ -96,6 +96,7 @@ public class GUI extends JFrame implements ObserverInterface {
 
     public void clearMazeAction() {
         loader.clearMaze();
+        exportMazeWithPathItem.setVisible(false);
         redrawMaze();
         subject.notifyAllObservers("Cleared maze");
     }
