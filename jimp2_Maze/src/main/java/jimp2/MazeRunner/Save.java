@@ -28,7 +28,7 @@ public class Save {
             }
             bufferedWriter.close();
         } catch (IOException ex) {
-            System.out.println("File Error: " + ex.getMessage());
+            System.err.println("Error with exporting maze with file: " + ex.getMessage());
         }
     }
 
@@ -48,7 +48,7 @@ public class Save {
             }
             bufferedWriter.close();
         } catch (IOException ex) {
-            System.out.println("File Error: " + ex.getMessage());
+            System.err.println("Error with exporting maze without path: " + ex.getMessage());
         }
     }
 

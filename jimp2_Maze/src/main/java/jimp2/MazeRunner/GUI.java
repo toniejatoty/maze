@@ -49,8 +49,10 @@ public class GUI extends JFrame implements ObserverInterface {
     private final JLabel helpMessageLabel = new JLabel(helpMessage);
     private final String wrongIndexErrorMessage = "<html><center>You tried to import a maze with a wrong extension.<br>Please import a maze with either \".txt\" or \".bin\" extension.";
     private final String wrongMazeErrorMessage = "<html><center>You tried to import an incorrect maze.<br>. Please import a correct maze with a \".txt\" or \".bin\" format.";
+    private final String cantFindPathErrorMessage = "<html><center>Couldn't find a path in the maze.";
     private final JLabel wrongIndexErrorLabel = new JLabel(wrongIndexErrorMessage);
     private final JLabel wrongMazeErrorLabel = new JLabel(wrongMazeErrorMessage);
+    private final JLabel cantFindPathErrorLabel = new JLabel(cantFindPathErrorMessage);
     private final JTextArea eventLogLabel = new JTextArea("");
     private JMenuItem exportMazeWithoutItem;
     private JButton findShortestWayButton;
@@ -141,7 +143,7 @@ public class GUI extends JFrame implements ObserverInterface {
     private void importMazeFromFile(File inputFile) {
         try {
             if (getFileExtension(inputFile).compareTo(".txt") == 0) {
-                Load loader = new Load(maze);
+                loader = new Load(maze);
                 loader.loadFromTxt(inputFile);
                 findShortestWayButton.setVisible(false);
                 exportMazeWithoutItem.setVisible(true);
@@ -154,7 +156,7 @@ public class GUI extends JFrame implements ObserverInterface {
                 redrawMaze();
                 subject.notifyAllObservers("Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
             } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {                        // Binary import
-                Load loader = new Load(maze);
+                loader = new Load(maze);
                 loader.loadFromBin(inputFile);
                 findShortestWayButton.setVisible(false);
                 exportMazeWithoutItem.setVisible(true);
@@ -192,7 +194,8 @@ public class GUI extends JFrame implements ObserverInterface {
         try {
             loader.findPathInMaze();
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("Couldn't find path in maze");
+            JOptionPane.showMessageDialog(null, cantFindPathErrorLabel, "Wrong Index Error", JOptionPane.ERROR_MESSAGE);
         }
         redrawMaze();
     }
@@ -245,7 +248,6 @@ public class GUI extends JFrame implements ObserverInterface {
                 newMazePaint.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        System.err.println("TEST AFTER");
                         int c = (int) (e.getX() / newMazePaint.getSquareSize());
                         int r = (int) (e.getY() / newMazePaint.getSquareSize());
                         loader.setStart(r, c, maze.getAmountP() == 1);

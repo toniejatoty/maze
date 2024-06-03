@@ -29,6 +29,7 @@ public class TerminalGUIObserver implements ObserverInterface {
                 loader.loadFromTxt(inputFile);
             } catch (IOException ex) {
                 System.err.println("Error with observer importing txt maze.");
+                loader.resetMaze();
             }
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
                 subject.notifyAllObservers("Found shortest path beetwen start and finish");
@@ -41,6 +42,7 @@ public class TerminalGUIObserver implements ObserverInterface {
             subject.notifyAllObservers(
                     "Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
         } else if (getFileExtension(inputFile).compareTo(".bin") == 0) {                // Binary import
+            maze = new Maze();
             Load loader = new Load(maze);
             try {
                 loader.loadFromBin(inputFile);

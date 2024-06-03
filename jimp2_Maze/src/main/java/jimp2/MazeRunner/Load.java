@@ -250,7 +250,7 @@ public class Load {
             maze.setAmountP(1);
 
         } catch (IOException ex) {
-            System.out.println("ERROR WITH BINARY FILE");
+            System.err.println("Error with binary file import");
         }
 
     }
