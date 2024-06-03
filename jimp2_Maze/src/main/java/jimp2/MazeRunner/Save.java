@@ -7,8 +7,8 @@ import java.io.IOException;
 
 public class Save {
 
-    private File savefile;
-    private Maze maze;
+    private final File savefile;
+    private final Maze maze;
 
     public Save(Maze maze, File savefile) {
         this.maze = maze;
@@ -18,15 +18,15 @@ public class Save {
     public void exportMazeWithPath() {
         try {
             FileWriter fileWriter = new FileWriter(savefile);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for (int i = 0; i < maze.getRows(); i++) {
-                for (int j = 0; j < maze.getColumns(); j++) {
-                    char character = maze.getMazeCell(i, j).getCellType().getCharacter();
-                    bufferedWriter.write(character);
+            try (BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+                for (int i = 0; i < maze.getRows(); i++) {
+                    for (int j = 0; j < maze.getColumns(); j++) {
+                        char character = maze.getMazeCell(i, j).getCellType().getCharacter();
+                        bufferedWriter.write(character);
+                    }
+                    bufferedWriter.write("\n");
                 }
-                bufferedWriter.write("\n");
             }
-            bufferedWriter.close();
         } catch (IOException ex) {
             System.err.println("Error with exporting maze with file: " + ex.getMessage());
         }
@@ -35,18 +35,18 @@ public class Save {
     public void exportMazeWithoutPath() {
         try {
             FileWriter fileWriter = new FileWriter(savefile);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for (int i = 0; i < maze.getRows(); i++) {
-                for (int j = 0; j < maze.getColumns(); j++) {
-                    char character = maze.getMazeCell(i, j).getCellType().getCharacter();
-                    if (character == 'O') {
-                        character = ' ';
+            try (BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+                for (int i = 0; i < maze.getRows(); i++) {
+                    for (int j = 0; j < maze.getColumns(); j++) {
+                        char character = maze.getMazeCell(i, j).getCellType().getCharacter();
+                        if (character == 'O') {
+                            character = ' ';
+                        }
+                        bufferedWriter.write(character);
                     }
-                    bufferedWriter.write(character);
+                    bufferedWriter.write("\n");
                 }
-                bufferedWriter.write("\n");
             }
-            bufferedWriter.close();
         } catch (IOException ex) {
             System.err.println("Error with exporting maze without path: " + ex.getMessage());
         }

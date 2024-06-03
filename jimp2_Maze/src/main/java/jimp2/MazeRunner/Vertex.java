@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Vertex {
 
-    private ArrayList<Edge> mazegraph = new ArrayList<>();
-    private Maze maze;
+    private final ArrayList<Edge> mazegraph = new ArrayList<>();
+    private final Maze maze;
 
     public Vertex(Maze maze) {
         this.maze = maze;
@@ -30,7 +30,7 @@ public class Vertex {
 
     @Override
     public String toString() {
-        String result = new String("");
+        String result = "";
         for (int i = 0; i < mazegraph.size(); i++) {
             result += "" + mazegraph.get(i).toString();
         }
@@ -39,6 +39,13 @@ public class Vertex {
 
     protected class Edge {
 
+        private final int destination;
+        private final int source;
+        private final int weight;
+        private final int x;
+        private final int y;
+        private final int direction;
+
         public int getX() {
             return x;
         }
@@ -46,8 +53,6 @@ public class Vertex {
         public int getY() {
             return y;
         }
-        private int destination, source, weight, x, y;
-        private int direction;
 
         public int getDestination() {
             return destination;

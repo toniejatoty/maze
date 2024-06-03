@@ -6,13 +6,13 @@ package jimp2.MazeRunner;
  */
 public class MazeCell {
 
-    private int i;
-    private int j;
-    private MazeCellType cellType;
+    private final MazeCellType cellType;
 
-    public MazeCell(int i, int j, MazeCellType cellType) {
-        this.i = i;
-        this.j = j;
+    /**
+     *
+     * @param cellType
+     */
+    public MazeCell(MazeCellType cellType) {
         this.cellType = cellType;
     }
 

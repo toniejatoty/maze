@@ -2,9 +2,9 @@ package jimp2.MazeRunner;
 
 public class Graph {
 
-    private Vertex[] graph;
-    private int size;
-    private Maze maze;
+    private final Vertex[] graph;
+    private final int size;
+    private final Maze maze;
 
     public Graph(int size, Maze maze) {
         this.size = size;

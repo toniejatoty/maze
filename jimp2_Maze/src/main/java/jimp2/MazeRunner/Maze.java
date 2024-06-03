@@ -29,7 +29,7 @@ public class Maze {
     }
 
     public void setMazeCell(int i, int j, MazeCellType mazeCellType) {
-        maze[i][j] = new MazeCell(i, j, mazeCellType);
+        maze[i][j] = new MazeCell(mazeCellType);
     }
 
     public int getRows() {

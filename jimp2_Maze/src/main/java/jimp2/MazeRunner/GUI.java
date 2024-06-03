@@ -54,18 +54,18 @@ public class GUI extends JFrame implements ObserverInterface {
     private final JLabel wrongMazeErrorLabel = new JLabel(wrongMazeErrorMessage);
     private final JLabel cantFindPathErrorLabel = new JLabel(cantFindPathErrorMessage);
     private final JTextArea eventLogLabel = new JTextArea("");
-    private JMenuItem exportMazeWithoutItem;
-    private JButton findShortestWayButton;
-    private JButton changeStartingPositionButton;
-    private JButton changeEndingPositionButton;
-    private JButton clearMazeButton;
+    private final JMenuItem exportMazeWithoutItem;
+    private final JButton findShortestWayButton;
+    private final JButton changeStartingPositionButton;
+    private final JButton changeEndingPositionButton;
+    private final JButton clearMazeButton;
     private Load loader;
-    private Maze maze;
+    private final Maze maze;
     private JScrollPane canvasScrollPane;
     private JMenuItem exportMazeWithPathItem;
     private Save save;
     private MazeDrawer mazePaint;
-    private Subject subject;
+    private final Subject subject;
 
     private void addFrame() {
         setSize(frameX, frameY);

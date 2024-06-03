@@ -8,12 +8,12 @@ import java.io.IOException;
 
 public class Load {
 
-    private Maze maze;
-    private MazeCellType emptyCell;
-    private MazeCellType wallCell;
-    private MazeCellType startCell;
-    private MazeCellType finishCell;
-    private MazeCellType pathCell;
+    private final Maze maze;
+    private final MazeCellType emptyCell;
+    private final MazeCellType wallCell;
+    private final MazeCellType startCell;
+    private final MazeCellType finishCell;
+    private final MazeCellType pathCell;
 
     public Load(Maze maze) {
         this.maze = maze;
@@ -205,16 +205,16 @@ public class Load {
                         }
                     }
                     if ((char) value[0] == 'X') {
-                        maze.getMaze()[countLines][countColumns] = new MazeCell(countLines, countColumns, wallCell);
+                        maze.getMaze()[countLines][countColumns] = new MazeCell(wallCell);
                     }
                     if ((char) value[0] == ' ') {
-                        maze.getMaze()[countLines][countColumns] = new MazeCell(countLines, countColumns, emptyCell);
+                        maze.getMaze()[countLines][countColumns] = new MazeCell(emptyCell);
                     }
                     if ((char) value[0] == 'P') {
-                        maze.getMaze()[countLines][countColumns] = new MazeCell(countLines, countColumns, startCell);
+                        maze.getMaze()[countLines][countColumns] = new MazeCell(startCell);
                     }
                     if ((char) value[0] == 'K') {
-                        maze.getMaze()[countLines][countColumns] = new MazeCell(countLines, countColumns, finishCell);
+                        maze.getMaze()[countLines][countColumns] = new MazeCell(finishCell);
                     }
                     countColumns++;
                 }

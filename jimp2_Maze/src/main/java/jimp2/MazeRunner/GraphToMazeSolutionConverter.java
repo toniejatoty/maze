@@ -2,11 +2,12 @@ package jimp2.MazeRunner;
 
 public class GraphToMazeSolutionConverter {
 
-    private Integer[] directions;
-    private int xStart, yStart;
-    private int distanceFromStartToFinish;
+    private final Integer[] directions;
+    private final int xStart;
+    private final int yStart;
+    private final int distanceFromStartToFinish;
     private PointXY[] points;
-    private Maze maze;
+    private final Maze maze;
 
     public GraphToMazeSolutionConverter(Maze maze, Integer[] directions, int xstart, int ystart, int s) {
         this.maze = maze;
@@ -28,20 +29,12 @@ public class GraphToMazeSolutionConverter {
                 direction = directions[vertexCount];
                 points[i] = new PointXY(x, y, direction);
                 switch (direction) {
-                    case 1:
-                        x--;
-                        break;
-                    case 2:
-                        x++;
-                        break;
-                    case 3:
-                        y--;
-                        break;
-                    case 4:
-                        y++;
-                        break;
-                    default:
-                        break;
+                    case 1 -> x--;
+                    case 2 -> x++;
+                    case 3 -> y--;
+                    case 4 -> y++;
+                    default -> {
+                    }
                 }
                 vertexCount--;
             } else {
@@ -71,7 +64,7 @@ public class GraphToMazeSolutionConverter {
     private void convertSolutionToMaze(MazeCellType pathCell) {
 
         for (int i = 1; i < distanceFromStartToFinish; i++) {
-            maze.getMaze()[points[i].getX()][points[i].getY()] = new MazeCell(points[i].getX(), points[i].getY(), pathCell);
+            maze.getMaze()[points[i].getX()][points[i].getY()] = new MazeCell(pathCell);
         }
 
     }

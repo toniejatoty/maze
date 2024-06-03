@@ -6,7 +6,7 @@ import java.io.IOException;
 public class TerminalGUIObserver implements ObserverInterface {
 
     private Maze maze;
-    private Subject subject = Subject.getInstance();
+    private final Subject subject = Subject.getInstance();
 
     public void Terminalsolve(File file) {
         importMazeFromFile(file);

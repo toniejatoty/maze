@@ -9,10 +9,10 @@ import javax.swing.JPanel;
  */
 public class MazeDrawer extends JPanel {
 
-    private int squareSize;
-    private int columns;
-    private int rows;
-    private Maze maze;
+    private final int squareSize;
+    private final int columns;
+    private final int rows;
+    private final Maze maze;
 
     public MazeDrawer(int rows, int columns, Maze maze) {
         squareSize = 10;

@@ -40,6 +40,7 @@ public class WallCell implements MazeCellType {
         g.fillRect(squareSize * j, squareSize * i, squareSize, squareSize);
     }
 
+    @Override
     public boolean isWallCell() {
         return true;
     }

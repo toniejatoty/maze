@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Subject {
 
-    private List<ObserverInterface> observers = new ArrayList<>();
+    private final List<ObserverInterface> observers = new ArrayList<>();
     private static Subject instance;
 
     private Subject() {

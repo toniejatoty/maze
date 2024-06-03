@@ -32,6 +32,7 @@ public class MazeRunner {
         final String finalFilePath = filePath;
         if (useGUI && useTerminal) {
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     TerminalGUIObserver terminalObserver = new TerminalGUIObserver();
                     observer.addObserver(terminalObserver);
@@ -48,6 +49,7 @@ public class MazeRunner {
             }
             if (useGUI || args.length == 0) {
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
                         GUI MazeGUI = new GUI(loader, maze, save, mazePaint, subject);
                         observer.addObserver(MazeGUI);
