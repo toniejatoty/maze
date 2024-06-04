@@ -34,7 +34,7 @@ public class MazeRunner {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    TerminalGUIObserver terminalObserver = new TerminalGUIObserver();
+                    TerminalObserver terminalObserver = new TerminalObserver();
                     observer.addObserver(terminalObserver);
                     GUI MazeGUI = new GUI(loader, maze, save, mazePaint, subject);
                     observer.addObserver(MazeGUI);
@@ -43,9 +43,9 @@ public class MazeRunner {
             });
         } else {
             if (useTerminal) {
-                TerminalGUIObserver terminalObserver = new TerminalGUIObserver();
+                TerminalObserver terminalObserver = new TerminalObserver();
                 observer.addObserver(terminalObserver);
-                terminalObserver.Terminalsolve(new File(filePath));
+                terminalObserver.TerminalSolve(new File(filePath));
             }
             if (useGUI || args.length == 0) {
                 SwingUtilities.invokeLater(new Runnable() {

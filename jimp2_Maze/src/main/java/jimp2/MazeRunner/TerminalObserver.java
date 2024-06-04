@@ -3,12 +3,12 @@ package jimp2.MazeRunner;
 import java.io.File;
 import java.io.IOException;
 
-public class TerminalGUIObserver implements ObserverInterface {
+public class TerminalObserver implements ObserverInterface {
 
     private Maze maze;
     private final Subject subject = Subject.getInstance();
 
-    public void Terminalsolve(File file) {
+    public void TerminalSolve(File file) {
         importMazeFromFile(file);
     }
 
@@ -32,12 +32,12 @@ public class TerminalGUIObserver implements ObserverInterface {
                 loader.resetMaze();
             }
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                subject.notifyAllObservers("Found shortest path beetwen start and finish");
                 try {
                     loader.findPathInMaze();
                 } catch (IOException ex) {
                     subject.notifyAllObservers(ex.getMessage());
                 }
+                subject.notifyAllObservers("Found shortest path beetwen start and finish");
             }
             subject.notifyAllObservers(
                     "Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
@@ -50,12 +50,12 @@ public class TerminalGUIObserver implements ObserverInterface {
                 System.err.println("Error with observer importing binaty maze.");
             }
             if (maze.getAmountK() == 1 && maze.getAmountP() == 1) {
-                subject.notifyAllObservers("Found shortest path beetwen start and finish");
                 try {
                     loader.findPathInMaze();
                 } catch (IOException ex) {
                     subject.notifyAllObservers(ex.getMessage());
                 }
+                subject.notifyAllObservers("Found shortest path beetwen start and finish");
             }
             subject.notifyAllObservers(
                     "Imported a maze with " + maze.getColumns() + " columns and " + maze.getRows() + " rows.");
